@@ -6,11 +6,11 @@ It has a boiler for central heating which can use a on-off control and OpenTherm
 
 ### The design wishes for the system
 
-*   Heat the bedroom to a desired temperature at night (while living room radiator closed) and the living room during the day and evening (while bedroom radiator closed)
+*   Multi zone: Heat the bedroom to a desired temperature at night (while living room radiator closed) and the living room during the day and evening (while bedroom radiator closed)
 *   Turn off the thermostat function when no one home
 *   A wired system, that doesn't use wifi, cause I want to limit the use of EMF-radiation in my home
 *   Use a smartphone app and / or a browser to control and monitor the thermostat
-*   Send alerts to the smartphone when certain conditions are met, e.g. when it is suspected that a window is open. 
+*   Send alerts to the smartphone when certain conditions are met, e.g. when it is suspected that a window is open.
 
 ### Software
 
@@ -22,9 +22,16 @@ It has a boiler for central heating which can use a on-off control and OpenTherm
 
 ### Hardware
 
-The bedroom has an Arduino with a DS18B20 temperature sensor.  
-  
-The living room has a Raspberry pi zero with a DS18B20 temperature sensor and a PIR motion sensor applied to the wall.  
+Bedroom: 
+
+*   Arduino with a DS18B20 temperature sensor connected via USB
+
+Living room:
+
+*   Raspberry pi zero with 
+    *   DS18B20 temperature sensor
+    *   PIR motion sensor
+    *   Relay module with wire for controlling on-off heating boiler
 
 Both rooms have one radiator, each is equipped with a eqiva-N thermostatic valve. 
 
@@ -34,13 +41,21 @@ There were no thermostatic valves on my radiator (just a turn knob), so I had to
 
 ![](https://user-images.githubusercontent.com/43075793/102867026-6d725980-4438-11eb-9752-5bd6fffe2686.png)
 
-  
- 
+Deuren
 
-### Configuration.yaml  
-  
-For the generic thermostat integration:  
- 
+### Configuration.yaml
+
+Only covering the relevant part of the configuration for the smart heating system. 
+
+#### For the generic thermostat integration
+
+Home Assistant documentation: [Generic thermostat](https://www.home-assistant.io/integrations/generic_thermostat/)
+
+Choices for configuration variables:
+
+*   `target_temp` I chose target temps lower than I actually want, but with a sudden a restart of the system I don't want the heating to turn on. I use automations to override the temperature to set these to desired temperatures.
+*   `min_cycle_duration` Set so that pump and gas furnace of boiler don't have to turn on and off that often. Set to 3 minutes for bedroom and 1 minute for living room. The living room has a larger radiator and 1 minute turned out as a good value. For the bedroom 3 minutes as the there is a smaller radiator.
+*   `heater` For each room I used a [Helper](https://www.home-assistant.io/integrations/input_boolean/), input\_boolean switch, because Generic thermostat isn't able to work with multiple zones (described [here](https://community.home-assistant.io/t/need-help-with-multi-zone-generic-thermostat-climate-configuration/8563)) when one heater switch is on both rooms (they will contradict). Trough an automation I made sure these helpers are controlling the relay switch, see [automations](#automations).
 
 ```
 climate:
@@ -76,9 +91,116 @@ climate:
   precision: 0.1
 ```
 
-Choices for configuration variables:
+#### Telegram integration
 
-*   `target_temp` I chose target temps lower than I actually want, but with a sudden a restart I don't want the heating to turn on. I use automations to override. 
+I use Telegram for notifications about hours of heating during a week and notifications when the heating is automatically turned of because of a suspected open window.   
+  
+Home Assistant documentation: https://www.home-assistant.io/integrations/telegram_polling/
+
+```
+telegram_bot:
+  - platform: polling
+    api_key: secret
+    allowed_chat_ids:
+      -  secret
+
+      
+notify:
+  - platform: telegram
+    name: Telegramnotifier
+    chat_id: secret
+```
+
+#### Correction of temperature sensors
+
+Noticed that my DS18b20 sensors weren't correct when set up. With the use of [template platform](https://www.home-assistant.io/integrations/template/) a correction is applied.   
+  
+See below:
+
+```
+sensor:
+  - platform: serial
+    serial_port: /dev/ttyUSB0
+  - platform: onewire
+  - platform: time_date
+    display_options:
+      - 'time'
+      - 'date'
+      - 'date_time'
+  - platform: template
+    sensors:
+      ds18b20_woonkamer_correctie:
+        value_template: "{{ states('sensor.28_00000913d350_temperature')|float - 1.2}}"
+        friendly_name: 'Woonkamer temp'
+        unit_of_measurement: degrees
+      ds18b20_slaapkamer_correctie:
+        value_template: "{{ states('sensor.28_011937d1c3d1_temperature')|float - 0.6}}"
+        friendly_name: 'Slaapkamer temp'
+        unit_of_measurement: degrees
+      deltat_slaapkamer:
+        value_template: "{{state_attr('binary_sensor.temp_falling', 'gradient')|float * 1000}}"
+        friendly_name: 'Slaapkamer temp gradient'
+        unit_of_measurement: 'graden'
+      deltat_slaapkamer_grens:
+        value_template: "{{state_attr('binary_sensor.temp_falling', 'min_gradient')|float * 1000}}"
+        friendly_name: 'Slaapkamer min gradient'
+        unit_of_measurement: 'graden'
+      deltat_woonkamer:
+        value_template: "{{state_attr('binary_sensor.temp_falling_woonkamer', 'gradient')|float * 1000}}"
+        friendly_name: 'Woonkamer temp gradient'
+        unit_of_measurement: 'graden'
+      deltat_woonkamer_grens:
+        value_template: "{{state_attr('binary_sensor.temp_falling_woonkamer', 'min_gradient')|float * 1000}}"
+        friendly_name: 'Woonkamer min gradient'
+        unit_of_measurement: 'graden'    
+      heating_state:
+        value_template: "{{state_attr('climate.woonkamer', 'hvac_action')}}"
+        friendly_name: 'thermostaat state'
+  - platform: history_stats
+    name: Aantal minuten verwarmen laatste 7 dagen
+    entity_id: sensor.heating_state
+    state: 'heating'
+    type: time
+    end: '{{ now().replace(hour=0, minute=0, second=0) }}'
+    duration:
+        days: 7
+```
+
+### Trend sensor for possible open window detection
+
+Using the [trend platform](https://www.home-assistant.io/integrations/trend/) it is checked if the temperature will rise enough while heating. If not, it is assumed that a window is open or some other error and the heating is turned off. See [automations](#automations).   
+  
+The `min_gradient` values for each room are set based on experience. 
+
+```
+binary_sensor:
+  - platform: rpi_gpio
+    invert_logic: false
+    ports:
+     16: Kleine Motion sensor
+  - platform: rpi_gpio
+    invert_logic: false
+    ports:
+     26: Motion sensor
+  - platform: trend
+    sensors:
+      temp_falling_slaapkamer:
+        entity_id: sensor.serial_sensor
+        sample_duration: 150
+        max_samples: 3
+        min_gradient: 0.0003
+        invert: false
+        friendly_name: DeltaT slaapk voldoende
+      temp_falling_woonkamer:
+        entity_id: sensor.ds18b20_woonkamer_correctie
+        sample_duration: 150
+        max_samples: 3
+        min_gradient: 0.0005
+        invert: false
+        friendly_name: DeltaT woonk voldoende
+```
+
+## Automations
 
 ```
 - id: '1587310221936'
