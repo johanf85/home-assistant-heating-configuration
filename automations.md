@@ -1,13 +1,27 @@
+# My home smart heating configuration with the use of Home Assistant
+
 My appartement consists of a living room, a bedroom and a kitchen.
 
 It has a boiler for central heating which can use a on-off control and OpenTherm.  
 
+### The design wishes for the system
+
+*   Heat the bedroom to a desired temperature at night (while living room radiator closed) and the living room during the day and evening (while bedroom radiator closed)
+*   Turn of the thermostat function when no one home
+
+  
 The bedroom has a DS18B20 temperature sensor.  
 The living room has a DS18B20 temperature sensor and a PIR motion sensor applied to the wall.  
 
 Both rooms have one radiator, each is equipped with a eqiva-N thermostatic valve. 
 
 ![](https://user-images.githubusercontent.com/43075793/102866119-1029d880-4437-11eb-9000-4aa8b5e9782c.png)
+
+There were no thermostatic valves on my radiator (just a turn knob), so I had to put in a new insert for my Herz radiator valve:
+
+![](https://user-images.githubusercontent.com/43075793/102867026-6d725980-4438-11eb-9752-5bd6fffe2686.png)
+
+Turn of the thermostat function when no one home
 
 ```
 - id: '1587310221936'
