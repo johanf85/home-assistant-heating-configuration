@@ -131,38 +131,38 @@ sensor:
   - platform: template
     sensors:
       ds18b20_woonkamer_correctie:
-        value_template: {% raw %}"{{ states('sensor.28_00000913d350_temperature')|float - 1.2}}"{% endraw %}
+        value_template: "{{ states('sensor.28_00000913d350_temperature')|float - 1.2}}"
         friendly_name: 'Woonkamer temp'
         unit_of_measurement: degrees
       ds18b20_slaapkamer_correctie:
-        value_template: {% raw %}"{{ states('sensor.28_011937d1c3d1_temperature')|float - 0.6}}"{% endraw %}
+        value_template: "{{ states('sensor.28_011937d1c3d1_temperature')|float - 0.6}}"
         friendly_name: 'Slaapkamer temp'
         unit_of_measurement: degrees
       deltat_slaapkamer:
-        value_template: {% raw %}"{{state_attr('binary_sensor.temp_falling', 'gradient')|float * 1000}}"{% endraw %}
+        value_template: "{{state_attr('binary_sensor.temp_falling', 'gradient')|float * 1000}}"
         friendly_name: 'Slaapkamer temp gradient'
         unit_of_measurement: 'graden'
       deltat_slaapkamer_grens:
-        value_template: {% raw %}"{{state_attr('binary_sensor.temp_falling', 'min_gradient')|float * 1000}}" {% endraw %} 
+        value_template: "{{state_attr('binary_sensor.temp_falling', 'min_gradient')|float * 1000}}"  
         friendly_name: 'Slaapkamer min gradient'
         unit_of_measurement: 'graden'
       deltat_woonkamer:
-        value_template:  {% raw %}"{{state_attr('binary_sensor.temp_falling_woonkamer', 'gradient')|float * 1000}}" {% endraw %} 
+        value_template: "{{state_attr('binary_sensor.temp_falling_woonkamer', 'gradient')|float * 1000}}" 
         friendly_name: 'Woonkamer temp gradient'
         unit_of_measurement: 'graden'
       deltat_woonkamer_grens:
-        value_template: {% raw %}"{{state_attr('binary_sensor.temp_falling_woonkamer', 'min_gradient')|float * 1000}}"{% endraw %}
+        value_template: "{{state_attr('binary_sensor.temp_falling_woonkamer', 'min_gradient')|float * 1000}}"
         friendly_name: 'Woonkamer min gradient'
         unit_of_measurement: 'graden'    
       heating_state:
-        value_template: {% raw %}"{{state_attr('climate.woonkamer', 'hvac_action')}}"{% endraw %}
+        value_template: "{{state_attr('climate.woonkamer', 'hvac_action')}}"
         friendly_name: 'thermostaat state'
   - platform: history_stats
     name: Aantal minuten verwarmen laatste 7 dagen
     entity_id: sensor.heating_state
     state: 'heating'
     type: time
-    end: {% raw %}'{{ now().replace(hour=0, minute=0, second=0) }}'{% endraw %}
+    end: '{{ now().replace(hour=0, minute=0, second=0) }}'
     duration:
         days: 7
 {% endraw %}
@@ -967,5 +967,4 @@ Two automations per room, one for setting the desired set-temperature at bedtime
     entity_id: climate.woonkamer
   mode: single
 {% endraw %}
-
 ```
