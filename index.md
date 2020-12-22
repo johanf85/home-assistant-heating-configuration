@@ -22,13 +22,13 @@ It has a boiler for central heating which can use a on-off control and OpenTherm
 
 ### Hardware
 
-Bedroom: 
+Bedroom:
 
 *   Arduino with a DS18B20 temperature sensor connected via USB
 
 Living room:
 
-*   Raspberry pi zero with 
+*   Raspberry pi zero with
     *   DS18B20 temperature sensor
     *   PIR motion sensor
     *   Relay module with wire for controlling on-off heating boiler
@@ -93,8 +93,8 @@ climate:
 
 #### Telegram integration
 
-I use Telegram for notifications about hours of heating during a week and notifications when the heating is automatically turned of because of a suspected open window.   
-  
+I use Telegram for notifications about hours of heating during a week and notifications when the heating is automatically turned of because of a suspected open window. 
+
 Home Assistant documentation: https://www.home-assistant.io/integrations/telegram_polling/
 
 ```
@@ -104,7 +104,7 @@ telegram_bot:
     allowed_chat_ids:
       -  secret
 
-      
+
 notify:
   - platform: telegram
     name: Telegramnotifier
@@ -113,8 +113,8 @@ notify:
 
 #### Correction of temperature sensors
 
-Noticed that my DS18b20 sensors weren't correct when set up. With the use of [template platform](https://www.home-assistant.io/integrations/template/) a correction is applied.   
-  
+Noticed that my DS18b20 sensors weren't correct when set up. With the use of [template platform](https://www.home-assistant.io/integrations/template/) a correction is applied. 
+
 See below:
 
 ```
@@ -168,8 +168,8 @@ sensor:
 
 ### Trend sensor for possible open window detection
 
-Using the [trend platform](https://www.home-assistant.io/integrations/trend/) it is checked if the temperature will rise enough while heating. If not, it is assumed that a window is open or some other error and the heating is turned off. See [automations](#automations).   
-  
+Using the [trend platform](https://www.home-assistant.io/integrations/trend/) it is checked if the temperature will rise enough while heating. If not, it is assumed that a window is open or some other error and the heating is turned off. See [automations](#automations). 
+
 The `min_gradient` values for each room are set based on experience. 
 
 ```
