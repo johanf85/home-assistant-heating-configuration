@@ -801,7 +801,7 @@ binary_sensor:
     seconds: '30'
   condition:
   - condition: template
-    value_template: '{% set current_time = now().hour * 60 + now().minute %}
+    value_template: '{/% set current_time = now().hour * 60 + now().minute %}
 
       {% set opstaan_hour, opstaan_minute, opstaan_second = states(''input_datetime.opstaan'').split('':'')
       %}
