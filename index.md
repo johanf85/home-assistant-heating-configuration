@@ -118,6 +118,7 @@ Noticed that my DS18b20 sensors weren't correct when set up. With the use of [te
 See below:
 
 ```
+{% raw %}
 sensor:
   - platform: serial
     serial_port: /dev/ttyUSB0
@@ -130,40 +131,41 @@ sensor:
   - platform: template
     sensors:
       ds18b20_woonkamer_correctie:
-        value_template: {% raw %}"{{ states('sensor.28_00000913d350_temperature')|float - 1.2/}/}"{% endraw %}
+        value_template: {% raw %}"{{ states('sensor.28_00000913d350_temperature')|float - 1.2}}"{% endraw %}
         friendly_name: 'Woonkamer temp'
         unit_of_measurement: degrees
       ds18b20_slaapkamer_correctie:
-        value_template: "{{ states('sensor.28_011937d1c3d1_temperature')|float - 0.6}}"
+        value_template: {% raw %}"{{ states('sensor.28_011937d1c3d1_temperature')|float - 0.6}}"{% endraw %}
         friendly_name: 'Slaapkamer temp'
         unit_of_measurement: degrees
       deltat_slaapkamer:
-        value_template: "{{state_attr('binary_sensor.temp_falling', 'gradient')|float * 1000}}"
+        value_template: {% raw %}"{{state_attr('binary_sensor.temp_falling', 'gradient')|float * 1000}}"{% endraw %}
         friendly_name: 'Slaapkamer temp gradient'
         unit_of_measurement: 'graden'
       deltat_slaapkamer_grens:
-        value_template: "{{state_attr('binary_sensor.temp_falling', 'min_gradient')|float * 1000}}"
+        value_template: {% raw %}"{{state_attr('binary_sensor.temp_falling', 'min_gradient')|float * 1000}}" {% endraw %} 
         friendly_name: 'Slaapkamer min gradient'
         unit_of_measurement: 'graden'
       deltat_woonkamer:
-        value_template: "{{state_attr('binary_sensor.temp_falling_woonkamer', 'gradient')|float * 1000}}"
+        value_template:  {% raw %}"{{state_attr('binary_sensor.temp_falling_woonkamer', 'gradient')|float * 1000}}" {% endraw %} 
         friendly_name: 'Woonkamer temp gradient'
         unit_of_measurement: 'graden'
       deltat_woonkamer_grens:
-        value_template: "{{state_attr('binary_sensor.temp_falling_woonkamer', 'min_gradient')|float * 1000}}"
+        value_template: {% raw %}"{{state_attr('binary_sensor.temp_falling_woonkamer', 'min_gradient')|float * 1000}}"{% endraw %}
         friendly_name: 'Woonkamer min gradient'
         unit_of_measurement: 'graden'    
       heating_state:
-        value_template: "{{state_attr('climate.woonkamer', 'hvac_action')}}"
+        value_template: {% raw %}"{{state_attr('climate.woonkamer', 'hvac_action')}}"{% endraw %}
         friendly_name: 'thermostaat state'
   - platform: history_stats
     name: Aantal minuten verwarmen laatste 7 dagen
     entity_id: sensor.heating_state
     state: 'heating'
     type: time
-    end: '{{ now().replace(hour=0, minute=0, second=0) }}'
+    end: {% raw %}'{{ now().replace(hour=0, minute=0, second=0) }}'{% endraw %}
     duration:
         days: 7
+{% endraw %}
 ```
 
 ### Trend sensor for possible open window detection
@@ -173,6 +175,7 @@ Using the [trend platform](https://www.home-assistant.io/integrations/trend/) it
 The `min_gradient` values for each room are set based on experience. 
 
 ```
+{% raw %}
 binary_sensor:
   - platform: rpi_gpio
     invert_logic: false
@@ -198,6 +201,7 @@ binary_sensor:
         min_gradient: 0.0005
         invert: false
         friendly_name: DeltaT woonk voldoende
+ {% endraw %}
 ```
 
 ## Variables
@@ -211,6 +215,7 @@ To easily change settings to which I would like them, I make use of input variab
 Two automations per room, one for setting the desired set-temperature at bedtime and one at wake-up time. Also a helper  `input_number.current_insteltemp_slaapkamer` is set with the current-set temperature. This is needed for restoring the set temperatures after restart of the system and x hours after a manual change, see automations.  
 
 ```
+{% raw %}
 - id: '1587807892892'
   alias: Slaapkamer naar instelwaarde 's nachts
   description: ''
@@ -221,16 +226,18 @@ Two automations per room, one for setting the desired set-temperature at bedtime
   action:
   - data_template:
       entity_id: climate.slaapkamer
-      temperature: '{{ states.input_text.slaapkamer_insteltemp_nacht.state }}'
+      temperature: {% raw %}'{{ states.input_text.slaapkamer_insteltemp_nacht.state }}'{% endraw %}
     service: climate.set_temperature
   - service: input_number.set_value
     data:
-      value: '{{ states.input_text.slaapkamer_insteltemp_nacht.state }}'
+      value: {% raw %}'{{ states.input_text.slaapkamer_insteltemp_nacht.state }}'{% endraw %}
     entity_id: input_number.current_insteltemp_slaapkamer
   mode: single
+{% endraw %}
 ```
 
 ```
+{% raw %}
 - id: '1589611935632'
   alias: Woonkamer instelwaarde na opstaan
   description: ''
@@ -241,16 +248,18 @@ Two automations per room, one for setting the desired set-temperature at bedtime
   action:
   - data_template:
       entity_id: climate.woonkamer
-      temperature: '{{ states.input_text.woonk_overdag.state }}'
+      temperature: {% raw %}'{{ states.input_text.woonk_overdag.state }}'{% endraw %}
     service: climate.set_temperature
   - service: input_number.set_value
     data:
-      value: '{{ states.input_text.woonk_overdag.state }}'
+      value: {% raw %}'{{ states.input_text.woonk_overdag.state }}'{% endraw %}
     entity_id: input_number.current_insteltemp_woonkamer
   mode: single
+{% endraw %}
 ```
 
 ```
+{% raw %}
 - id: '1587807715263'
   alias: Slaapkamer naar instelwaarde overdag
   description: ''
@@ -261,16 +270,18 @@ Two automations per room, one for setting the desired set-temperature at bedtime
   action:
   - data_template:
       entity_id: climate.slaapkamer
-      temperature: '{{ states.input_text.slaapkamer_insteltemp_overdag.state }}'
+      temperature: {% raw %}'{{ states.input_text.slaapkamer_insteltemp_overdag.state }}'{% endraw %}
     service: climate.set_temperature
   - service: input_number.set_value
     data:
       value: '{{ states.input_text.slaapkamer_insteltemp_overdag.state }}'
     entity_id: input_number.current_insteltemp_slaapkamer
   mode: single
+{% endraw %}
 ```
 
 ```
+{% raw %}
 - id: '1587310221936'
   alias: Woonkamer instelwaarde na bedtijd
   description: ''
@@ -288,9 +299,11 @@ Two automations per room, one for setting the desired set-temperature at bedtime
       value: '{{ states.input_text.woonk_nacht.state }}'
     entity_id: input_number.current_insteltemp_woonkamer
   mode: single
+{% endraw %}
 ```
 
 ```
+{% raw %}
 - id: '1587319960331'
   alias: Aanschakelen iemand thuis bij beweging
   description: ''
@@ -953,4 +966,6 @@ Two automations per room, one for setting the desired set-temperature at bedtime
     data: {}
     entity_id: climate.woonkamer
   mode: single
+{% endraw %}
+
 ```
