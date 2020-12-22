@@ -7,11 +7,24 @@ It has a boiler for central heating which can use a on-off control and OpenTherm
 ### The design wishes for the system
 
 *   Heat the bedroom to a desired temperature at night (while living room radiator closed) and the living room during the day and evening (while bedroom radiator closed)
-*   Turn of the thermostat function when no one home
+*   Turn off the thermostat function when no one home
+*   A wired system, that doesn't use wifi, cause I want to limit the use of EMF-radiation in my home
+*   Use a smartphone app and / or a browser to control and monitor the thermostat
+*   Send alerts to the smartphone when certain conditions are met, e.g. when it is suspected that a window is open. 
 
+### Software
+
+[Home Assistant](https://www.home-assistant.io/)
+
+#### Home assistant integrations
+
+*   [Generic Thermostat integration](https://www.home-assistant.io/integrations/generic_thermostat/)
+
+### Hardware
+
+The bedroom has an Arduino with a DS18B20 temperature sensor.  
   
-The bedroom has a DS18B20 temperature sensor.  
-The living room has a DS18B20 temperature sensor and a PIR motion sensor applied to the wall.  
+The living room has a Raspberry pi zero with a DS18B20 temperature sensor and a PIR motion sensor applied to the wall.  
 
 Both rooms have one radiator, each is equipped with a eqiva-N thermostatic valve. 
 
@@ -21,7 +34,51 @@ There were no thermostatic valves on my radiator (just a turn knob), so I had to
 
 ![](https://user-images.githubusercontent.com/43075793/102867026-6d725980-4438-11eb-9752-5bd6fffe2686.png)
 
-Turn of the thermostat function when no one home
+  
+ 
+
+### Configuration.yaml  
+  
+For the generic thermostat integration:  
+ 
+
+```
+climate:
+- platform: generic_thermostat
+  name: Livingroom
+  heater: input_boolean.schakelaar_woonkamer
+  target_sensor: sensor.ds18b20_woonkamer_correctie
+  min_temp: 12
+  max_temp: 22
+  ac_mode: false
+  min_cycle_duration:
+    minutes: 1
+  target_temp: 18.0
+  cold_tolerance: 0
+  hot_tolerance: 0
+  initial_hvac_mode: "heat"
+  away_temp: 16
+  precision: 0.1
+- platform: generic_thermostat
+  name: Bedroom
+  heater: input_boolean.schakelaar_slaapkamer
+  target_sensor: sensor.serial_sensor
+  min_temp: 10
+  max_temp: 22
+  ac_mode: false
+  min_cycle_duration:
+    minutes: 3
+  target_temp: 12.0
+  cold_tolerance: 0
+  hot_tolerance: 0
+  initial_hvac_mode: "heat"
+  away_temp: 16
+  precision: 0.1
+```
+
+Choices for configuration variables:
+
+*   `target_temp` I chose target temps lower than I actually want, but with a sudden a restart I don't want the heating to turn on. I use automations to override. 
 
 ```
 - id: '1587310221936'
