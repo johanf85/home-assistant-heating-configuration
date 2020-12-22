@@ -130,7 +130,7 @@ sensor:
   - platform: template
     sensors:
       ds18b20_woonkamer_correctie:
-        value_template: "/{/{ states('sensor.28_00000913d350_temperature')|float - 1.2/}/}"
+        value_template: {% raw %}"{{ states('sensor.28_00000913d350_temperature')|float - 1.2/}/}"{% endraw %}
         friendly_name: 'Woonkamer temp'
         unit_of_measurement: degrees
       ds18b20_slaapkamer_correctie:
