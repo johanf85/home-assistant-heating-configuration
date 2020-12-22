@@ -1,6 +1,13 @@
-My appartement consists of a living room, a bedroom and a kitchen.   
-  
-The bedroom has a DS18Bsensor
+My appartement consists of a living room, a bedroom and a kitchen.
+
+It has a boiler for central heating which can use a on-off control and OpenTherm.  
+
+The bedroom has a DS18B20 temperature sensor.  
+The living room has a DS18B20 temperature sensor and a PIR motion sensor applied to the wall.  
+
+Both rooms have one radiator, each is equipped with a eqiva-N thermostatic valve. 
+
+![](https://user-images.githubusercontent.com/43075793/102866119-1029d880-4437-11eb-9000-4aa8b5e9782c.png)
 
 ```
 - id: '1587310221936'
