@@ -22,11 +22,11 @@ It has a boiler for central heating which can use a on-off control and OpenTherm
 
 ### Hardware
 
-Bedroom:
+**Bedroom:**
 
 *   Arduino with a DS18B20 temperature sensor connected via USB
 
-Living room:
+**Living room:**
 
 *   Raspberry pi zero with
     *   DS18B20 temperature sensor
@@ -200,7 +200,75 @@ binary_sensor:
         friendly_name: DeltaT woonk voldoende
 ```
 
+## Variables
+
+To easily change settings to which I would like them, I make use of input variables. I made a tab in Lovelace to edit this variables.
+
 ## Automations
+
+#### Setting temperature time program
+
+Two automations per room, one for setting the desired set-temperature at bedtime and one at wake-up time. Also a helper  `input_number.current_insteltemp_slaapkamer` is set with the current-set temperature. This is needed for restoring the set temperatures after restart of the system and x hours after a manual change, see automations.  
+
+```
+- id: '1587807892892'
+  alias: Slaapkamer naar instelwaarde 's nachts
+  description: ''
+  trigger:
+  - at: input_datetime.bedtijd
+    platform: time
+  condition: []
+  action:
+  - data_template:
+      entity_id: climate.slaapkamer
+      temperature: '{{ states.input_text.slaapkamer_insteltemp_nacht.state }}'
+    service: climate.set_temperature
+  - service: input_number.set_value
+    data:
+      value: '{{ states.input_text.slaapkamer_insteltemp_nacht.state }}'
+    entity_id: input_number.current_insteltemp_slaapkamer
+  mode: single
+```
+
+```
+- id: '1589611935632'
+  alias: Woonkamer instelwaarde na opstaan
+  description: ''
+  trigger:
+  - at: input_datetime.opstaan
+    platform: time
+  condition: []
+  action:
+  - data_template:
+      entity_id: climate.woonkamer
+      temperature: '{{ states.input_text.woonk_overdag.state }}'
+    service: climate.set_temperature
+  - service: input_number.set_value
+    data:
+      value: '{{ states.input_text.woonk_overdag.state }}'
+    entity_id: input_number.current_insteltemp_woonkamer
+  mode: single
+```
+
+```
+- id: '1587807715263'
+  alias: Slaapkamer naar instelwaarde overdag
+  description: ''
+  trigger:
+  - at: input_datetime.opstaan
+    platform: time
+  condition: []
+  action:
+  - data_template:
+      entity_id: climate.slaapkamer
+      temperature: '{{ states.input_text.slaapkamer_insteltemp_overdag.state }}'
+    service: climate.set_temperature
+  - service: input_number.set_value
+    data:
+      value: '{{ states.input_text.slaapkamer_insteltemp_overdag.state }}'
+    entity_id: input_number.current_insteltemp_slaapkamer
+  mode: single
+```
 
 ```
 - id: '1587310221936'
@@ -220,6 +288,9 @@ binary_sensor:
       value: '{{ states.input_text.woonk_nacht.state }}'
     entity_id: input_number.current_insteltemp_woonkamer
   mode: single
+```
+
+```
 - id: '1587319960331'
   alias: Aanschakelen iemand thuis bij beweging
   description: ''
@@ -319,40 +390,7 @@ binary_sensor:
   - data: {}
     entity_id: climate.slaapkamer
     service: climate.turn_off
-- id: '1587807715263'
-  alias: Slaapkamer naar instelwaarde overdag
-  description: ''
-  trigger:
-  - at: input_datetime.opstaan
-    platform: time
-  condition: []
-  action:
-  - data_template:
-      entity_id: climate.slaapkamer
-      temperature: '{{ states.input_text.slaapkamer_insteltemp_overdag.state }}'
-    service: climate.set_temperature
-  - service: input_number.set_value
-    data:
-      value: '{{ states.input_text.slaapkamer_insteltemp_overdag.state }}'
-    entity_id: input_number.current_insteltemp_slaapkamer
-  mode: single
-- id: '1587807892892'
-  alias: Slaapkamer naar instelwaarde 's nachts
-  description: ''
-  trigger:
-  - at: input_datetime.bedtijd
-    platform: time
-  condition: []
-  action:
-  - data_template:
-      entity_id: climate.slaapkamer
-      temperature: '{{ states.input_text.slaapkamer_insteltemp_nacht.state }}'
-    service: climate.set_temperature
-  - service: input_number.set_value
-    data:
-      value: '{{ states.input_text.slaapkamer_insteltemp_nacht.state }}'
-    entity_id: input_number.current_insteltemp_slaapkamer
-  mode: single
+
 - id: '1588717917351'
   alias: 5 minuten verwarmen als schakelaar aan
   description: ''
@@ -406,23 +444,6 @@ binary_sensor:
   - service: climate.turn_on
     data: {}
     entity_id: climate.slaapkamer
-  mode: single
-- id: '1589611935632'
-  alias: Woonkamer instelwaarde na opstaan
-  description: ''
-  trigger:
-  - at: input_datetime.opstaan
-    platform: time
-  condition: []
-  action:
-  - data_template:
-      entity_id: climate.woonkamer
-      temperature: '{{ states.input_text.woonk_overdag.state }}'
-    service: climate.set_temperature
-  - service: input_number.set_value
-    data:
-      value: '{{ states.input_text.woonk_overdag.state }}'
-    entity_id: input_number.current_insteltemp_woonkamer
   mode: single
 - id: '1600599019863'
   alias: Terugzetten na temperatuurverhoging
