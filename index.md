@@ -1,5 +1,6 @@
 # My home smart heating configuration with the use of Home Assistant
 
+* TOC
 {:toc}
 
 
