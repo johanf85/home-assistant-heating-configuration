@@ -248,11 +248,11 @@ Two automations per room, one for setting the desired set-temperature at bedtime
   action:
   - data_template:
       entity_id: climate.woonkamer
-      temperature: {% raw %}'{{ states.input_text.woonk_overdag.state }}'{% endraw %}
+      temperature: '{{ states.input_text.woonk_overdag.state }}'
     service: climate.set_temperature
   - service: input_number.set_value
     data:
-      value: {% raw %}'{{ states.input_text.woonk_overdag.state }}'{% endraw %}
+      value: '{{ states.input_text.woonk_overdag.state }}'
     entity_id: input_number.current_insteltemp_woonkamer
   mode: single
 {% endraw %}
@@ -270,7 +270,7 @@ Two automations per room, one for setting the desired set-temperature at bedtime
   action:
   - data_template:
       entity_id: climate.slaapkamer
-      temperature: {% raw %}'{{ states.input_text.slaapkamer_insteltemp_overdag.state }}'{% endraw %}
+      temperature: '{{ states.input_text.slaapkamer_insteltemp_overdag.state }}'
     service: climate.set_temperature
   - service: input_number.set_value
     data:
