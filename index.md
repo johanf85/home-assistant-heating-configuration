@@ -1,5 +1,8 @@
 # My home smart heating configuration with the use of Home Assistant
 
+{:toc}
+
+
 My appartement consists of a living room, a bedroom and a kitchen.
 
 It has a boiler for central heating which can use a on-off control and OpenTherm.  
