@@ -1,8 +1,7 @@
 # My home smart heating configuration with the use of Home Assistant
 
-* TOC
-{:toc}
-
+*   TOC  
+    {:toc}
 
 My appartement consists of a living room, a bedroom and a kitchen.
 
@@ -37,15 +36,17 @@ It has a boiler for central heating which can use a on-off control and OpenTherm
     *   PIR motion sensor
     *   Relay module with wire for controlling on-off heating boiler
 
-Both rooms have one radiator, each is equipped with a eqiva-N thermostatic valve. 
+Both rooms have one radiator, each is equipped with a eqiva-N thermostatic radiator valve. These are only used to be open and close the radiators at the beginning and end of the day. They are programmed to setpoint 12° C when the desired heating for the room is off and to 25° C when the desired heating is on. 
 
-![](https://user-images.githubusercontent.com/43075793/102866119-1029d880-4437-11eb-9000-4aa8b5e9782c.png)
+<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102866119-1029d880-4437-11eb-9000-4aa8b5e9782c.png" alt=""></figure></td></tr><tr><td><i>The eqiva-N thermostat</i></td></tr></tbody></table>
 
-There were no thermostatic valves on my radiator (just a turn knob), so I had to put in a new insert for my Herz radiator valve:
+There were no thermostatic valves on my radiator (just a turn knob), so I had to put in a new insert, part # 1639091 for my Herz radiator valve:
 
-![](https://user-images.githubusercontent.com/43075793/102867026-6d725980-4438-11eb-9752-5bd6fffe2686.png)
+<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102867026-6d725980-4438-11eb-9752-5bd6fffe2686.png" alt=""></figure></td></tr><tr><td>The Herz 1639091 insert to make the valve a thermostatic valve</td></tr></tbody></table>
 
-Deuren
+An extra adapter was necessary to fit the eqiva-N as it doesn't support the Herz system immediately. 
+
+<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102991803-40967300-451a-11eb-9a69-aa1a5d3b32cc.jpg"></figure></td></tr><tr><td>IMI adapter for Herz part no. 15071304</td></tr></tbody></table>
 
 ### Configuration.yaml
 
