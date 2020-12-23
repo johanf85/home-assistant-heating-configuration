@@ -15,7 +15,7 @@ It has a boiler for central heating which can use a on-off control and OpenTherm
 *   A smartphone app and / or a browser to control and monitor the thermostat
 *   Send alerts to the smartphone when certain conditions are met, e.g. when it is suspected that a window is open.
 *   Reverting to normal set temperature after a certain amount of time after a manual change
-*   Easily using setting variables like bedtime, waking time and revert time with input fields in the front-end
+*   Easily setting variables like bedtime, waking time and revert time with input fields in the front-end
 
 ### Software
 
@@ -27,11 +27,11 @@ It has a boiler for central heating which can use a on-off control and OpenTherm
 
 ### Hardware
 
-**Bedroom:**
+**Bedroom**
 
 *   Arduino with a DS18B20 temperature sensor connected via USB
 
-**Living room:**
+**Living room**
 
 *   Raspberry pi zero with
     *   DS18B20 temperature sensor
@@ -41,6 +41,10 @@ It has a boiler for central heating which can use a on-off control and OpenTherm
 Both rooms have one radiator, each is equipped with a eqiva-N thermostatic radiator valve. These are only used to be open and close the radiators at the beginning and end of the day. They are programmed to setpoint 12° C when the desired heating for the room is off and to 25° C when the desired heating is on. 
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102992726-0a59f300-451c-11eb-83e4-a0b0d94b93bb.jpg"></figure></td></tr><tr><td><i>The eqiva-N thermostat</i></td></tr></tbody></table>
+
+Valve before:
+
+<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102994879-41320800-4520-11eb-9485-fe36122d2637.jpg"></figure></td></tr><tr><td><i>The Herz valve knob - old situation</i></td></tr></tbody></table>
 
 There were no thermostatic valves on my radiator (just a turn knob), so I had to put in a new insert, part # 1639091 for my Herz radiator valve:  
 
@@ -53,6 +57,12 @@ An extra adapter was necessary to fit the eqiva-N as it doesn't support the Herz
 A doorspring was put on both rooms door, so that they will be kept closed as much as possible to avoid heat loss.  
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102992183-0b3e5500-451b-11eb-8786-723f359d2996.jpeg"></figure></td></tr><tr><td><i>Doorspring for door closing</i></td></tr></tbody></table>
+
+## Helpers 
+
+Created the following helpers via configuration > helpers within Home Assistant
+
+<table><tbody><tr><td><strong>Someone home?</strong></td><td>toggle</td><td>input_boolean</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>input_datetime.bedtijd</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>input_text.woonk_nacht</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>input_number.current_insteltemp_woonkamer</td></tr></tbody></table>
 
 ## Configuration.yaml
 
@@ -106,7 +116,7 @@ climate:
 
 I use Telegram for notifications about hours of heating during a week and notifications when the heating is automatically turned of because of a suspected open window. 
 
-Home Assistant documentation: https://www.home-assistant.io/integrations/telegram_polling/
+Home Assistant documentation: [Telegram polling](https://www.home-assistant.io/integrations/telegram_polling/)
 
 ```
 telegram_bot:
@@ -124,7 +134,7 @@ notify:
 
 #### Correction of temperature sensors
 
-Noticed that my DS18b20 sensors weren't correct when set up. With the use of [template platform](https://www.home-assistant.io/integrations/template/) a correction is applied. 
+Noticed that my DS18b20 sensors weren't correct when set up. With the use of [template platform](https://www.home-assistant.io/integrations/template/) a correction is applied to the onewire sensors. 
 
 See below:
 
@@ -223,7 +233,7 @@ To easily change settings to which I would like them, I make use of input variab
 
 #### Setting temperature time program
 
-Two automations per room, one for setting the desired set-temperature at bedtime and one at wake-up time. Also a helper  `input_number.current_insteltemp_slaapkamer` is set with the current-set temperature. This is needed for restoring the set temperatures after restart of the system and x hours after a manual change, see automations.  
+Two automations per room, one for setting the desired set-temperature at bedtime and one at wake-up time. Also a helper `input_number.current_insteltemp_slaapkamer` is set with the current-set temperature. This is needed for restoring the set temperatures after restart of the system and x hours after a manual change, see automations.  
 
 ```
 {% raw %}
