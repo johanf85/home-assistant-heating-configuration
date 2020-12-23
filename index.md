@@ -1,6 +1,6 @@
 # My home smart heating configuration with the use of Home Assistant
 
-*TOC  
+* TOC  
 {:toc}
 
 My appartement consists of a living room, a bedroom and a kitchen.
