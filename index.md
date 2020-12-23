@@ -333,17 +333,19 @@ The configuration is set so, that when the phone changes location from away to h
 
 In the evening the presence detection by the PIR motion detector should be different. It is assumed that if two times a motion is detected within half an hour during `evening time` and `bedtime`, that someone will be home during the entire night. 
 
-As it was noticed that the PIR in very few occasions can have a false motion detections, the number of two motion detections was chosen. 
+As it was noticed that the PIR used in very few occasions can have a false motion detections, the number of two motion detections was chosen. 
 
-This configuration set up is based on a one person household, so only one smartphone with the home assistant app. 
+This configuration set up is based on a one person household, so only one smartphone with the home assistant app running. 
 
 | Triggers | Between hours | set 'someone home status' to |
 | --- | --- | --- |
 | Two times a motion detected within 30 minutes period 'someone home status' is off | waking up and evening | on |
 | An half an hour with one or less motion detected while 'someone home status' is on | waking up and evening | off |
 | Two times a motion detected within 30 minutes period while 'someone home status' is off | evening and bedtime | on |
-| Persons location based on smartphone changing to away | always | off |
-| Persons location based on smartphone changing to home | always | on |
+| Smartphone location state change to away | always | off |
+| Smartphone location state change to home | always | on |
+
+The following automations were set to achieve this. 
 
 ```
 {% raw %}
@@ -366,30 +368,11 @@ This configuration set up is based on a one person household, so only one smartp
     entity_id: input_boolean.iemandthuis
     service: input_boolean.turn_on
   mode: single
-- id: '1587319961411'
-  alias: Gedrag bewegingssensor woonkamer tussen opstaan en avond (overdag)
-  description: ''
-  trigger:
-  - platform: template
-    value_template: '{{ (states.sensor.time.last_changed - states.input_datetime.bewegingeennalaatst_1.last_changed).total_seconds()
-      > 1800 }}
+{% endraw %}
+```
 
-      '
-  - platform: state
-    entity_id: person.johan
-    to: not_home
-  condition:
-  - condition: state
-    entity_id: input_boolean.iemandthuis
-    state: 'on'
-  - before: input_datetime.bedtijd
-    condition: time
-    after: input_datetime.opstaan
-  action:
-  - data: {}
-    entity_id: input_boolean.iemandthuis
-    service: input_boolean.turn_off
-  mode: single
+```
+{% raw %}
 - id: '1587404974211'
   alias: Aanwezigheid detectie avond tot opstaan
   description: ''
@@ -431,6 +414,40 @@ This configuration set up is based on a one person household, so only one smartp
   - data: {}
     entity_id: climate.slaapkamer
     service: climate.turn_on
+{% endraw %}
+```
+
+```
+{% raw %}
+- id: '1587319961411'
+  alias: Behaviour of motion sensor living room between wakeup time and evening time
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{ (states.sensor.time.last_changed - states.input_datetime.bewegingeennalaatst_1.last_changed).total_seconds()
+      > 1800 }}
+
+      '
+  - platform: state
+    entity_id: person.johan
+    to: not_home
+  condition:
+  - condition: state
+    entity_id: input_boolean.iemandthuis
+    state: 'on'
+  - before: input_datetime.bedtijd
+    condition: time
+    after: input_datetime.opstaan
+  action:
+  - data: {}
+    entity_id: input_boolean.iemandthuis
+    service: input_boolean.turn_off
+  mode: single
+{% endraw %}
+```
+
+```
+{% raw %}
 - id: '1587373899805'
   alias: Thermostaat uit bij niemand thuis
   description: ''
