@@ -1,4 +1,4 @@
 markdown: kramdown
 remote_theme: rundocs/jekyll-rtd-theme
-kramdown:
-  toc_levels: 3
+#kramdown:
+#  toc_levels: 3
