@@ -64,6 +64,10 @@ Created the following helpers via configuration > helpers within Home Assistant
 
 <table><tbody><tr><td><strong>Someone home?</strong></td><td>toggle</td><td>input_boolean</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>input_datetime.bedtijd</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>input_text.woonk_nacht</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>input_number.current_insteltemp_woonkamer</td></tr></tbody></table>
 
+## Variables
+
+To easily change settings to which I would like them, I make use of input variables. I made a tab in Lovelace to edit this variables.
+
 ## Configuration.yaml
 
 Only covering the relevant part of the configuration for the smart heating system. 
@@ -225,10 +229,6 @@ binary_sensor:
  {% endraw %}
 ```
 
-## Variables
-
-To easily change settings to which I would like them, I make use of input variables. I made a tab in Lovelace to edit this variables.
-
 ## Automations
 
 #### Setting temperature time program
@@ -322,6 +322,28 @@ Two automations per room, one for setting the desired set-temperature at bedtime
   mode: single
 {% endraw %}
 ```
+
+###  Presence detection
+
+Presence detection is done with both the mobile phone location and a PIR movement sensor. The generic thermostat integration has an away set temperature based on the away/home status of the users in home assistant. If the mobile phone was the only source for presence detection this would have been used, but since there is a PIR as well, it is bypassed in this configuration by using a helper switch.  
+
+I used a PIR sensor as well next to the smartphone, because there are some disadvantages in using smartphones only like what happens when the battery is off or the phone is on flight mode. There might not be an accurate detection of presence. Also it doesn't account for having guests if the smartphone is used as only presence detection source. 
+
+The configuration is set so, that when the phone changes location from away to home or home to away the helper switch is toggled. So only on state change, not on current state. Next to that, the rule is followed that if two movements aren't being detected within the last half hour, the 'someone home status' is set to off. 
+
+In the evening the presence detection by the PIR motion detector should be different. It is assumed that if two times a motion is detected within half an hour during `evening time` and `bedtime`, that someone will be home during the entire night. 
+
+As it was noticed that the PIR in very few occasions can have a false motion detections, the number of two motion detections was chosen. 
+
+This configuration set up is based on a one person household, so only one smartphone with the home assistant app. 
+
+| Triggers | Between hours | set 'someone home status' to |
+| --- | --- | --- |
+| Two times a motion detected within 30 minutes period 'someone home status' is off | waking up and evening | on |
+| An half an hour with one or less motion detected while 'someone home status' is on | waking up and evening | off |
+| Two times a motion detected within 30 minutes period while 'someone home status' is off | evening and bedtime | on |
+| Persons location based on smartphone changing to away | always | off |
+| Persons location based on smartphone changing to home | always | on |
 
 ```
 {% raw %}
