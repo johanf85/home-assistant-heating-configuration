@@ -11,9 +11,11 @@ It has a boiler for central heating which can use a on-off control and OpenTherm
 
 *   Multi zone: Heat the bedroom to a desired temperature at night (while living room radiator closed) and the living room during the day and evening (while bedroom radiator closed)
 *   Turn off the thermostat function when no one home
-*   A wired system, that doesn't use wifi, cause I want to limit the use of EMF-radiation in my home
-*   Use a smartphone app and / or a browser to control and monitor the thermostat
+*   A wired system, that doesn't use wifi, to limit the use of EMF-radiation in the home
+*   A smartphone app and / or a browser to control and monitor the thermostat
 *   Send alerts to the smartphone when certain conditions are met, e.g. when it is suspected that a window is open.
+*   Reverting to normal set temperature after a certain amount of time after a manual change
+*   Easily using setting variables like bedtime, waking time and revert time with input fields in the front-end
 
 ### Software
 
@@ -38,20 +40,19 @@ It has a boiler for central heating which can use a on-off control and OpenTherm
 
 Both rooms have one radiator, each is equipped with a eqiva-N thermostatic radiator valve. These are only used to be open and close the radiators at the beginning and end of the day. They are programmed to setpoint 12° C when the desired heating for the room is off and to 25° C when the desired heating is on. 
 
-<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102866119-1029d880-4437-11eb-9000-4aa8b5e9782c.png" alt=""></figure></td></tr><tr><td><i>The eqiva-N thermostat</i></td></tr></tbody></table>
+<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102992726-0a59f300-451c-11eb-83e4-a0b0d94b93bb.jpg"></figure></td></tr><tr><td><i>The eqiva-N thermostat</i></td></tr></tbody></table>
 
-There were no thermostatic valves on my radiator (just a turn knob), so I had to put in a new insert, part # 1639091 for my Herz radiator valve:  
- 
+There were no thermostatic valves on my radiator (just a turn knob), so I had to put in a new insert, part # 1639091 for my Herz radiator valve:  
 
-<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102867026-6d725980-4438-11eb-9752-5bd6fffe2686.png" alt=""></figure></td></tr><tr><td>The Herz 1639091 insert to make the valve a thermostatic valve</td></tr></tbody></table>
+<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102867026-6d725980-4438-11eb-9752-5bd6fffe2686.png" alt=""></figure></td></tr><tr><td><i>The Herz 1639091 insert to make the valve a thermostatic valve</i></td></tr></tbody></table>
 
 An extra adapter was necessary to fit the eqiva-N as it doesn't support the Herz system immediately. 
 
-<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102991803-40967300-451a-11eb-9a69-aa1a5d3b32cc.jpg"></figure></td></tr><tr><td>IMI adapter for Herz part no. 15071304</td></tr></tbody></table>
+<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102991803-40967300-451a-11eb-9a69-aa1a5d3b32cc.jpg"></figure></td></tr><tr><td><i>IMI adapter for Herz part no. 15071304</i></td></tr></tbody></table>
 
 A doorspring was put on both rooms door, so that they will be kept closed as much as possible to avoid heat loss.  
 
-<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102992183-0b3e5500-451b-11eb-8786-723f359d2996.jpeg"></figure></td></tr><tr><td>Doorspring for door closing</td></tr></tbody></table>
+<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102992183-0b3e5500-451b-11eb-8786-723f359d2996.jpeg"></figure></td></tr><tr><td><i>Doorspring for door closing</i></td></tr></tbody></table>
 
 ## Configuration.yaml
 
