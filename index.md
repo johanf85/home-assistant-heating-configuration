@@ -40,7 +40,8 @@ Both rooms have one radiator, each is equipped with a eqiva-N thermostatic radia
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102866119-1029d880-4437-11eb-9000-4aa8b5e9782c.png" alt=""></figure></td></tr><tr><td><i>The eqiva-N thermostat</i></td></tr></tbody></table>
 
-There were no thermostatic valves on my radiator (just a turn knob), so I had to put in a new insert, part # 1639091 for my Herz radiator valve:
+There were no thermostatic valves on my radiator (just a turn knob), so I had to put in a new insert, part # 1639091 for my Herz radiator valve:  
+ 
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102867026-6d725980-4438-11eb-9752-5bd6fffe2686.png" alt=""></figure></td></tr><tr><td>The Herz 1639091 insert to make the valve a thermostatic valve</td></tr></tbody></table>
 
@@ -48,7 +49,11 @@ An extra adapter was necessary to fit the eqiva-N as it doesn't support the Herz
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102991803-40967300-451a-11eb-9a69-aa1a5d3b32cc.jpg"></figure></td></tr><tr><td>IMI adapter for Herz part no. 15071304</td></tr></tbody></table>
 
-### Configuration.yaml
+A doorspring was put on both rooms door, so that they will be kept closed as much as possible to avoid heat loss.  
+
+<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102992183-0b3e5500-451b-11eb-8786-723f359d2996.jpeg"></figure></td></tr><tr><td>Doorspring for door closing</td></tr></tbody></table>
+
+## Configuration.yaml
 
 Only covering the relevant part of the configuration for the smart heating system. 
 
