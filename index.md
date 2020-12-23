@@ -118,7 +118,7 @@ climate:
 
 #### Telegram integration
 
-I use Telegram for notifications about hours of heating during a week and notifications when the heating is automatically turned of because of a suspected open window. 
+I use [Telegram](https://telegram.org/) for notifications about hours of heating during a week and notifications when the heating is automatically turned off because of a suspected open window. 
 
 Home Assistant documentation: [Telegram polling](https://www.home-assistant.io/integrations/telegram_polling/)
 
@@ -138,7 +138,7 @@ notify:
 
 #### Correction of temperature sensors
 
-Noticed that my DS18b20 sensors weren't correct when set up. With the use of [template platform](https://www.home-assistant.io/integrations/template/) a correction is applied to the onewire sensors. 
+Noticed that my DS18B20 sensors weren't correct when set up. With the use of [template platform](https://www.home-assistant.io/integrations/template/) a correction is applied to the onewire sensors. 
 
 See below:
 
@@ -350,7 +350,7 @@ The following automations were set to achieve this. 
 ```
 {% raw %}
 - id: '1587319960331'
-  alias: Aanschakelen iemand thuis bij beweging
+  alias: Turn on someone home status when motion detected
   description: ''
   trigger:
   - entity_id: device_tracker.pra_lx1
@@ -370,6 +370,8 @@ The following automations were set to achieve this. 
   mode: single
 {% endraw %}
 ```
+
+ For the 
 
 ```
 {% raw %}
