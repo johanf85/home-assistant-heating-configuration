@@ -5,7 +5,7 @@
 
 My appartement consists of a living room, a bedroom and a kitchen.
 
-It has a boiler for central heating which can use a on-off control and OpenTherm.  
+It has a boiler (Intergas kompakt hre 24/18) for central heating which can use a on-off control and OpenTherm.  
 
 ### The design wishes for the system
 
