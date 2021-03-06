@@ -1,7 +1,7 @@
 # My home smart heating configuration with the use of Home Assistant
 
-* TOC  
-{:toc}
+*   TOC  
+    {:toc}
 
 My appartement consists of a living room, a bedroom and a kitchen.
 
@@ -78,7 +78,7 @@ Home Assistant documentation: [Generic thermostat](https://www.home-assistant.io
 
 Choices for configuration variables:
 
-*   `target_temp` I chose target temps lower than I actually want, but with a sudden a restart of the system I don't want the heating to turn on. I use automations to override the temperature to set these to desired temperatures.
+*   `target_temp` I chose target temps within configuration.yaml lower than I actually want, but with a sudden a reboot of the system I don't want the heating to turn on. I use automations to override the temperature to set these to desired temperatures. After a restart the `target_temp` is reverted back to the last setting before the reboot.
 *   `min_cycle_duration` Set so that pump and gas furnace of boiler don't have to turn on and off that often. Set to 3 minutes for bedroom and 1 minute for living room. The living room has a larger radiator and 1 minute turned out as a good value. For the bedroom 3 minutes as the there is a smaller radiator.
 *   `heater` For each room I used a [Helper](https://www.home-assistant.io/integrations/input_boolean/), input\_boolean switch, because Generic thermostat isn't able to work with multiple zones (described [here](https://community.home-assistant.io/t/need-help-with-multi-zone-generic-thermostat-climate-configuration/8563)) when one heater switch is on both rooms (they will contradict). Trough an automation I made sure these helpers are controlling the relay switch, see [automations](#automations).
 
