@@ -1,5 +1,10 @@
 # My home smart heating configuration with the use of Home Assistant
 
+Home Assistant is Open Source software that runs on various devices like a Raspberry Pi and acts as a central server for smart home devices and/or self build modules to make automatizations in the home. It has an active community and a large library of integrations with products on the market.
+
+<a href="https://www.home-assistant.io">
+![](https://user-images.githubusercontent.com/43075793/110300601-5551b580-7ff7-11eb-8b33-5909025a2cfa.png)</a>
+
 *   TOC  
     {:toc}
 
@@ -7,7 +12,7 @@ My appartement consists of a living room, a bedroom and a kitchen.
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/110296386-94c9d300-7ff2-11eb-9622-e06369d3a43b.jpg"></figure></td></tr><tr><td>A schematic view of the floorplan with the relevant rooms</td></tr></tbody></table>
 
-<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/110297333-a790d780-7ff3-11eb-839d-b3b001fa90a7.png"></figure></td></tr><tr><td>A 3D view of the floorplan, the door between living room and bedroom can be closed off<br>(made with https://roomstyler.com/3dplanner)</td></tr></tbody></table>
+<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/110297333-a790d780-7ff3-11eb-839d-b3b001fa90a7.png"></figure></td></tr><tr><td>A 3D view of the floorplan, the door between living room and bedroom can be closed off<br>(made with <a href="https://roomstyler.com/3dplanner">https://roomstyler.com/3dplanner</a>)</td></tr></tbody></table>
 
 The appartement has a boiler (Intergas kompakt hre 24/18) for central heating which can use a on-off control and OpenTherm.  
 
@@ -41,7 +46,7 @@ Arduino IDE
 *   Raspberry pi zero with
     *   DS18B20 temperature sensor
     *   PIR motion sensor
-    *   Relay module with wire for controlling on-off heating boiler
+    *   Relay module with wire to boiler for controlling on-off heating 
 
 Both rooms have one radiator, each is equipped with a eqiva-N thermostatic radiator valve. These are only used to be open and close the radiators at the beginning and end of the day. They are programmed to setpoint 12° C when the desired heating for the room is off and to 25° C when the desired heating is on. 
 
@@ -88,9 +93,9 @@ Home Assistant documentation: [Generic thermostat](https://www.home-assistant.io
 
 Choices for configuration variables:
 
-*   `target_temp` I chose target temps within configuration.yaml lower than I actually want, but with a sudden a reboot of the system I don't want the heating to turn on. I use automations to override the temperature to set these to desired temperatures. After a restart the `target_temp` is reverted back to the last setting before the reboot.
+*   `target_temp` I chose target temps within configuration.yaml lower than I actually want, cause with a sudden a reboot of the system I don't want the heating to turn on. I use automations to override the temperature to set these to desired temperatures. After a restart the `target_temp` is reverted back to the last setting before the reboot. See Automations further on. 
 *   `min_cycle_duration` Set so that pump and gas furnace of boiler don't have to turn on and off that often. Set to 3 minutes for bedroom and 1 minute for living room. The living room has a larger radiator and 1 minute turned out as a good value. For the bedroom 3 minutes as the there is a smaller radiator.
-*   `heater` For each room I used a [Helper](https://www.home-assistant.io/integrations/input_boolean/), input\_boolean switch, because Generic thermostat isn't able to work with multiple zones (described [here](https://community.home-assistant.io/t/need-help-with-multi-zone-generic-thermostat-climate-configuration/8563)) when one heater switch is on both rooms (they will contradict). Trough an automation I made sure these helpers are controlling the relay switch, see [automations](#automations).
+*   `heater` I use two `generic_thermostat` instances with seperate heater swithches, because Generic thermostat isn't able to work with multiple zones (described [here](https://community.home-assistant.io/t/need-help-with-multi-zone-generic-thermostat-climate-configuration/8563)) when one heater switch is on both rooms (they will contradict). For each room I used a [Helper](https://www.home-assistant.io/integrations/input_boolean/), `input_boolean` switch. Trough an automation I made sure these helpers are controlling the relay switch, which controls the on-off signal to the boiler, see [automations](#automations).
 
 ```
 climate:
@@ -128,7 +133,10 @@ climate:
 
 #### Telegram integration
 
-I use [Telegram](https://telegram.org/) for notifications about hours of heating during a week and notifications when the heating is automatically turned off because of a suspected open window. 
+I use [Telegram](https://telegram.org/) for notifications. Currently I am using two notifications:
+
+*   Hours of heating during a week on Sunday at 18:00 
+*   When the heating is automatically turned off because of a suspected open window (See Verwijzing). 
 
 Home Assistant documentation: [Telegram polling](https://www.home-assistant.io/integrations/telegram_polling/)
 
@@ -148,7 +156,7 @@ notify:
 
 #### Correction of temperature sensors
 
-Noticed that my DS18B20 sensors weren't correct when set up. With the use of [template platform](https://www.home-assistant.io/integrations/template/) a correction is applied to the onewire sensors. 
+My DS18B20 sensors ([onewire](https://www.home-assistant.io/integrations/onewire/)) needed a correction to match the right temperature value. With the use of [template platform](https://www.home-assistant.io/integrations/template/) a correction is applied to the onewire sensors. 
 
 See below:
 
@@ -173,25 +181,6 @@ sensor:
         value_template: "{{ states('sensor.28_011937d1c3d1_temperature')|float - 0.6}}"
         friendly_name: 'Slaapkamer temp'
         unit_of_measurement: degrees
-      deltat_slaapkamer:
-        value_template: "{{state_attr('binary_sensor.temp_falling', 'gradient')|float * 1000}}"
-        friendly_name: 'Slaapkamer temp gradient'
-        unit_of_measurement: 'graden'
-      deltat_slaapkamer_grens:
-        value_template: "{{state_attr('binary_sensor.temp_falling', 'min_gradient')|float * 1000}}"  
-        friendly_name: 'Slaapkamer min gradient'
-        unit_of_measurement: 'graden'
-      deltat_woonkamer:
-        value_template: "{{state_attr('binary_sensor.temp_falling_woonkamer', 'gradient')|float * 1000}}" 
-        friendly_name: 'Woonkamer temp gradient'
-        unit_of_measurement: 'graden'
-      deltat_woonkamer_grens:
-        value_template: "{{state_attr('binary_sensor.temp_falling_woonkamer', 'min_gradient')|float * 1000}}"
-        friendly_name: 'Woonkamer min gradient'
-        unit_of_measurement: 'graden'    
-      heating_state:
-        value_template: "{{state_attr('climate.woonkamer', 'hvac_action')}}"
-        friendly_name: 'thermostaat state'
   - platform: history_stats
     name: Aantal minuten verwarmen laatste 7 dagen
     entity_id: sensor.heating_state
@@ -205,7 +194,7 @@ sensor:
 
 ### Trend sensor for possible open window detection
 
-Using the [trend platform](https://www.home-assistant.io/integrations/trend/) it is checked if the temperature will rise enough while heating. If not, it is assumed that a window is open or some other error and the heating is turned off. See [automations](#automations). 
+Using the [trend platform](https://www.home-assistant.io/integrations/trend/) it is checked if the temperature will rise enough while heating. If not, it can be assumed that a window is open or some other error is happening and the heating is turned off. See [automations](#automations). 
 
 The `min_gradient` values for each room are set based on experience. 
 
@@ -237,6 +226,39 @@ binary_sensor:
         invert: false
         friendly_name: DeltaT woonk voldoende
  {% endraw %}
+```
+
+```
+sensor:
+  - platform: serial
+    serial_port: /dev/ttyUSB0
+  - platform: onewire
+  - platform: time_date
+    display_options:
+      - 'time'
+      - 'date'
+      - 'date_time'
+  - platform: template
+    sensors:
+      deltat_slaapkamer:
+        value_template: "{{state_attr('binary_sensor.temp_falling', 'gradient')|float * 1000}}"
+        friendly_name: 'Slaapkamer temp gradient'
+        unit_of_measurement: 'graden'
+      deltat_slaapkamer_grens:
+        value_template: "{{state_attr('binary_sensor.temp_falling', 'min_gradient')|float * 1000}}"  
+        friendly_name: 'Slaapkamer min gradient'
+        unit_of_measurement: 'graden'
+      deltat_woonkamer:
+        value_template: "{{state_attr('binary_sensor.temp_falling_woonkamer', 'gradient')|float * 1000}}" 
+        friendly_name: 'Woonkamer temp gradient'
+        unit_of_measurement: 'graden'
+      deltat_woonkamer_grens:
+        value_template: "{{state_attr('binary_sensor.temp_falling_woonkamer', 'min_gradient')|float * 1000}}"
+        friendly_name: 'Woonkamer min gradient'
+        unit_of_measurement: 'graden'    
+      heating_state:
+        value_template: "{{state_attr('climate.woonkamer', 'hvac_action')}}"
+        friendly_name: 'thermostaat state'
 ```
 
 ## Automations
