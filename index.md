@@ -5,7 +5,11 @@
 
 My appartement consists of a living room, a bedroom and a kitchen.
 
-It has a boiler (Intergas kompakt hre 24/18) for central heating which can use a on-off control and OpenTherm.  
+<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/110296386-94c9d300-7ff2-11eb-9622-e06369d3a43b.jpg"></figure></td></tr><tr><td>A schematic view of the floorplan with the relevant rooms</td></tr></tbody></table>
+
+<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/110297333-a790d780-7ff3-11eb-839d-b3b001fa90a7.png"></figure></td></tr><tr><td>A 3D view of the floorplan, the door between living room and bedroom can be closed off<br>(made with https://roomstyler.com/3dplanner)</td></tr></tbody></table>
+
+The appartement has a boiler (Intergas kompakt hre 24/18) for central heating which can use a on-off control and OpenTherm.  
 
 ### The design wishes for the system
 
@@ -15,11 +19,12 @@ It has a boiler (Intergas kompakt hre 24/18) for central heating which can use a
 *   A smartphone app and / or a browser to control and monitor the thermostat
 *   Send alerts to the smartphone when certain conditions are met, e.g. when it is suspected that a window is open.
 *   Reverting to normal set temperature after a certain amount of time after a manual change
-*   Easily setting variables like bedtime, waking time and revert time with input fields in the front-end
+*   Easily setting variables like bedtime, waking time and revert-to-initial-time with input fields in the front-end
 
 ### Software
 
-[Home Assistant](https://www.home-assistant.io/)
+[Home Assistant](https://www.home-assistant.io/)  
+Arduino IDE
 
 #### Home assistant integrations
 
@@ -29,7 +34,7 @@ It has a boiler (Intergas kompakt hre 24/18) for central heating which can use a
 
 **Bedroom**
 
-*   Arduino with a DS18B20 temperature sensor connected via USB
+*   Arduino with a DS18B20 temperature sensor connected via USB to the Home Assistant server
 
 **Living room**
 
@@ -40,17 +45,17 @@ It has a boiler (Intergas kompakt hre 24/18) for central heating which can use a
 
 Both rooms have one radiator, each is equipped with a eqiva-N thermostatic radiator valve. These are only used to be open and close the radiators at the beginning and end of the day. They are programmed to setpoint 12° C when the desired heating for the room is off and to 25° C when the desired heating is on. 
 
-<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102992726-0a59f300-451c-11eb-83e4-a0b0d94b93bb.jpg"></figure></td></tr><tr><td><i>The eqiva-N thermostat</i></td></tr></tbody></table>
+<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102992726-0a59f300-451c-11eb-83e4-a0b0d94b93bb.jpg"></figure></td></tr><tr><td><i>The eqiva-N thermostatic radiator valve (TRV)</i></td></tr></tbody></table>
 
 Valve before:
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102994879-41320800-4520-11eb-9485-fe36122d2637.jpg"></figure></td></tr><tr><td><i>The Herz valve knob - old situation</i></td></tr></tbody></table>
 
-There were no thermostatic valves on my radiator (just a turn knob), so I had to put in a new insert, part # 1639091 for my Herz radiator valve:  
+There were no thermostatic valves on my radiator (just a turn knob), so I had to put in a new insert, part #1639091 for my Herz radiator valve:  
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102867026-6d725980-4438-11eb-9752-5bd6fffe2686.png" alt=""></figure></td></tr><tr><td><i>The Herz 1639091 insert to make the valve a thermostatic valve</i></td></tr></tbody></table>
 
-An extra adapter was necessary to fit the eqiva-N as it doesn't support the Herz system immediately. 
+An extra adapter was necessary to fit the eqiva-N TRV as it doesn't fit the Herz system with the adapters provided on buying. 
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102991803-40967300-451a-11eb-9a69-aa1a5d3b32cc.jpg"></figure></td></tr><tr><td><i>IMI adapter for Herz part no. 15071304</i></td></tr></tbody></table>
 
@@ -62,7 +67,12 @@ A doorspring was put on both rooms door, so that they will be kept closed as muc
 
 Created the following helpers via configuration > helpers within Home Assistant
 
-<table><tbody><tr><td><strong>Someone home?</strong></td><td>toggle</td><td>input_boolean</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>input_datetime.bedtijd</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>input_text.woonk_nacht</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>input_number.current_insteltemp_woonkamer</td></tr></tbody></table>
+|   | Type |   |
+| --- | --- | --- |
+| **Someone home?** | input\_boolean (toggle) |   |
+|   |   | input\_datetime.bedtijd |
+|   |   | input\_text.woonk\_nacht |
+|   |   | input\_number.current\_insteltemp\_woonkamer |
 
 ## Variables
 
