@@ -1,10 +1,24 @@
-# My home smart heating configuration with the use of Home Assistant
+#   
+My home smart heating configuration with the use of Home Assistant  
+(Under construction)
 
 Home Assistant is Open Source software that runs on various devices, for instance Raspberry Pi, and acts as a central server for smart home devices and/or self build modules to make automatizations in the home. It has an active community and a large library of integrations with products on the market. Home Assistant is a non-cloud system, wich means there is no dependance on external cloud service.
 
 ![https://www.home-assistant.io/](https://user-images.githubusercontent.com/43075793/110300847-b4172f00-7ff7-11eb-94d2-3394992bd090.png)
 
-With the use of Home Assistant I created a smart thermostat, which I was able to customize to my personal situation. Against low costs. In this document I will describe my configuration for others to benefit. I am Dutch, so the names I chose for various entities are in Dutch.
+With the use of Home Assistant I created a smart thermostat, which I was able to customize to my personal situation. Against low costs. In this document I will describe my configuration for others to benefit. I am Dutch, so the names I chose for various entities are in Dutch.  
+  
+Screenshots of my dashboard:
+
+![](https://user-images.githubusercontent.com/43075793/110309572-ce560a80-8001-11eb-85fc-a04b34ca5de8.png)
+
+Here is a tab with variables:
+
+![](https://user-images.githubusercontent.com/43075793/110309259-699ab000-8001-11eb-95a1-4a28d13302c3.png)
+
+And on my phone:
+
+![](https://user-images.githubusercontent.com/43075793/110310007-51776080-8002-11eb-9b64-755373b3a415.png)
 
 *   TOC  
     {:toc}
