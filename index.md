@@ -1,8 +1,10 @@
 # My home smart heating configuration with the use of Home Assistant
 
-Home Assistant is Open Source software that runs on various devices like a Raspberry Pi and acts as a central server for smart home devices and/or self build modules to make automatizations in the home. It has an active community and a large library of integrations with products on the market.
+Home Assistant is Open Source software that runs on various devices, for instance Raspberry Pi, and acts as a central server for smart home devices and/or self build modules to make automatizations in the home. It has an active community and a large library of integrations with products on the market. Home Assistant is a non-cloud system, wich means there is no dependance on external cloud service.
 
 ![https://www.home-assistant.io/](https://user-images.githubusercontent.com/43075793/110300847-b4172f00-7ff7-11eb-94d2-3394992bd090.png)
+
+With the use of Home Assistant I created a smart thermostat, which I was able to customize to my personal situation. Against low costs. In this document I will describe my configuration for others to benefit. I am Dutch, so the names I chose for various entities are in Dutch.
 
 *   TOC  
     {:toc}
@@ -42,20 +44,20 @@ Arduino IDE
 
 **Living room**
 
-*   Raspberry pi zero with
+*   Raspberry pi Zero W with
     *   DS18B20 temperature sensor
-    *   PIR motion sensor
+    *   PIR motion sensor module
     *   Relay module with wire to boiler for controlling on-off heating
 
 Both rooms have one radiator, each is equipped with a eqiva-N thermostatic radiator valve. These are only used to be open and close the radiators at the beginning and end of the day. They are programmed to setpoint 12° C when the desired heating for the room is off and to 25° C when the desired heating is on. 
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102992726-0a59f300-451c-11eb-83e4-a0b0d94b93bb.jpg"></figure></td></tr><tr><td><i>The eqiva-N thermostatic radiator valve (TRV)</i></td></tr></tbody></table>
 
-Valve before:
+Radiator valve before:
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102994879-41320800-4520-11eb-9485-fe36122d2637.jpg"></figure></td></tr><tr><td><i>The Herz valve knob - old situation</i></td></tr></tbody></table>
 
-There were no thermostatic valves on my radiator (just a turn knob), so I had to put in a new insert, part #1639091 for my Herz radiator valve:  
+There were no thermostatic valves on my radiator (just a turn knob), to get it working with the Eqiva TRV I had to put in a new insert, part #1639091 for Herz radiator valves:  
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102867026-6d725980-4438-11eb-9752-5bd6fffe2686.png" alt=""></figure></td></tr><tr><td><i>The Herz 1639091 insert to make the valve a thermostatic valve</i></td></tr></tbody></table>
 
@@ -94,7 +96,7 @@ Choices for configuration variables:
 
 *   `target_temp` I chose target temps within configuration.yaml lower than I actually want, cause with a sudden a reboot of the system I don't want the heating to turn on. I use automations to override the temperature to set these to desired temperatures. After a restart the `target_temp` is reverted back to the last setting before the reboot. See Automations further on.
 *   `min_cycle_duration` Set so that pump and gas furnace of boiler don't have to turn on and off that often. Set to 3 minutes for bedroom and 1 minute for living room. The living room has a larger radiator and 1 minute turned out as a good value. For the bedroom 3 minutes as the there is a smaller radiator.
-*   `heater` I use two `generic_thermostat` instances with seperate heater swithches, because Generic thermostat isn't able to work with multiple zones (described [here](https://community.home-assistant.io/t/need-help-with-multi-zone-generic-thermostat-climate-configuration/8563)) when one heater switch is on both rooms (they will contradict). For each room I used a [Helper](https://www.home-assistant.io/integrations/input_boolean/), `input_boolean` switch. Trough an automation I made sure these helpers are controlling the relay switch, which controls the on-off signal to the boiler, see [automations](#automations).
+*   `heater` I use two `generic_thermostat` instances with separate heater switches, because Generic thermostat isn't able to work with multiple zones (described [here](https://community.home-assistant.io/t/need-help-with-multi-zone-generic-thermostat-climate-configuration/8563)) when one heater switch is on both rooms (they will contradict). For each room I used a [Helper](https://www.home-assistant.io/integrations/input_boolean/), `input_boolean` switch. Trough an automation I made sure these helpers are controlling the relay switch, which controls the on-off signal to the boiler, see [automations](#automations).
 
 ```
 climate:
@@ -135,7 +137,16 @@ climate:
 I use [Telegram](https://telegram.org/) for notifications. Currently I am using two notifications:
 
 *   Hours of heating during a week on Sunday at 18:00
+
+![](https://user-images.githubusercontent.com/43075793/110303144-53d5bc80-7ffa-11eb-98dc-0a7ae96f4686.png)
+
+"Last week there were 21 hours of heating"
+
 *   When the heating is automatically turned off because of a suspected open window (See Verwijzing).
+
+![](https://user-images.githubusercontent.com/43075793/110302916-13763e80-7ffa-11eb-8579-ccd264169956.png)
+
+Translation: "Bedroom thermostat turned off bc of too slow heating up, window open?"
 
 Home Assistant documentation: [Telegram polling](https://www.home-assistant.io/integrations/telegram_polling/)
 
@@ -155,7 +166,7 @@ notify:
 
 #### Correction of temperature sensors
 
-My DS18B20 sensors ([onewire](https://www.home-assistant.io/integrations/onewire/)) needed a correction to match the right temperature value. With the use of [template platform](https://www.home-assistant.io/integrations/template/) a correction is applied to the onewire sensors. 
+My DS18B20 sensors ([onewire](https://www.home-assistant.io/integrations/onewire/)) need a correction to match the right temperature value. With the use of [template platform](https://www.home-assistant.io/integrations/template/) a correction is applied to the onewire sensors. 
 
 See below:
 
@@ -195,7 +206,7 @@ sensor:
 
 Using the [trend platform](https://www.home-assistant.io/integrations/trend/) it is checked if the temperature will rise enough while heating. If not, it can be assumed that a window is open or some other error is happening and the heating is turned off. See [automations](#automations). 
 
-The `min_gradient` values for each room are set based on experience. 
+The `min_gradient` value, which is the temperature rising per second, for each room is set based on trial and error. 
 
 ```
 {% raw %}
@@ -264,7 +275,7 @@ sensor:
 
 #### Setting temperature time program
 
-Two automations per room, one for setting the desired set-temperature at bedtime and one at wake-up time. Also a helper `input_number.current_insteltemp_slaapkamer` is set with the current-set temperature. This is needed for restoring the set temperatures after restart of the system and x hours after a manual change, see automations.  
+Two automations per room, one for setting the desired set-temperature at bedtime and one at wake-up time. Also a helper `input_number.current_insteltemp_slaapkamer` is set with the current-set temperature. This is needed for restoring the set temperatures after restart of the system and input\_number. hours after a manual change, see automations.  
 
 ```
 {% raw %}
@@ -356,11 +367,13 @@ Two automations per room, one for setting the desired set-temperature at bedtime
 
 ###  Presence detection
 
-Presence detection is done with both the mobile phone location and a PIR movement sensor. The generic thermostat integration has an away set temperature based on the away/home status of the users in home assistant. If the mobile phone was the only source for presence detection this would have been used, but since there is a PIR as well, it is bypassed in this configuration by using a helper switch.  
+Presence detection is done with both the mobile phone location and a PIR movement sensor in the living room. The generic thermostat integration has an away set temperature based on the away/home status of the users in home assistant. If the mobile phone was the only source for presence detection this would have been used, but since there is a PIR as well, it is bypassed in this configuration by using a helper switch input.  
 
-I used a PIR sensor as well next to the smartphone, because there are some disadvantages in using smartphones only like what happens when the battery is off or the phone is on flight mode. There might not be an accurate detection of presence. Also it doesn't account for having guests if the smartphone is used as only presence detection source. 
+I used a PIR sensor next to the smartphone, because there are some disadvantages in using smartphones only for presence detection. There are scenarios like when the battery is down or the phone is on flight mode, in which the system will think someones is home.  Also it is less suitable when having guests if the smartphone is used as only presence detection source. 
 
-The configuration is set so, that when the phone changes location from away to home or home to away the helper switch is toggled. So only on state change, not on current state. Next to that, the rule is followed that if two movements aren't being detected within the last half hour, the 'someone home status' is set to off. 
+It's possible to make smart automations for the PIR movement sensor, like only execute an action on two movements within halve an hour. 
+
+The configuration is set so, that when the phone `device_tracker.pra_lx1` changes location from away to home or home to away the helper switch `input_boolean.iemandthuis`  is toggled. So only on **state change**, not on current state. Next to that, the rule is followed that if two movements aren't being detected within the last half hour, the 'someone home status' `input_boolean.iemandthuis` is set to off. 
 
 In the evening the presence detection by the PIR motion detector should be different. It is assumed that if two times a motion is detected within half an hour during `evening time` and `bedtime`, that someone will be home during the entire night. 
 
@@ -412,9 +425,7 @@ The following automations were set to achieve this. 
   trigger:
   - platform: template
     value_template: '{{ (states.sensor.time.last_changed - states.input_datetime.bewegingeennalaatst_1.last_changed).total_seconds()
-      == 300 }}
-
-      '
+      == 300 }}'
   condition:
   - condition: state
     entity_id: input_boolean.iemandthuis
@@ -424,9 +435,7 @@ The following automations were set to achieve this. 
     after: input_datetime.avond
   - condition: template
     value_template: '{{ (states.sensor.time.last_changed - states.input_datetime.bewegingeennalaatst_1.last_changed).total_seconds()
-      < 300 }}
-
-      '
+      < 300 }}'
   action:
   - data: {}
     entity_id: input_boolean.iemandthuis
