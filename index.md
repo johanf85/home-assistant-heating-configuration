@@ -2,8 +2,7 @@
 
 Home Assistant is Open Source software that runs on various devices like a Raspberry Pi and acts as a central server for smart home devices and/or self build modules to make automatizations in the home. It has an active community and a large library of integrations with products on the market.
 
-<a href="https://www.home-assistant.io">
-![](https://user-images.githubusercontent.com/43075793/110300601-5551b580-7ff7-11eb-8b33-5909025a2cfa.png)</a>
+![https://www.home-assistant.io/](https://user-images.githubusercontent.com/43075793/110300847-b4172f00-7ff7-11eb-94d2-3394992bd090.png)
 
 *   TOC  
     {:toc}
@@ -46,7 +45,7 @@ Arduino IDE
 *   Raspberry pi zero with
     *   DS18B20 temperature sensor
     *   PIR motion sensor
-    *   Relay module with wire to boiler for controlling on-off heating 
+    *   Relay module with wire to boiler for controlling on-off heating
 
 Both rooms have one radiator, each is equipped with a eqiva-N thermostatic radiator valve. These are only used to be open and close the radiators at the beginning and end of the day. They are programmed to setpoint 12° C when the desired heating for the room is off and to 25° C when the desired heating is on. 
 
@@ -93,7 +92,7 @@ Home Assistant documentation: [Generic thermostat](https://www.home-assistant.io
 
 Choices for configuration variables:
 
-*   `target_temp` I chose target temps within configuration.yaml lower than I actually want, cause with a sudden a reboot of the system I don't want the heating to turn on. I use automations to override the temperature to set these to desired temperatures. After a restart the `target_temp` is reverted back to the last setting before the reboot. See Automations further on. 
+*   `target_temp` I chose target temps within configuration.yaml lower than I actually want, cause with a sudden a reboot of the system I don't want the heating to turn on. I use automations to override the temperature to set these to desired temperatures. After a restart the `target_temp` is reverted back to the last setting before the reboot. See Automations further on.
 *   `min_cycle_duration` Set so that pump and gas furnace of boiler don't have to turn on and off that often. Set to 3 minutes for bedroom and 1 minute for living room. The living room has a larger radiator and 1 minute turned out as a good value. For the bedroom 3 minutes as the there is a smaller radiator.
 *   `heater` I use two `generic_thermostat` instances with seperate heater swithches, because Generic thermostat isn't able to work with multiple zones (described [here](https://community.home-assistant.io/t/need-help-with-multi-zone-generic-thermostat-climate-configuration/8563)) when one heater switch is on both rooms (they will contradict). For each room I used a [Helper](https://www.home-assistant.io/integrations/input_boolean/), `input_boolean` switch. Trough an automation I made sure these helpers are controlling the relay switch, which controls the on-off signal to the boiler, see [automations](#automations).
 
@@ -135,8 +134,8 @@ climate:
 
 I use [Telegram](https://telegram.org/) for notifications. Currently I am using two notifications:
 
-*   Hours of heating during a week on Sunday at 18:00 
-*   When the heating is automatically turned off because of a suspected open window (See Verwijzing). 
+*   Hours of heating during a week on Sunday at 18:00
+*   When the heating is automatically turned off because of a suspected open window (See Verwijzing).
 
 Home Assistant documentation: [Telegram polling](https://www.home-assistant.io/integrations/telegram_polling/)
 
