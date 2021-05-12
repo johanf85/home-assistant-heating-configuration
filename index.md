@@ -1,13 +1,13 @@
-#   My home smart heating configuration with the use of Home Assistant  (Under construction)
+# My home smart heating configuration with the use of Home Assistant (Under construction)
 
-This page is under construction and not finished yet. 
+This page is under construction and not finished yet.
 
 Home Assistant is Open Source software that runs on various devices, for instance Raspberry Pi, and acts as a central server for smart home devices and/or self build modules to make automatizations in the home. It has an active community and a large library of integrations with products on the market. Home Assistant is a non-cloud system, wich means there is no dependance on external cloud service.
 
 ![https://www.home-assistant.io/](https://user-images.githubusercontent.com/43075793/110300847-b4172f00-7ff7-11eb-94d2-3394992bd090.png)
 
-With the use of Home Assistant I created a smart thermostat, which I was able to customize to my personal situation. Against low costs. In this document I will describe my configuration for others to benefit. I am Dutch, so the names I chose for various entities are in Dutch.  
-  
+With the use of Home Assistant I created a smart thermostat, which I was able to customize to my personal situation. Against low costs. In this document I will describe my configuration for others to benefit. I am Dutch, so the names I chose for various entities are in Dutch.
+
 Screenshots of my dashboard:
 
 ![](https://user-images.githubusercontent.com/43075793/110309572-ce560a80-8001-11eb-85fc-a04b34ca5de8.png)
@@ -58,10 +58,12 @@ Arduino IDE
 
 **Living room**
 
-*   Raspberry pi Zero W with
+*   Raspberry pi Zero W (acts as server) with
     *   DS18B20 temperature sensor
     *   PIR motion sensor module
     *   Relay module with wire to boiler for controlling on-off heating
+
+The pi Zero W is the Raspberry with the least specifications. However it does run well for a year now, as I only use it for nothing else than the thermostat function. Dowload Home-Assistant at: [https://github.com/home-assistant/operating-system/releases](https://github.com/home-assistant/operating-system/releases) for pi Zero W download: hassos\_rpi0-w-x.xx.img.xz. 
 
 Both rooms have one radiator, each is equipped with a eqiva-N thermostatic radiator valve. These are only used to be open and close the radiators at the beginning and end of the day. They are programmed to setpoint 12° C when the desired heating for the room is off and to 25° C when the desired heating is on. 
 
@@ -1084,3 +1086,7 @@ The following automations were set to achieve this. 
   mode: single
 {% endraw %}
 ```
+
+### Links to other similar
+
+I used these webpages for inspiration:
