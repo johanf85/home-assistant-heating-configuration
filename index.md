@@ -60,23 +60,19 @@ Arduino IDE
 
 **Living room**
 
-*   Raspberry pi Zero W (acts as server) with:  
-     
+*   Raspberry pi Zero W (acts as server) with:
 
 ![](https://user-images.githubusercontent.com/43075793/117957217-210db480-b31a-11eb-834b-1250b6fbd008.png)
 
-*   DS18B20 temperature sensor  
-     
+*   DS18B20 temperature sensor
 
 ![](https://user-images.githubusercontent.com/43075793/117957906-cb85d780-b31a-11eb-8d61-c71f36264ce6.png)
 
-*   PIR motion sensor module  
-     
+*   PIR motion sensor module
 
 ![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
 
-*   Relay module with wire to boiler for controlling on-off heating  
-     
+*   Relay module with wire to boiler for controlling on-off heating
 
 ![](https://user-images.githubusercontent.com/43075793/117958501-5c5cb300-b31b-11eb-8065-645693a0284e.png)
 
@@ -1111,4 +1107,6 @@ The following automations were set to achieve this. 
 
 ### Links to other similar
 
-I used these webpages for inspiration:
+I used these webpages for inspiration: 
+
+[Siytek - the ultimate home-assistant DIY guide for multiple zone heating](https://siytek.com/the-ultimate-home-assistant-diy-thermostat-guide-for-single-or-multiple-zone-heating/)
