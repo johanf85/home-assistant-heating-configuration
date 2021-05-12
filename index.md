@@ -37,7 +37,7 @@ The appartement has a boiler (Intergas kompakt hre 24/18) for central heating wh
 
 *   Multi zone: Heat the bedroom to a desired temperature at night (while living room radiator closed) and the living room during the day and evening (while bedroom radiator closed)
 *   Turn off the thermostat function when no one home
-*   A wired system, that doesn't use wifi, to limit the use of EMF-radiation in the home. See [this TED talk](https://www.youtube.com/watch?v=F0NEaPTu9oI) about possible dangers of EMF radiation in the living environment. 
+*   A wired system, that doesn't use wifi, to limit the use of EMF-radiation in the home. See [this TED talk](https://www.youtube.com/watch?v=F0NEaPTu9oI) about possible dangers of EMF radiation in the living environment.
 *   A smartphone app and / or a browser to control and monitor the thermostat
 *   Send alerts to the smartphone when certain conditions are met, e.g. when it is suspected that a window is open.
 *   Reverting to normal set temperature after a certain amount of time after a manual change
@@ -60,19 +60,23 @@ Arduino IDE
 
 **Living room**
 
-*   Raspberry pi Zero W (acts as server) with:
+*   Raspberry pi Zero W (acts as server) with:  
+     
 
 ![](https://user-images.githubusercontent.com/43075793/117957217-210db480-b31a-11eb-834b-1250b6fbd008.png)
 
-*   DS18B20 temperature sensor
+*   DS18B20 temperature sensor  
+     
 
 ![](https://user-images.githubusercontent.com/43075793/117957906-cb85d780-b31a-11eb-8d61-c71f36264ce6.png)
 
-*   PIR motion sensor module
+*   PIR motion sensor module  
+     
 
 ![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
 
-*   Relay module with wire to boiler for controlling on-off heating
+*   Relay module with wire to boiler for controlling on-off heating  
+     
 
 ![](https://user-images.githubusercontent.com/43075793/117958501-5c5cb300-b31b-11eb-8065-645693a0284e.png)
 
@@ -81,7 +85,7 @@ Arduino IDE
 
 The pi Zero W is the Raspberry with the least specifications. However it does run well for a year now, as I only use it for nothing else than the thermostat function. \`
 
-Dowload Home-Assistant  OS for pi0 at: [https://github.com/home-assistant/operating-system/releases](https://github.com/home-assistant/operating-system/releases) for pi Zero W download: hassos\_rpi0-w-x.xx.img.xz. 
+Dowload Home-Assistant  OS for pi0 at: [https://github.com/home-assistant/operating-system/releases](https://github.com/home-assistant/operating-system/releases) for pi Zero W choose: hassos\_rpi0-w-x.xx.img.xz. 
 
 Both rooms have one radiator, each is equipped with a eqiva-N thermostatic radiator valve. These are only used to be open and close the radiators at the beginning and end of the day. They are programmed to setpoint 12° C when the desired heating for the room is off and to 25° C when the desired heating is on. 
 
