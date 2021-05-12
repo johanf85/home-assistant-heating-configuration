@@ -6,7 +6,7 @@ Home Assistant is Open Source software that runs on various devices, for instanc
 
 ![https://www.home-assistant.io/](https://user-images.githubusercontent.com/43075793/110300847-b4172f00-7ff7-11eb-94d2-3394992bd090.png)
 
-With the use of Home Assistant I created a smart thermostat, which I was able to customize to my personal situation. Against low costs. In this document I will describe my configuration for others to benefit. I am Dutch, so the names I chose for various entities are in Dutch.
+With the use of Home Assistant I created a smart thermostat, which I was able to customize to my personal situation. Against low costs and all wired to limit the EMF radiation in the home. In this document I will describe my configuration. I am Dutch, so the names I chose for various entities are in Dutch.
 
 Screenshots of my dashboard:
 
@@ -25,11 +25,13 @@ And on my phone:
 
 My appartement consists of a living room, a bedroom and a kitchen.
 
-<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/110296386-94c9d300-7ff2-11eb-9622-e06369d3a43b.jpg"></figure></td></tr><tr><td>A schematic view of the floorplan with the relevant rooms</td></tr></tbody></table>
+<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/117958666-8a41f780-b31b-11eb-812e-aa2912945f4b.png"></figure></td></tr><tr><td>A schematic view of the floorplan with the relevant rooms</td></tr></tbody></table>
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/110297333-a790d780-7ff3-11eb-839d-b3b001fa90a7.png"></figure></td></tr><tr><td>A 3D view of the floorplan, the door between living room and bedroom can be closed off<br>(made with <a href="https://roomstyler.com/3dplanner">https://roomstyler.com/3dplanner</a>)</td></tr></tbody></table>
 
 The appartement has a boiler (Intergas kompakt hre 24/18) for central heating which can use a on-off control and OpenTherm.  
+
+![](https://user-images.githubusercontent.com/43075793/117956831-b492b580-b319-11eb-9d92-bc3bd366e92d.png)
 
 ### The design wishes for the system
 
@@ -46,7 +48,7 @@ The appartement has a boiler (Intergas kompakt hre 24/18) for central heating wh
 [Home Assistant](https://www.home-assistant.io/)  
 Arduino IDE
 
-#### Home assistant integrations
+#### Home assistant integrations for the thermostat
 
 *   [Generic Thermostat integration](https://www.home-assistant.io/integrations/generic_thermostat/)
 
@@ -58,12 +60,32 @@ Arduino IDE
 
 **Living room**
 
-*   Raspberry pi Zero W (acts as server) with
-    *   DS18B20 temperature sensor
-    *   PIR motion sensor module
-    *   Relay module with wire to boiler for controlling on-off heating
+*   Raspberry pi Zero W (acts as server) with:
 
-The pi Zero W is the Raspberry with the least specifications. However it does run well for a year now, as I only use it for nothing else than the thermostat function. Dowload Home-Assistant at: [https://github.com/home-assistant/operating-system/releases](https://github.com/home-assistant/operating-system/releases) for pi Zero W download: hassos\_rpi0-w-x.xx.img.xz. 
+![](https://user-images.githubusercontent.com/43075793/117957217-210db480-b31a-11eb-834b-1250b6fbd008.png)
+
+*   DS18B20 temperature sensor  
+     
+
+![](https://user-images.githubusercontent.com/43075793/117957906-cb85d780-b31a-11eb-8d61-c71f36264ce6.png)
+
+*   PIR motion sensor module  
+     
+
+![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
+
+*   Relay module with wire to boiler for controlling on-off heating  
+     
+
+![](https://user-images.githubusercontent.com/43075793/117958501-5c5cb300-b31b-11eb-8065-645693a0284e.png)
+
+*   USB hub with Ethernet and connected USB storage device for the OS. 
+*   MicroSD with bootcode.bin file
+
+  
+The pi Zero W is the Raspberry with the least specifications. However it does run well for a year now, as I only use it for nothing else than the thermostat function. \`
+
+Dowload Home-Assistant  OS for pi0 at: [https://github.com/home-assistant/operating-system/releases](https://github.com/home-assistant/operating-system/releases) for pi Zero W download: hassos\_rpi0-w-x.xx.img.xz. 
 
 Both rooms have one radiator, each is equipped with a eqiva-N thermostatic radiator valve. These are only used to be open and close the radiators at the beginning and end of the day. They are programmed to setpoint 12° C when the desired heating for the room is off and to 25° C when the desired heating is on. 
 
