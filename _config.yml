@@ -1,6 +1,8 @@
 markdown: kramdown
+
 remote_theme: rundocs/jekyll-rtd-theme
 #kramdown:
 #  toc_levels: 3
-#readme_index:
-#   with_frontmatter: true
+
+readme_index:
+   with_frontmatter: true
