@@ -12,7 +12,7 @@ readme_index:
    with_frontmatter: true
    
 plugins:
-  - jekyll-readme-index 0.3.0
+  - jekyll-readme-index
    
    
 exclude:
