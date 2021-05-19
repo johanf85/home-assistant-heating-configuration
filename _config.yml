@@ -1,6 +1,6 @@
-title: RunDocs
+title: My Home Assistant smart heating configuration
 lang: en
-description: Extends the continuous integration documentation capabilities of GitHub pages for everyone!
+description: My configuration for smart heating thermostat with the use of Home Assistant. 
 
 #markdown: kramdown
 
