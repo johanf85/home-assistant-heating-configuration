@@ -1107,6 +1107,6 @@ The following automations were set to achieve this. 
 
 ### Links to other similar
 
-I used these webpages for inspiration: 
+I used these webpages for inspiration:
 
 [Siytek - the ultimate home-assistant DIY guide for multiple zone heating](https://siytek.com/the-ultimate-home-assistant-diy-thermostat-guide-for-single-or-multiple-zone-heating/)
