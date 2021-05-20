@@ -2,7 +2,7 @@ title: My Home Assistant smart heating configuration
 lang: en
 description: My configuration for smart heating thermostat with the use of Home Assistant. 
 
-#markdown: kramdown
+markdown: kramdown
 
 remote_theme: rundocs/jekyll-rtd-theme
 #kramdown:
