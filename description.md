@@ -33,7 +33,7 @@ The appartement has a boiler (Intergas kompakt hre 24/18) for central heating wh
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/117959173-08060300-b31c-11eb-9171-167f414ecc1a.png"></figure></td></tr><tr><td>Intergas hre 24/18</td></tr></tbody></table>
 
-### The design wishes for the system
+## The design wishes for the system
 
 *   Multi zone: Heat the bedroom to a desired temperature at night (while living room radiator closed) and the living room during the day and evening (while bedroom radiator closed)
 *   Turn off the thermostat function when no one home
@@ -43,16 +43,19 @@ The appartement has a boiler (Intergas kompakt hre 24/18) for central heating wh
 *   Reverting to normal set temperature after a certain amount of time after a manual change
 *   Easily setting variables like bedtime, waking time and revert-to-initial-time with input fields in the front-end
 
-### Software
+## Software
 
-[Home Assistant](https://www.home-assistant.io/)  
-Arduino IDE
+[Home Assistant](https://www.home-assistant.io/) (The main platform on which everything is running)  
+  
+Arduino IDE (for uploading Arduino sketches to the arduino mcu)
 
-#### Home assistant integrations for the thermostat
+**Home assistant integrations for the thermostat**
+
+Several integrations are used. The most important is the Generic Thermostat integration, designed to act as a thermostat with a on-off switch:
 
 *   [Generic Thermostat integration](https://www.home-assistant.io/integrations/generic_thermostat/)
 
-### Hardware
+## Hardware
 
 **Bedroom**
 
@@ -109,7 +112,9 @@ A doorspring was put on both rooms door, so that they will be kept closed as muc
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102992183-0b3e5500-451b-11eb-8786-723f359d2996.jpeg"></figure></td></tr><tr><td><i>Doorspring for door closing</i></td></tr></tbody></table>
 
-## Helpers 
+## Configuration in Home Assistant
+
+### Helpers 
 
 Created the following helpers via configuration > helpers within Home Assistant
 
@@ -120,11 +125,11 @@ Created the following helpers via configuration > helpers within Home Assistant
 |   |   | input\_text.woonk\_nacht |
 |   |   | input\_number.current\_insteltemp\_woonkamer |
 
-## Variables
+### Variables
 
 To easily change settings to which I would like them, I make use of input variables. I made a tab in Lovelace to edit this variables.
 
-## Configuration.yaml
+### Configuration.yaml
 
 Only covering the relevant part of the configuration for the smart heating system. 
 
@@ -242,7 +247,7 @@ sensor:
 {% endraw %}
 ```
 
-### Trend sensor for possible open window detection
+#### Trend sensor for possible open window detection
 
 Using the [trend platform](https://www.home-assistant.io/integrations/trend/) it is checked if the temperature will rise enough while heating. If not, it can be assumed that a window is open or some other error is happening and the heating is turned off. See [automations](#automations). 
 
@@ -311,7 +316,7 @@ sensor:
         friendly_name: 'thermostaat state'
 ```
 
-## Automations
+### Automations
 
 #### Setting temperature time program
 
