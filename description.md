@@ -60,6 +60,12 @@ Arduino IDE
 
 **Living room**
 
+**Server with sensors:**
+
+![](https://user-images.githubusercontent.com/43075793/121671494-e6c93b80-caae-11eb-8e96-3eeadb19c349.png)
+
+Contains:
+
 *   Raspberry pi Zero W (acts as server) with:
 
 ![](https://user-images.githubusercontent.com/43075793/117957217-210db480-b31a-11eb-834b-1250b6fbd008.png)
