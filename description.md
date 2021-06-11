@@ -45,8 +45,8 @@ The appartement has a boiler (Intergas kompakt hre 24/18) for central heating wh
 
 ## Software
 
-[Home Assistant](https://www.home-assistant.io/) (The main platform on which everything is running)  
-  
+[Home Assistant](https://www.home-assistant.io/) (The main platform on which everything is running)
+
 Arduino IDE (for uploading Arduino sketches to the arduino mcu)
 
 **Home assistant integrations for the thermostat**
@@ -59,7 +59,11 @@ Several integrations are used. The most important is the Generic Thermostat inte
 
 **Bedroom**
 
-*   Arduino with a DS18B20 temperature sensor connected via USB to the Home Assistant server
+*   Arduino nano with a DS18B20 temperature sensor connected via USB to the Home Assistant server
+
+![](https://user-images.githubusercontent.com/43075793/121677790-abcb0600-cab6-11eb-9732-bff4973d8bb1.png)
+
+![](https://user-images.githubusercontent.com/43075793/117957906-cb85d780-b31a-11eb-8d61-c71f36264ce6.png)
 
 **Living room**
 
