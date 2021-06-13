@@ -186,6 +186,10 @@ Created the following helpers via configuration > helpers within Home Assistant
 
 To easily change settings to which I would like them, I make use of input variables. I made a tab in Lovelace to edit this variables.
 
+![](https://user-images.githubusercontent.com/43075793/121800703-a941eb00-cc33-11eb-9dcc-9041997f328b.png)
+
+Most of them speak for themselves. The someone home switch is turned on depending on presence detection. When the set temperature of the thermostat is changed manually, it will revert back to the initial set temperature according to program after the set Duration manual change value. The countdown shows the amount of time left until revert to initial set temperature. 
+
 ### Configuration.yaml
 
 Only covering the relevant part of the configuration for the smart heating system. 
@@ -469,17 +473,15 @@ Two automations per room, one for setting the desired set-temperature at bedtime
 
 ###  Presence detection
 
-Presence detection is done with both the mobile phone location and a PIR movement sensor in the living room. The generic thermostat integration has an away set temperature based on the away/home status of the users in home assistant. If the mobile phone was the only source for presence detection this would have been used, but since there is a PIR as well, it is bypassed in this configuration by using a helper switch input.  
+Presence detection is done with both the mobile phone GPS location and a PIR movement sensor in the living room. If the mobile phone was the only source for presence detection this would have been used, but since there is a PIR as well, the away modus of Generic thermostat integration isn't used in this configuration, instead of this  a helper switch input.  
 
 I used a PIR sensor next to the smartphone, because there are some disadvantages in using smartphones only for presence detection. There are scenarios like when the battery is down or the phone is on flight mode, in which the system will think someones is home.  Also it is less suitable when having guests if the smartphone is used as only presence detection source. 
-
-It's possible to make smart automations for the PIR movement sensor, like only execute an action on two movements within halve an hour. 
 
 The configuration is set so, that when the phone `device_tracker.pra_lx1` changes location from away to home or home to away the helper switch `input_boolean.iemandthuis`  is toggled. So only on **state change**, not on current state. Next to that, the rule is followed that if two movements aren't being detected within the last half hour, the 'someone home status' `input_boolean.iemandthuis` is set to off. 
 
 In the evening the presence detection by the PIR motion detector should be different. It is assumed that if two times a motion is detected within half an hour during `evening time` and `bedtime`, that someone will be home during the entire night. 
 
-As it was noticed that the PIR used in very few occasions can have a false motion detections, the number of two motion detections was chosen. 
+As it was noticed that the PIR used in very few occasions can have a false motion detection, the number of two motion detections was chosen. 
 
 This configuration set up is based on a one person household, so only one smartphone with the home assistant app running. 
 
@@ -1180,3 +1182,5 @@ I used these webpages for inspiration:
 [Siytek - the ultimate home-assistant DIY guide for multiple zone heating](https://siytek.com/the-ultimate-home-assistant-diy-thermostat-guide-for-single-or-multiple-zone-heating/)
 
 [Hacking a Eqiva EQ-3 thermostatic radiator valve.](https://www.youtube.com/watch?v=LlPHrdXHBTU)
+
+An interesting idea: [using thermal sensors as room presence detection](https://www.youtube.com/watch?v=-beIaL-RmvQ)
