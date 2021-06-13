@@ -258,7 +258,7 @@ Translation: "Bedroom thermostat turned off bc of too slow heating up, window op
 
 Home Assistant documentation: [Telegram polling](https://www.home-assistant.io/integrations/telegram_polling/)
 
-```
+```yaml
 telegram_bot:
   - platform: polling
     api_key: secret
@@ -278,7 +278,7 @@ My DS18B20 sensors ([onewire](https://www.home-assistant.io/integrations/onewire
 
 See below:
 
-```
+```yaml
 {% raw %}
 sensor:
   - platform: serial
@@ -316,7 +316,7 @@ Using the [trend platform](https://www.home-assistant.io/integrations/trend/) it
 
 The `min_gradient` value, which is the temperature rising per second, for each room is set based on trial and error. 
 
-```
+```yaml
 {% raw %}
 binary_sensor:
   - platform: rpi_gpio
@@ -346,7 +346,7 @@ binary_sensor:
  {% endraw %}
 ```
 
-```
+```yaml
 sensor:
   - platform: serial
     serial_port: /dev/ttyUSB0
@@ -383,9 +383,11 @@ sensor:
 
 #### Setting temperature time program
 
-Two automations per room, one for setting the desired set-temperature at bedtime and one at wake-up time. Also a helper `input_number.current_insteltemp_slaapkamer` is set with the current-set temperature. This is needed for restoring the set temperatures after restart of the system and input\_number. hours after a manual change, see automations.  
+Two automations per room, one for setting the desired set-temperature at bedtime and one at wake-up time. Also a helper `input_number.current_insteltemp_slaapkamer` is set with the current-set temperature. This is needed for restoring the set temperatures after restart of the system and after a manual change.  
 
-```
+##### Bedroom set temperature after bedtime
+
+```yaml
 {% raw %}
 - id: '1587807892892'
   alias: Slaapkamer naar instelwaarde 's nachts
@@ -407,7 +409,9 @@ Two automations per room, one for setting the desired set-temperature at bedtime
 {% endraw %}
 ```
 
-```
+#####  Bedroom to set temperature after bedtime
+
+```yaml
 {% raw %}
 - id: '1589611935632'
   alias: Woonkamer instelwaarde na opstaan
@@ -429,7 +433,9 @@ Two automations per room, one for setting the desired set-temperature at bedtime
 {% endraw %}
 ```
 
-```
+#####  Bedroom to set temperature during day time
+
+```yaml
 {% raw %}
 - id: '1587807715263'
   alias: Slaapkamer naar instelwaarde overdag
@@ -450,6 +456,8 @@ Two automations per room, one for setting the desired set-temperature at bedtime
   mode: single
 {% endraw %}
 ```
+
+#####  Living room set temperature after bedtime
 
 ```
 {% raw %}
@@ -501,9 +509,65 @@ The following automations were set to achieve this. 
 
 #### Automations for presence detection
 
+##### Automation for minimum of two movements detected to trigger other automations
+
+Set two input\_datetime fields on a motion detection with the PIR. One input field is set to date/time of the last movement detected and on the next motion this value is passed to one-before-last-input boolean.
+
+This is used, bc it is desired that only when a minimum of two movements are detected in the last 30 minutes the status of some one should be turned to 'on'.
+
+```yaml
+- id: '1606672315270'
+  alias: Bewegingssensor last 
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_sensor
+    to: 'on'
+  condition: []
+  action:
+  - service: input_datetime.set_datetime
+    data:
+      datetime: '{{states(''input_datetime.beweginglaatst_0'')}}'
+    entity_id: input_datetime.bewegingeennalaatst_1
+  - service: input_datetime.set_datetime
+    data:
+      datetime: '{{ now().strftime(''%Y-%m-%d %H:%M:%S'') }}'
+    entity_id: input_datetime.beweginglaatst_0
+  mode: single
+```
+
+##### Reset the one-before-last-input boolean 31 minutes before waking time
+
+Needed for the someone home status to turn on immediately when entering the living room in the morning, otherwise first two motions need to be detected, which can take a while. 
+
+```yaml
+- id: '1606905142912'
+  alias: Reset 1 na laatste beweging 31 min voor opstaan
+  description: ''
+  trigger:
+  - platform: time_pattern
+    seconds: '30'
+  condition:
+  - condition: template
+    value_template: '{/% set current_time = now().hour * 60 + now().minute %}
+
+      {/% set opstaan_hour, opstaan_minute, opstaan_second = states(''input_datetime.opstaan'').split('':'')
+      %}
+
+      {/% set opstaan_time = opstaan_hour | int * 60 + opstaan_minute | int %}
+
+      {{ current_time == opstaan_time - 32 }}'
+  action:
+  - service: input_datetime.set_datetime
+    data:
+      datetime: '{{now().strftime(''%Y-%m-%d %H:%M:%S'')}}'
+    entity_id: input_datetime.bewegingeennalaatst_1
+  mode: restart
+```
+
 ##### Automation to turn on someone home status
 
-```
+```yaml
 {% raw %}
 - id: '1587319960331'
   alias: Turn on someone home status
@@ -573,7 +637,7 @@ The following automations were set to achieve this. 
 
 #####  Automation between getting up time and evening time
 
-```
+```yaml
 {% raw %}
 - id: '1587319961411'
   alias: Behaviour of motion sensor living room between wakeup time and evening time
@@ -602,7 +666,35 @@ The following automations were set to achieve this. 
 {% endraw %}
 ```
 
+##### Behavior based on smart phone location with Home Assistant app
+
 ```
+
+- id: '1606221709908'
+  alias: Smartphone thuiskomen / weggaan
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: person.johan
+    to: not_home
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+    entity_id: input_boolean.iemandthuis
+  - wait_for_trigger:
+    - platform: state
+      entity_id: person.johan
+      to: home
+  - service: input_boolean.turn_on
+    data: {}
+    entity_id: input_boolean.iemandthuis
+  mode: restart
+```
+
+#####  Turning off thermostat when Someone home status is off
+
+```yaml
 - id: '1587373899805'
   alias: Thermostaat uit bij niemand thuis
   description: ''
@@ -620,8 +712,11 @@ The following automations were set to achieve this. 
     service: climate.turn_off 
 ```
 
-```
-{% raw %}
+### Heat for 5 minutes straight
+
+##### Automation:
+
+```yaml
 
 - id: '1588717917351'
   alias: 5 minuten verwarmen als schakelaar aan
@@ -644,6 +739,16 @@ The following automations were set to achieve this. 
     data: {}
     entity_id: input_boolean.30_min_verwarmen_schakelaar
   mode: single
+```
+
+### Window open detection (based on speed of temperature rise)
+
+Uses the [Trend sensor](https://www.home-assistant.io/integrations/trend/) to make the `binary_sensor.temp_falling`
+
+After 300 seconds of heating without reaching the treshold of de trend sensor, the relay switch is turned off and sends a Telegram notification. 
+
+```yaml
+
 - id: '1588799650928'
   alias: Relay beveiging raam open
   description: ''
@@ -667,7 +772,7 @@ The following automations were set to achieve this. 
   - service: telegram_bot.send_message
     data:
       message: Slaapkamer thermostaat uitgeschakeld ivm te langzame opwarming, raam
-        open
+        open?
       target: [chat-number]
   - data: {}
     entity_id: climate.slaapkamer
@@ -677,117 +782,10 @@ The following automations were set to achieve this. 
     data: {}
     entity_id: climate.slaapkamer
   mode: single
-- id: '1600599019863'
-  alias: Terugzetten na temperatuurverhoging
-  description: ''
-  trigger:
-  - platform: template
-    value_template: '{{ (states.sensor.time.last_changed - states.climate.slaapkamer.last_changed).total_seconds()
-      > 7200 }}'
-  - platform: template
-    value_template: '{{ (states.sensor.time.last_changed - states.climate.woonkamer.last_changed).total_seconds()
-      > 7200 }}'
-  condition: []
-  action:
-  - condition: state
-    entity_id: climate.slaapkamer
-    state: '21.5'
-  - condition: state
-    entity_id: climate.woonkamer
-    state: '21.0'
-  mode: single
-- id: '1601214055496'
-  alias: Relay overgang off-on set schakelaar
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: switch.relay
-    to: 'on'
-  condition: []
-  action:
-  - service: input_boolean.turn_on
-    data: {}
-    entity_id: input_boolean.slaapkamer_overgang_off_on_thermostaat
-  mode: single
-- id: '1601214055496'
-  alias: Relay overgang on-off set schakelaar
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: switch.relay
-    from: 'on'
-    to: 'off'
-  condition: []
-  action:
-  - condition: state
-    entity_id: input_boolean.slaapkamer_overgang_off_on_thermostaat
-    state: 'off'
-  mode: single
-- id: '1601214055496'
-  alias: Relay overgang on-off set schakelaar
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: switch.relay
-    from: 'on'
-    to: 'off'
-  condition: []
-  action:
-  - condition: state
-    entity_id: input_boolean.slaapkamer_overgang_off_on_thermostaat
-    state: 'off'
-  mode: single
-- id: '1601214594628'
-  alias: Relay overgang off-on set schakelaar (Dupliceren)
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: switch.relay
-    from: 'off'
-    to: 'on'
-  condition: []
-  action:
-  - condition: state
-    entity_id: input_boolean.slaapkamer_overgang_off_on_thermostaat
-    state: 'on'
-  mode: single
-- id: '1601214728176'
-  alias: Relay on-off set schakelaar
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: switch.relay
-    from: 'on'
-    to: 'off'
-  condition: []
-  action:
-  - service: input_boolean.turn_off
-    data: {}
-    entity_id: input_boolean.slaapkamer_overgang_off_on_thermostaat
-  mode: single
-- id: '1601214996076'
-  alias: Relay beveiging raam open (Dupliceren)
-  description: ''
-  trigger:
-  - platform: template
-    value_template: '{{ (states.sensor.time.last_changed  - states.switch.relay.last_changed).total_seconds()
-      > 310 }}'
-  condition:
-  - condition: state
-    entity_id: binary_sensor.temp_falling
-    state: 'off'
-  - condition: state
-    entity_id: automation.slaapkamer_overgang_off_on_set_schakelaar
-    state: 'on'
-  action:
-  - data: {}
-    entity_id: climate.slaapkamer
-    service: climate.turn_off
-  - delay: 00:59:00
-  - service: climate.turn_on
-    data: {}
-    entity_id: climate.slaapkamer
-  mode: single
+```
+
+```yaml
+
 - id: '1601215001454'
   alias: Relay beveiging raam open (woonkamer)
   description: ''
@@ -808,6 +806,15 @@ The following automations were set to achieve this. 
     data: {}
     entity_id: climate.woonkamer
   mode: single
+```
+
+##### Revert back to programmed set temperature after manual change  
+
+According to `input_datetime.duur_manuele_verhoging` value a timer is started after which the set temperature will revert back to set temperature according to program. 
+
+Uses the [Timer integration](https://www.home-assistant.io/integrations/timer/)
+
+```yaml
 - id: '1604920070266'
   alias: Countdown bij manual wijziging
   description: ''
@@ -834,6 +841,11 @@ The following automations were set to achieve this. 
       temperature: '{{ states.input_number.current_insteltemp_woonkamer.state  }}'
     entity_id: climate.woonkamer
   mode: restart
+```
+
+##### Telegram notification hours of heating past week on Sunday
+
+```yaml
 - id: '1604938488226'
   alias: Notificatie aantal uren verwarmen in week
   description: ''
@@ -850,39 +862,13 @@ The following automations were set to achieve this. 
       message: De afgelopen week is er {{ states.sensor.aantal_minuten_verwarmen_laatste_7_dagen.state
         | int}} uren verwarmd.
   mode: single
-- id: '1605216873548'
-  alias: Relay beveiging raam open Woonkamer
-  description: ''
-  trigger:
-  - platform: time_pattern
-    minutes: '5'
-  condition:
-  - condition: state
-    entity_id: binary_sensor.temp_falling_woonkamer
-    state: 'off'
-  - condition: template
-    value_template: '{{state_attr(''climate.woonkamer'', ''temperature'') | float
-      > state_attr(''climate.woonkamer'', ''current_temperature'')}}'
-  - condition: state
-    entity_id: switch.relay
-    state: 'on'
-  - condition: template
-    value_template: '{{ (states.sensor.time.last_changed  - states.switch.relay.last_changed).total_seconds()
-      > 300 }}'
-  action:
-  - service: telegram_bot.send_message
-    data:
-      message: Woonkamer thermostaat uitgeschakeld ivm te langzame opwarming, raam
-        open?
-      target: 1212957007
-  - data: {}
-    entity_id: climate.woonkamer
-    service: climate.turn_off
-  - delay: 00:45:00
-  - service: climate.turn_on
-    data: {}
-    entity_id: climate.woonkamer
-  mode: single
+```
+
+##### Turn of heating when there is no signal of DS18B20 temperature sensor
+
+It occasionally happens that there is no signal of the DS18B20 temperature sensor or that by mistake the USB cable gets unplugged. The displayed temperature then can get below set temperature and will trigger heating while not really desired. To avoid this an automation is set to turn off. 
+
+```yaml
 - id: '1606221459609'
   alias: Beveiliging uitvallen temp sensor
   description: ''
@@ -903,26 +889,19 @@ The following automations were set to achieve this. 
     data: {}
     entity_id: climate.woonkamer
   mode: single
-- id: '1606221709908'
-  alias: Smartphone thuiskomen / weggaan
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: person.johan
-    to: not_home
-  condition: []
-  action:
-  - service: input_boolean.turn_off
-    data: {}
-    entity_id: input_boolean.iemandthuis
-  - wait_for_trigger:
-    - platform: state
-      entity_id: person.johan
-      to: home
-  - service: input_boolean.turn_on
-    data: {}
-    entity_id: input_boolean.iemandthuis
-  mode: restart
+```
+
+##### Controlling two generic thermostat entities
+
+The [generic thermostat integration](https://www.home-assistant.io/integrations/generic_thermostat/) is equipped to work only with one temperature sensor. You can run two instances of the generic thermostat integration. However when the heater option is set to the same switch, then when one thermostat is turned on, the other will automatically turn on too (bc they use the same switch,  generic thermostat is programmed like that). This sometimes can lead to situations in which the thermostat of a room will turn on while cold air is flowing in because of a open window. 
+
+Therefore a couple of input\_booleans are created and are set as heater switch. Via an automation the relay switch will be turned on if one of these input\_booleans are turned on. 
+
+Also the someone status `input_boolean.iemandthuis` is taken into account 
+
+###### Living room 
+
+```yaml
 - id: '1606337912735'
   alias: Woonkamer thermostaat aan
   description: ''
@@ -953,24 +932,11 @@ The following automations were set to achieve this. 
     entity_id: climate.woonkamer
   mode: single
   max: 10
-- id: '1606337919641'
-  alias: Woonkamer thermostaat aan
-  description: ''
-  trigger:
-  - platform: time_pattern
-    minutes: '5'
-  condition:
-  - condition: template
-    value_template: '{{state_attr(''climate.woonkamer'', ''temperature'') > state_attr(''climate.woonkamer'',
-      ''current_temperature'')}}'
-  - condition: state
-    entity_id: input_boolean.iemandthuis
-    state: 'on'
-  action:
-  - service: climate.turn_on
-    data: {}
-    entity_id: climate.woonkamer
-  mode: single
+```
+
+###### Bedroom thermostat turn on / off 
+
+```yaml
 - id: '1606338268883'
   alias: 'Slaapkamer thermostaat aan '
   description: ''
@@ -1006,24 +972,11 @@ The following automations were set to achieve this. 
     data: {}
     entity_id: climate.slaapkamer
   mode: restart
-- id: '1606672315270'
-  alias: Bewegingssensor laatst naar helper
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.motion_sensor
-    to: 'on'
-  condition: []
-  action:
-  - service: input_datetime.set_datetime
-    data:
-      datetime: '{{states(''input_datetime.beweginglaatst_0'')}}'
-    entity_id: input_datetime.bewegingeennalaatst_1
-  - service: input_datetime.set_datetime
-    data:
-      datetime: '{{ now().strftime(''%Y-%m-%d %H:%M:%S'') }}'
-    entity_id: input_datetime.beweginglaatst_0
-  mode: single
+```
+
+```yaml
+{% raw %}
+
 - id: '1606839006446'
   alias: Woonkamer thermostaat uit
   description: ''
@@ -1046,28 +999,7 @@ The following automations were set to achieve this. 
     entity_id: climate.woonkamer
   mode: restart
   max: 10
-- id: '1606905142912'
-  alias: Reset 1 na laatste beweging 31 min voor opstaan
-  description: ''
-  trigger:
-  - platform: time_pattern
-    seconds: '30'
-  condition:
-  - condition: template
-    value_template: '{/% set current_time = now().hour * 60 + now().minute %}
 
-      {/% set opstaan_hour, opstaan_minute, opstaan_second = states(''input_datetime.opstaan'').split('':'')
-      %}
-
-      {/% set opstaan_time = opstaan_hour | int * 60 + opstaan_minute | int %}
-
-      {{ current_time == opstaan_time - 32 }}'
-  action:
-  - service: input_datetime.set_datetime
-    data:
-      datetime: '{{now().strftime(''%Y-%m-%d %H:%M:%S'')}}'
-    entity_id: input_datetime.bewegingeennalaatst_1
-  mode: restart
 - id: '1608290218329'
   alias: Bij opstaan aanwezigheid uit
   description: ''
