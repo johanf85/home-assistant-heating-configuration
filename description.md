@@ -899,7 +899,7 @@ Therefore a couple of input\_booleans are created and are set as heater switch. 
 
 Also the someone status `input_boolean.iemandthuis` is taken into account 
 
-###### Living room 
+###### Living room thermostat turn on
 
 ```yaml
 - id: '1606337912735'
@@ -973,6 +973,8 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
     entity_id: climate.slaapkamer
   mode: restart
 ```
+
+#####  Living room turn thermostat off
 
 ```yaml
 {% raw %}
