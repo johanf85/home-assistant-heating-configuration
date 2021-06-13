@@ -1120,7 +1120,7 @@ The following automations were set to achieve this. 
 {% endraw %}
 ```
 
-### Links to other similar
+## Links to other similar
 
 I used these webpages for inspiration:
 
