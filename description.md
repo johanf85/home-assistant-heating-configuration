@@ -51,7 +51,7 @@ Arduino IDE (for uploading Arduino sketches to the arduino mcu)
 
 **Home assistant integrations for the thermostat**
 
-Several integrations are used. The most important is the Generic Thermostat integration, designed to act as a thermostat with a on-off switch:
+Several integrations are used. The most important is the Generic Thermostat integration, designed to act as a on-off thermostat with a switch:
 
 *   [Generic Thermostat integration](https://www.home-assistant.io/integrations/generic_thermostat/)
 
@@ -104,7 +104,7 @@ void loop(void)
       }
       float t = sensors.getTempCByIndex(0);
       Serial.println(t);
-   
+
   delay(30000);
 }
 ```
@@ -114,6 +114,9 @@ void loop(void)
 **Server with sensors:**
 
 ![](https://user-images.githubusercontent.com/43075793/121671494-e6c93b80-caae-11eb-8e96-3eeadb19c349.png)
+
+Case: [Aliexpress](https://s.click.aliexpress.com/e/_ABlPWR)  
+PIR case (only used as case and fitted in 5V PIR): [Aliexpress](https://s.click.aliexpress.com/e/_A9CbmJ)
 
 Contains:
 
@@ -125,22 +128,28 @@ Contains:
 
 ![](https://user-images.githubusercontent.com/43075793/117957906-cb85d780-b31a-11eb-8d61-c71f36264ce6.png)
 
+Store: [Aliexpress](https://nl.aliexpress.com/item/1005002674336082.html)
+
 *   PIR motion sensor module
 
 ![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
+
+Store: [Aliexpress](https://s.click.aliexpress.com/e/_9HU2TH)
 
 *   Relay module with wire to boiler for controlling on-off heating
 
 ![](https://user-images.githubusercontent.com/43075793/117958501-5c5cb300-b31b-11eb-8065-645693a0284e.png)
 
+Store: [Aliexpress](https://s.click.aliexpress.com/e/_A5z0ab)
+
 *   USB hub with Ethernet and connected USB storage device for the OS.
-*   MicroSD with bootcode.bin file
+*   MicroSD with bootcode.bin file (needed, as pi0 doesn't boot from USB by default)
 
 The pi Zero W is the Raspberry with the least specifications. However it does run well for a year now, as I only use it for nothing else than the thermostat function. \`
 
 Dowload Home-Assistant  OS for pi0 at: [https://github.com/home-assistant/operating-system/releases](https://github.com/home-assistant/operating-system/releases) for pi Zero W choose: hassos\_rpi0-w-x.xx.img.xz. 
 
-Both rooms have one radiator, each is equipped with a eqiva-N thermostatic radiator valve. These are only used to be open and close the radiators at the beginning and end of the day. They are programmed to setpoint 12° C when the desired heating for the room is off and to 25° C when the desired heating is on. 
+Both rooms have one radiator, each is equipped with a eqiva-N thermostatic radiator valve (TRV). These are only used to be open and close the radiators at the beginning and end of the day. They are programmed to setpoint 12° C when the desired heating for the room is off and to 25° C when the desired heating is on. The limitation of using these TRVs is that they aren't accessible from within Home Assistant, as I chose a non smart TRV.
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102992726-0a59f300-451c-11eb-83e4-a0b0d94b93bb.jpg"></figure></td></tr><tr><td><i>The eqiva-N thermostatic radiator valve (TRV)</i></td></tr></tbody></table>
 
@@ -1169,3 +1178,5 @@ The following automations were set to achieve this. 
 I used these webpages for inspiration:
 
 [Siytek - the ultimate home-assistant DIY guide for multiple zone heating](https://siytek.com/the-ultimate-home-assistant-diy-thermostat-guide-for-single-or-multiple-zone-heating/)
+
+[Hacking a Eqiva EQ-3 thermostatic radiator valve.](https://www.youtube.com/watch?v=LlPHrdXHBTU)
