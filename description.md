@@ -65,9 +65,11 @@ Several integrations are used. The most important is the Generic Thermostat inte
 
 ![](https://user-images.githubusercontent.com/43075793/117957906-cb85d780-b31a-11eb-8d61-c71f36264ce6.png)
 
+Store: [Aliexpress](https://nl.aliexpress.com/item/1005002674336082.html)
+
 Arduino sketch used:
 
-```
+```c++
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
@@ -204,7 +206,7 @@ Choices for configuration variables:
 *   `min_cycle_duration` Set so that pump and gas furnace of boiler don't have to turn on and off that often. Set to 3 minutes for bedroom and 1 minute for living room. The living room has a larger radiator and 1 minute turned out as a good value. For the bedroom 3 minutes as the there is a smaller radiator.
 *   `heater` I use two `generic_thermostat` instances with separate heater switches, because Generic thermostat isn't able to work with multiple zones (described [here](https://community.home-assistant.io/t/need-help-with-multi-zone-generic-thermostat-climate-configuration/8563)) when one heater switch is on both rooms (they will contradict). For each room I used a [Helper](https://www.home-assistant.io/integrations/input_boolean/), `input_boolean` switch. Trough an automation I made sure these helpers are controlling the relay switch, which controls the on-off signal to the boiler, see [automations](#automations).
 
-```
+```yaml
 climate:
 - platform: generic_thermostat
   name: Livingroom
@@ -473,7 +475,9 @@ Two automations per room, one for setting the desired set-temperature at bedtime
 
 ###  Presence detection
 
-Presence detection is done with both the mobile phone GPS location and a PIR movement sensor in the living room. If the mobile phone was the only source for presence detection this would have been used, but since there is a PIR as well, the away modus of Generic thermostat integration isn't used in this configuration, instead of this  a helper switch input.  
+![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
+
+Presence detection is done with both the mobile phone GPS location and a PIR movement sensor in the living room. If the mobile phone was the only source for presence detection this would have been used, but since there is a PIR as well, the away modus of Generic thermostat integration isn't used in this configuration, instead of this a helper switch input (Someone home?).  
 
 I used a PIR sensor next to the smartphone, because there are some disadvantages in using smartphones only for presence detection. There are scenarios like when the battery is down or the phone is on flight mode, in which the system will think someones is home.  Also it is less suitable when having guests if the smartphone is used as only presence detection source. 
 
@@ -495,10 +499,14 @@ This configuration set up is based on a one person household, so only one smartp
 
 The following automations were set to achieve this. 
 
+#### Automations for presence detection
+
+##### Automation to turn on someone home status
+
 ```
 {% raw %}
 - id: '1587319960331'
-  alias: Turn on someone home status when motion detected
+  alias: Turn on someone home status
   description: ''
   trigger:
   - entity_id: device_tracker.pra_lx1
@@ -519,7 +527,7 @@ The following automations were set to achieve this. 
 {% endraw %}
 ```
 
- For the 
+#####  Automation during evening and getting up 
 
 ```
 {% raw %}
@@ -563,6 +571,8 @@ The following automations were set to achieve this. 
 {% endraw %}
 ```
 
+#####  Automation between getting up time and evening time
+
 ```
 {% raw %}
 - id: '1587319961411'
@@ -593,7 +603,6 @@ The following automations were set to achieve this. 
 ```
 
 ```
-{% raw %}
 - id: '1587373899805'
   alias: Thermostaat uit bij niemand thuis
   description: ''
@@ -608,7 +617,11 @@ The following automations were set to achieve this. 
     service: climate.turn_off
   - data: {}
     entity_id: climate.slaapkamer
-    service: climate.turn_off
+    service: climate.turn_off 
+```
+
+```
+{% raw %}
 
 - id: '1588717917351'
   alias: 5 minuten verwarmen als schakelaar aan
