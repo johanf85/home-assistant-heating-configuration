@@ -13,7 +13,9 @@ readme_index:
    
 plugins:
   - jekyll-readme-index
-   
+
+google:
+  gtag: G-ERSFN94HKL
    
 exclude:
   - Makefile
