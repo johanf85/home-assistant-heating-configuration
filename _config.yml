@@ -15,10 +15,9 @@ plugins:
   - jekyll-readme-index
   - jekyll-analytics'
 
-jekyll_analytics:
-  GoogleAnalytics:          # Add, if you want to track with Google Analytics
-    id: G-ERSFN94HKL        # Required - replace with your tracking id
-    
+google:
+  gtag: G-ERSFN94HKL
+  
 exclude:
   - Makefile
   - CNAME
