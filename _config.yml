@@ -13,7 +13,6 @@ readme_index:
    
 plugins:
   - jekyll-readme-index
-  - jekyll-analytics'
 
 google:
   gtag: G-ERSFN94HKL
