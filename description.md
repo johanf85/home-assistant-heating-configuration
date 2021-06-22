@@ -1,4 +1,4 @@
-#1. My home smart heating configuration with the use of Home Assistant
+# My home smart heating configuration with the use of Home Assistant
 
 Home Assistant is Open Source software that runs on various devices, for instance Raspberry Pi, and acts as a central server for smart home devices and/or self build modules to make automatizations in the home. It has an active community and a large library of integrations with products on the market. Home Assistant is a non-cloud system, which means there is not necessarily a dependance on external cloud services (and an internet connection).
 
@@ -31,7 +31,7 @@ The appartement has a boiler (Intergas kompakt hre 24/18) for central heating wh
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/117959173-08060300-b31c-11eb-9171-167f414ecc1a.png"></figure></td></tr><tr><td>Intergas hre 24/18</td></tr></tbody></table>
 
-##1. The design wishes for the system
+## The design wishes for the system
 
 *   Multi zone: Heat the bedroom to a desired temperature at night (while living room radiator closed) and the living room during the day and evening (while bedroom radiator closed)
 *   Turn off the thermostat function when no one home
