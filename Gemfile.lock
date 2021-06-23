@@ -273,6 +273,7 @@ DEPENDENCIES
   github-pages
   jekyll-numbered-headings
   jekyll-rtd-theme
+  kramdown (>= 2.3.0)
 
 BUNDLED WITH
    1.17.2
