@@ -4,7 +4,7 @@ description: My configuration for smart heating thermostat with the use of Home 
 
 markdown: kramdown
 
-remote_theme: rundocs/jekyll-rtd-theme
+theme: jekyll-rtd-theme
 #kramdown:
 #  toc_levels: 3
 
