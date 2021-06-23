@@ -277,7 +277,6 @@ My DS18B20 sensors ([onewire](https://www.home-assistant.io/integrations/onewire
 See below:
 
 ```yaml
-{% raw %}
 sensor:
   - platform: serial
     serial_port: /dev/ttyUSB0
@@ -305,7 +304,7 @@ sensor:
     end: '{{ now().replace(hour=0, minute=0, second=0) }}'
     duration:
         days: 7
-{% endraw %}
+
 ```
 
 #### Trend sensor for possible open window detection
@@ -341,7 +340,7 @@ binary_sensor:
         min_gradient: 0.0005
         invert: false
         friendly_name: DeltaT woonk voldoende
- {% endraw %}
+ 
 ```
 
 ```yaml
@@ -404,7 +403,7 @@ Two automations per room, one for setting the desired set-temperature at bedtime
       value: '{{ states.input_text.slaapkamer_insteltemp_nacht.state }}'
     entity_id: input_number.current_insteltemp_slaapkamer
   mode: single
-{% endraw %}
+
 ```
 
 #####  Bedroom to set temperature after bedtime
@@ -428,7 +427,7 @@ Two automations per room, one for setting the desired set-temperature at bedtime
       value: '{{ states.input_text.woonk_overdag.state }}'
     entity_id: input_number.current_insteltemp_woonkamer
   mode: single
-{% endraw %}
+
 ```
 
 #####  Bedroom to set temperature during day time
@@ -452,7 +451,7 @@ Two automations per room, one for setting the desired set-temperature at bedtime
       value: '{{ states.input_text.slaapkamer_insteltemp_overdag.state }}'
     entity_id: input_number.current_insteltemp_slaapkamer
   mode: single
-{% endraw %}
+
 ```
 
 #####  Living room set temperature after bedtime
@@ -476,7 +475,7 @@ Two automations per room, one for setting the desired set-temperature at bedtime
       value: '{{ states.input_text.woonk_nacht.state }}'
     entity_id: input_number.current_insteltemp_woonkamer
   mode: single
-{% endraw %}
+
 ```
 
 ###  Presence detection
@@ -586,7 +585,7 @@ Needed for the someone home status to turn on immediately when entering the livi
     entity_id: input_boolean.iemandthuis
     service: input_boolean.turn_on
   mode: single
-{% endraw %}
+
 ```
 
 #####  Automation during evening and getting up 
@@ -630,7 +629,7 @@ Needed for the someone home status to turn on immediately when entering the livi
   - data: {}
     entity_id: climate.slaapkamer
     service: climate.turn_on
-{% endraw %}
+
 ```
 
 #####  Automation between getting up time and evening time
@@ -661,7 +660,7 @@ Needed for the someone home status to turn on immediately when entering the livi
     entity_id: input_boolean.iemandthuis
     service: input_boolean.turn_off
   mode: single
-{% endraw %}
+
 ```
 
 ##### Behavior based on smart phone location with Home Assistant app
@@ -1117,7 +1116,7 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
     data: {}
     entity_id: climate.woonkamer
   mode: single
-{% endraw %}
+
 ```
 
 ## Links to other similar
