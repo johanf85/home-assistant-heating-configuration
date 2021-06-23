@@ -1,0 +1,12 @@
+GEM
+  specs:
+    jekyll-numbered-headings (0.1.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  jekyll-numbered-headings
+
+BUNDLED WITH
+   1.17.2
