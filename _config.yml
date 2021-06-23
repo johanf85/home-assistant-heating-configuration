@@ -14,8 +14,6 @@ readme_index:
    
 plugins:
   - jekyll-readme-index
-
-gems:
   - jekyll-numbered-headings
 
 google:
