@@ -1,4 +1,4 @@
-# 1. My home smart heating configuration with the use of Home Assistant
+#  My home smart heating configuration with the use of Home Assistant
 
 Home Assistant is Open Source software that runs on various devices, for instance Raspberry Pi, and acts as a central server for smart home devices and/or self build modules to make automatizations in the home. It has an active community and a large library of integrations with products on the market. Home Assistant is a non-cloud system, which means there is not necessarily a dependance on external cloud services (and an internet connection).
 
@@ -31,7 +31,7 @@ The appartement has a boiler (Intergas kompakt hre 24/18) for central heating wh
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/117959173-08060300-b31c-11eb-9171-167f414ecc1a.png"></figure></td></tr><tr><td>Intergas hre 24/18</td></tr></tbody></table>
 
-## 1.1 1 The design wishes for the system
+## 1. 1 The design wishes for the system
 
 *   Multi zone: Heat the bedroom to a desired temperature at night (while living room radiator closed) and the living room during the day and evening (while bedroom radiator closed)
 *   Turn off the thermostat function when no one home
@@ -41,7 +41,7 @@ The appartement has a boiler (Intergas kompakt hre 24/18) for central heating wh
 *   Reverting to normal set temperature after a certain amount of time after a manual change
 *   Easily setting variables like bedtime, waking time and revert-to-initial-time with input fields in the front-end
 
-## 1.2 Software
+## 2. Software
 
 [Home Assistant](https://www.home-assistant.io/) (The main platform on which everything is running)
 
@@ -53,7 +53,7 @@ Several integrations are used. The most important is the Generic Thermostat inte
 
 *   [Generic Thermostat integration](https://www.home-assistant.io/integrations/generic_thermostat/)
 
-## 1.3 Hardware
+## 3. Hardware
 
 **Bedroom**
 
@@ -68,6 +68,7 @@ Store: [Aliexpress](https://nl.aliexpress.com/item/1005002674336082.html)
 Arduino sketch used:
 
 ```c++
+{% raw %}
 &#35;include <OneWire.h>
 &#35;include <DallasTemperature.h>
 
@@ -107,6 +108,7 @@ void loop(void)
 
   delay(30000);
 }
+{% endraw %}
 ```
 
 **Living room**
@@ -169,9 +171,9 @@ A doorspring was put on both rooms door, so that they will be kept closed as muc
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102992183-0b3e5500-451b-11eb-8786-723f359d2996.jpeg"></figure></td></tr><tr><td><i>Doorspring for door closing</i></td></tr></tbody></table>
 
-## 1.4 Configuration in Home Assistant
+## 4. Configuration in Home Assistant
 
-### 1.4.1 Helpers 
+### 4.1 Helpers 
 
 Created the following helpers via configuration > helpers within Home Assistant
 
@@ -182,7 +184,7 @@ Created the following helpers via configuration > helpers within Home Assistant
 |   |   | input\_text.woonk\_nacht |
 |   |   | input\_number.current\_insteltemp\_woonkamer |
 
-### 1.4.2 Variables
+### 4.2 Variables
 
 To easily change settings to which I would like them, I make use of input variables. I made a tab in Lovelace to edit this variables.
 
@@ -190,11 +192,11 @@ To easily change settings to which I would like them, I make use of input variab
 
 Most of them speak for themselves. The someone home switch is turned on depending on presence detection. When the set temperature of the thermostat is changed manually, it will revert back to the initial set temperature according to program after the set Duration manual change value. The countdown shows the amount of time left until revert to initial set temperature. 
 
-### 1.4.3 Configuration.yaml
+### 4.3 Configuration.yaml
 
 Only covering the relevant part of the configuration for the smart heating system. 
 
-#### 1.4.3.1 For the generic thermostat integration
+#### 4.3.1 For the generic thermostat integration
 
 Home Assistant documentation: [Generic thermostat](https://www.home-assistant.io/integrations/generic_thermostat/)
 
@@ -238,7 +240,7 @@ climate:
   precision: 0.1
 ```
 
-#### 1.4.3.2 Telegram integration
+#### 4.3.2 Telegram integration
 
 I use [Telegram](https://telegram.org/) for notifications. Currently I am using two notifications:
 
@@ -270,14 +272,13 @@ notify:
     chat_id: secret
 ```
 
-#### 1.4.3.3 Correction of temperature sensors
+#### 4.3.3 Correction of temperature sensors
 
 My DS18B20 sensors ([onewire](https://www.home-assistant.io/integrations/onewire/)) need a correction to match the right temperature value. With the use of [template platform](https://www.home-assistant.io/integrations/template/) a correction is applied to the onewire sensors. 
 
 See below:
 
 ```yaml
-{% raw %}
 sensor:
   - platform: serial
     serial_port: /dev/ttyUSB0
@@ -305,17 +306,17 @@ sensor:
     end: '{{ now().replace(hour=0, minute=0, second=0) }}'
     duration:
         days: 7
-{% endraw %}
+
 ```
 
-#### 1.4.3.4 Trend sensor for possible open window detection
+#### 4.3.4 Trend sensor for possible open window detection
 
 Using the [trend platform](https://www.home-assistant.io/integrations/trend/) it is checked if the temperature will rise enough while heating. If not, it can be assumed that a window is open or some other error is happening and the heating is turned off. See [automations](#automations). 
 
 The `min_gradient` value, which is the temperature rising per second, for each room is set based on trial and error. 
 
 ```yaml
-{% raw %}
+
 binary_sensor:
   - platform: rpi_gpio
     invert_logic: false
@@ -341,7 +342,7 @@ binary_sensor:
         min_gradient: 0.0005
         invert: false
         friendly_name: DeltaT woonk voldoende
- {% endraw %}
+ 
 ```
 
 ```yaml
@@ -377,16 +378,16 @@ sensor:
         friendly_name: 'thermostaat state'
 ```
 
-### 1.4.4 Automations
+### 4.4 Automations
 
-#### 1.4.4.1 Setting temperature time program
+#### 4.4.1 Setting temperature time program
 
 Two automations per room, one for setting the desired set-temperature at bedtime and one at wake-up time. Also a helper `input_number.current_insteltemp_slaapkamer` is set with the current-set temperature. This is needed for restoring the set temperatures after restart of the system and after a manual change.  
 
-##### 1.4.4.1.1 Bedroom set temperature after bedtime
+##### 4.4.1.1 Bedroom set temperature after bedtime
 
 ```yaml
-{% raw %}
+
 - id: '1587807892892'
   alias: Slaapkamer naar instelwaarde 's nachts
   description: ''
@@ -404,13 +405,13 @@ Two automations per room, one for setting the desired set-temperature at bedtime
       value: '{{ states.input_text.slaapkamer_insteltemp_nacht.state }}'
     entity_id: input_number.current_insteltemp_slaapkamer
   mode: single
-{% endraw %}
+
 ```
 
 #####  Bedroom to set temperature after bedtime
 
 ```yaml
-{% raw %}
+
 - id: '1589611935632'
   alias: Woonkamer instelwaarde na opstaan
   description: ''
@@ -428,13 +429,13 @@ Two automations per room, one for setting the desired set-temperature at bedtime
       value: '{{ states.input_text.woonk_overdag.state }}'
     entity_id: input_number.current_insteltemp_woonkamer
   mode: single
-{% endraw %}
+
 ```
 
 #####  Bedroom to set temperature during day time
 
 ```yaml
-{% raw %}
+
 - id: '1587807715263'
   alias: Slaapkamer naar instelwaarde overdag
   description: ''
@@ -452,13 +453,13 @@ Two automations per room, one for setting the desired set-temperature at bedtime
       value: '{{ states.input_text.slaapkamer_insteltemp_overdag.state }}'
     entity_id: input_number.current_insteltemp_slaapkamer
   mode: single
-{% endraw %}
+
 ```
 
 #####  Living room set temperature after bedtime
 
 ```
-{% raw %}
+
 - id: '1587310221936'
   alias: Woonkamer instelwaarde na bedtijd
   description: ''
@@ -476,7 +477,7 @@ Two automations per room, one for setting the desired set-temperature at bedtime
       value: '{{ states.input_text.woonk_nacht.state }}'
     entity_id: input_number.current_insteltemp_woonkamer
   mode: single
-{% endraw %}
+
 ```
 
 ###  Presence detection
@@ -505,9 +506,9 @@ This configuration set up is based on a one person household, so only one smartp
 
 The following automations were set to achieve this. 
 
-#### 1.4.4.2 Automations for presence detection
+#### 4.4.2 Automations for presence detection
 
-##### 1.4.4.2.1 Automation for minimum of two movements detected to trigger other automations
+##### 4.4.2.1 Automation for minimum of two movements detected to trigger other automations
 
 Set two input\_datetime fields on a motion detection with the PIR. One input field is set to date/time of the last movement detected and on the next motion this value is passed to one-before-last-input boolean.
 
@@ -534,7 +535,7 @@ This is used, bc it is desired that only when a minimum of two movements are det
   mode: single
 ```
 
-##### 1.4.4.2.2 Reset the one-before-last-input boolean 31 minutes before waking time
+##### 4.4.2.2 Reset the one-before-last-input boolean 31 minutes before waking time
 
 Needed for the someone home status to turn on immediately when entering the living room in the morning, otherwise first two motions need to be detected, which can take a while. 
 
@@ -563,10 +564,10 @@ Needed for the someone home status to turn on immediately when entering the livi
   mode: restart
 ```
 
-##### 1.4.4.2.3 Automation to turn on someone home status
+##### 4.4.2.3 Automation to turn on someone home status
 
 ```yaml
-{% raw %}
+
 - id: '1587319960331'
   alias: Turn on someone home status
   description: ''
@@ -586,13 +587,13 @@ Needed for the someone home status to turn on immediately when entering the livi
     entity_id: input_boolean.iemandthuis
     service: input_boolean.turn_on
   mode: single
-{% endraw %}
+
 ```
 
 #####  Automation during evening and getting up 
 
 ```
-{% raw %}
+
 - id: '1587404974211'
   alias: Aanwezigheid detectie avond tot opstaan
   description: ''
@@ -630,13 +631,13 @@ Needed for the someone home status to turn on immediately when entering the livi
   - data: {}
     entity_id: climate.slaapkamer
     service: climate.turn_on
-{% endraw %}
+
 ```
 
 #####  Automation between getting up time and evening time
 
 ```yaml
-{% raw %}
+
 - id: '1587319961411'
   alias: Behaviour of motion sensor living room between wakeup time and evening time
   description: ''
@@ -661,10 +662,10 @@ Needed for the someone home status to turn on immediately when entering the livi
     entity_id: input_boolean.iemandthuis
     service: input_boolean.turn_off
   mode: single
-{% endraw %}
+
 ```
 
-##### 1.4.4.2.4 Behavior based on smart phone location with Home Assistant app
+##### 4.4.2.4 Behavior based on smart phone location with Home Assistant app
 
 ```
 
@@ -710,9 +711,9 @@ Needed for the someone home status to turn on immediately when entering the livi
     service: climate.turn_off 
 ```
 
-### 1.4.5 Heat for 5 minutes straight
+### 4.5 Heat for 5 minutes straight
 
-##### 1.4.5.1.1 Automation:
+##### 4.5.1.1 Automation:
 
 ```yaml
 
@@ -739,7 +740,7 @@ Needed for the someone home status to turn on immediately when entering the livi
   mode: single
 ```
 
-### 1.4.6 Window open detection (based on speed of temperature rise)
+### 4.6 Window open detection (based on speed of temperature rise)
 
 Uses the [Trend sensor](https://www.home-assistant.io/integrations/trend/) to make the `binary_sensor.temp_falling`
 
@@ -806,7 +807,7 @@ After 300 seconds of heating without reaching the treshold of de trend sensor, t
   mode: single
 ```
 
-##### 1.4.6.1.1 Revert back to programmed set temperature after manual change  
+##### 4.6.1.1 Revert back to programmed set temperature after manual change  
 
 According to `input_datetime.duur_manuele_verhoging` value a timer is started after which the set temperature will revert back to set temperature according to program. 
 
@@ -841,7 +842,7 @@ Uses the [Timer integration](https://www.home-assistant.io/integrations/timer/)
   mode: restart
 ```
 
-##### 1.4.6.1.2 Telegram notification hours of heating past week on Sunday
+##### 4.6.1.2 Telegram notification hours of heating past week on Sunday
 
 ```yaml
 - id: '1604938488226'
@@ -862,7 +863,7 @@ Uses the [Timer integration](https://www.home-assistant.io/integrations/timer/)
   mode: single
 ```
 
-##### 1.4.6.1.3 Turn of heating when there is no signal of DS18B20 temperature sensor
+##### 4.6.1.3 Turn of heating when there is no signal of DS18B20 temperature sensor
 
 It occasionally happens that there is no signal of the DS18B20 temperature sensor or that by mistake the USB cable gets unplugged. The displayed temperature then can get below set temperature and will trigger heating while not really desired. To avoid this an automation is set to turn off. 
 
@@ -889,7 +890,7 @@ It occasionally happens that there is no signal of the DS18B20 temperature senso
   mode: single
 ```
 
-##### 1.4.6.1.4 Controlling two generic thermostat entities
+##### 4.6.1.4 Controlling two generic thermostat entities
 
 The [generic thermostat integration](https://www.home-assistant.io/integrations/generic_thermostat/) is equipped to work only with one temperature sensor. You can run two instances of the generic thermostat integration. However when the heater option is set to the same switch, then when one thermostat is turned on, the other will automatically turn on too (bc they use the same switch,  generic thermostat is programmed like that). This sometimes can lead to situations in which the thermostat of a room will turn on while cold air is flowing in because of a open window. 
 
@@ -897,7 +898,7 @@ Therefore a couple of input\_booleans are created and are set as heater switch. 
 
 Also the someone status `input_boolean.iemandthuis` is taken into account 
 
-###### 1.4.6.1.4.1 Living room thermostat turn on
+###### 4.6.1.4.1 Living room thermostat turn on
 
 ```yaml
 - id: '1606337912735'
@@ -932,7 +933,7 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
   max: 10
 ```
 
-###### 1.4.6.1.4.2 Bedroom thermostat turn on / off 
+###### 4.6.1.4.2 Bedroom thermostat turn on / off 
 
 ```yaml
 - id: '1606338268883'
@@ -975,7 +976,7 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
 #####  Living room turn thermostat off
 
 ```yaml
-{% raw %}
+
 
 - id: '1606839006446'
   alias: Woonkamer thermostaat uit
@@ -1117,10 +1118,10 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
     data: {}
     entity_id: climate.woonkamer
   mode: single
-{% endraw %}
+
 ```
 
-## 1.5 Links to other similar
+## 5. Links to other similar
 
 I used these webpages for inspiration:
 
