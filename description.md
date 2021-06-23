@@ -314,7 +314,7 @@ Using the [trend platform](https://www.home-assistant.io/integrations/trend/) it
 The `min_gradient` value, which is the temperature rising per second, for each room is set based on trial and error. 
 
 ```yaml
-{% raw %}
+
 binary_sensor:
   - platform: rpi_gpio
     invert_logic: false
@@ -385,7 +385,7 @@ Two automations per room, one for setting the desired set-temperature at bedtime
 ##### Bedroom set temperature after bedtime
 
 ```yaml
-{% raw %}
+
 - id: '1587807892892'
   alias: Slaapkamer naar instelwaarde 's nachts
   description: ''
@@ -409,7 +409,7 @@ Two automations per room, one for setting the desired set-temperature at bedtime
 #####  Bedroom to set temperature after bedtime
 
 ```yaml
-{% raw %}
+
 - id: '1589611935632'
   alias: Woonkamer instelwaarde na opstaan
   description: ''
@@ -433,7 +433,7 @@ Two automations per room, one for setting the desired set-temperature at bedtime
 #####  Bedroom to set temperature during day time
 
 ```yaml
-{% raw %}
+
 - id: '1587807715263'
   alias: Slaapkamer naar instelwaarde overdag
   description: ''
@@ -457,7 +457,7 @@ Two automations per room, one for setting the desired set-temperature at bedtime
 #####  Living room set temperature after bedtime
 
 ```
-{% raw %}
+
 - id: '1587310221936'
   alias: Woonkamer instelwaarde na bedtijd
   description: ''
@@ -565,7 +565,7 @@ Needed for the someone home status to turn on immediately when entering the livi
 ##### Automation to turn on someone home status
 
 ```yaml
-{% raw %}
+
 - id: '1587319960331'
   alias: Turn on someone home status
   description: ''
@@ -591,7 +591,7 @@ Needed for the someone home status to turn on immediately when entering the livi
 #####  Automation during evening and getting up 
 
 ```
-{% raw %}
+
 - id: '1587404974211'
   alias: Aanwezigheid detectie avond tot opstaan
   description: ''
@@ -635,7 +635,7 @@ Needed for the someone home status to turn on immediately when entering the livi
 #####  Automation between getting up time and evening time
 
 ```yaml
-{% raw %}
+
 - id: '1587319961411'
   alias: Behaviour of motion sensor living room between wakeup time and evening time
   description: ''
@@ -974,7 +974,7 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
 #####  Living room turn thermostat off
 
 ```yaml
-{% raw %}
+
 
 - id: '1606839006446'
   alias: Woonkamer thermostaat uit
