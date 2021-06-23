@@ -6,4 +6,4 @@ gem 'jekyll-numbered-headings'
 
 gem "github-pages", group: :jekyll_plugins
 
-gem "kramdown", ">= 2.3.1"
+gem "kramdown", ">= 2.3.0"
