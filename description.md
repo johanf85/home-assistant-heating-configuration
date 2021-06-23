@@ -68,6 +68,7 @@ Store: [Aliexpress](https://nl.aliexpress.com/item/1005002674336082.html)
 Arduino sketch used:
 
 ```c++
+{% raw %}
 #/include <OneWire.h>
 #/include <DallasTemperature.h>
 
@@ -107,6 +108,7 @@ void loop(void)
 
   delay(30000);
 }
+{% endraw %}
 ```
 
 **Living room**
