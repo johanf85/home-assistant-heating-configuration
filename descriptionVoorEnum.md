@@ -31,7 +31,7 @@ The appartement has a boiler (Intergas kompakt hre 24/18) for central heating wh
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/117959173-08060300-b31c-11eb-9171-167f414ecc1a.png"></figure></td></tr><tr><td>Intergas hre 24/18</td></tr></tbody></table>
 
-##1 The design wishes for the system
+## The design wishes for the system
 
 *   Multi zone: Heat the bedroom to a desired temperature at night (while living room radiator closed) and the living room during the day and evening (while bedroom radiator closed)
 *   Turn off the thermostat function when no one home
@@ -502,8 +502,8 @@ The following automations were set to achieve this. 
 
 ##### Automations for presence detection
 
-**Creation of input\_datetime fields**   
-  
+**Creation of input\_datetime fields**
+
 Two input\_datetime fields have been created for the purpose of presence detection: `input_datetime.beweginglaatst_0` and `input_datetime.bewegingeennalaatst_1` . On a motion detection one is to date/time of the last movement detected and on the next detected motion this value is passed to the other.
 
 This is used, bc it is desired that a minimum of two movements need to be detected in the last 30 minutes to keep the status of some one home, `input_boolean.iemandthuis`, to 'on'.
