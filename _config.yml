@@ -23,5 +23,5 @@ exclude:
   - CNAME
   - Gemfile
   - Gemfile.lock
-  - description.md
+  - descriptionVoorEnum.md
 
