@@ -75,11 +75,11 @@ Arduino sketch used:
 
 ```c++
 {% raw %}
-\#include <OneWire.h>
-\#include <DallasTemperature.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
 
 // Data wire is plugged into port 2 on the Arduino
-\#define ONE_WIRE_BUS 2
+#define ONE_WIRE_BUS 2
 
 // Setup a oneWire instance to communicate with any OneWire devices (not just Maxim/Dallas temperature ICs)
 OneWire oneWire(ONE_WIRE_BUS);
@@ -138,13 +138,17 @@ Contains:
 
 Store: [Aliexpress](https://nl.aliexpress.com/item/1005002674336082.html)
 
+Note: DHT11/22 sensors don't work with pi0 and Home Assistant (drive not provided), if desired use an Arduino with DHT sensor and connect to Home Assistant.
+
 *   PIR motion sensor module
 
 ![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
 
-Store: [Aliexpress](https://s.click.aliexpress.com/e/_9HU2TH)
+Store: [Aliexpress](https://s.click.aliexpress.com/e/_9HU2TH)  
+  
+There are two set screws on this module, one is for measure distance and one for sensitivity (how long the signal is high)
 
-*   Relay module with wire to boiler for controlling on-off heating
+*   Relay module with wire connected to boiler for controlling on-off heating
 
 ![](https://user-images.githubusercontent.com/43075793/117958501-5c5cb300-b31b-11eb-8065-645693a0284e.png)
 
@@ -153,11 +157,20 @@ Store: [Aliexpress](https://s.click.aliexpress.com/e/_A5z0ab)
 *   USB hub with Ethernet and connected USB storage device for the OS.
 *   MicroSD with bootcode.bin file (needed, as pi0 doesn't boot from USB by default)
 
+  
+**Note about the pi0**  
 The pi Zero W is the Raspberry with the least specifications. However it does run well for a year now, as I only use it for nothing else than the thermostat function. \`
 
-Dowload Home-Assistant  OS for pi0 at: [https://github.com/home-assistant/operating-system/releases](https://github.com/home-assistant/operating-system/releases) for pi Zero W choose: hassos\_rpi0-w-x.xx.img.xz. 
+**Download location Home-Assistant OS** for pi0 at: [https://github.com/home-assistant/operating-system/releases](https://github.com/home-assistant/operating-system/releases) for pi Zero W choose: hassos\_rpi0-w-x.xx.img.xz. 
 
-Both rooms have one radiator, each is equipped with a eqiva-N thermostatic radiator valve (TRV). These are only used to be open and close the radiators at the beginning and end of the day. They are programmed to setpoint 12° C when the desired heating for the room is off and to 25° C when the desired heating is on. The limitation of using these TRVs is that they aren't accessible from within Home Assistant, as I chose a non smart TRV.
+**Thermostatic radiator valves**  
+  
+Both rooms have one radiator, each is equipped with an eqiva-N thermostatic radiator valve (TRV). These are only used to open and close the radiators at the beginning and end of the day. They are programmed to setpoint 12° C when the desired heating for the room is off and to 25° C when the desired heating is on. 
+
+**Limitations**  
+The limitation of using these TRVs is that they aren't being set from within Home Assistant, as I chose a TRV without connectivity. Therefore it is important to keep in mind that there is a risk that they aren't synced to the times set in Home Assistant, as their program needs to be set separately.   
+Another limitation is that when the set temperature of the bedroom during the day is set higher than the current room temperature, the boiler will start heating but no heat will arrive at the room, as the radiator is closed. Of course it is possible to open the valve manually.   
+ 
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102992726-0a59f300-451c-11eb-83e4-a0b0d94b93bb.jpg"></figure></td></tr><tr><td><i>The eqiva-N thermostatic radiator valve (TRV)</i></td></tr></tbody></table>
 
@@ -169,9 +182,11 @@ There were no thermostatic valves on my radiator (just a turn knob), to get it w
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102867026-6d725980-4438-11eb-9752-5bd6fffe2686.png" alt=""></figure></td></tr><tr><td><i>The Herz 1639091 insert to make the valve a thermostatic valve</i></td></tr></tbody></table>
 
-An extra adapter was necessary to fit the eqiva-N TRV as it doesn't fit the Herz system with the adapters provided on buying. 
+An extra adapter was necessary to fit the eqiva-N TRV as it doesn't fit the Herz system with the adapters provided on in the package. 
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102991803-40967300-451a-11eb-9a69-aa1a5d3b32cc.jpg"></figure></td></tr><tr><td><i>IMI adapter for Herz part no. 15071304</i></td></tr></tbody></table>
+
+**Doorsprings**
 
 A doorspring was put on both rooms door, so that they will be kept closed as much as possible to avoid heat loss.  
 
@@ -1153,6 +1168,15 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
     entity_id: climate.woonkamer
   mode: single
 ```
+
+## Possible improvements
+
+Some possible improvements for this design to implement later on:
+
+*   Making a way to control the radiator valves within Home Assistant. As a wired solution is preferred, a possibility is using a zone valve (quite expensive) or a heating actuator. A heating actuator is usually used for floor heating distribution, but might also be suitable for a radiator. Also an interesting and cost effective way is presented here: [Hacking a Eqiva EQ-3 thermostatic radiator valve.](https://www.youtube.com/watch?v=LlPHrdXHBTU)  
+     
+*   Making use of OpenTherm. The [Opentherm module](http://ihormelnyk.com/opentherm_adapter) made by Ihor Melnyk is suitable for doing that. Already been fiddling around with this idea, see [my community post.](https://community.home-assistant.io/t/help-needed-with-arduino-sketch-opentherm-module-by-ihor-melnyk/273595/4)   
+     
 
 ## Links to other similar
 
