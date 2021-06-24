@@ -500,17 +500,19 @@ This configuration set up is based on a one person household, so only one smartp
 
 The following automations were set to achieve this. 
 
-#### Automations for presence detection
+##### Automations for presence detection
 
-##### Automation for minimum of two movements detected to trigger other automations
+**Creation of input\_datetime fields**   
+  
+Two input\_datetime fields have been created for the purpose of presence detection: `input_datetime.beweginglaatst_0` and `input_datetime.bewegingeennalaatst_1` . On a motion detection one is to date/time of the last movement detected and on the next detected motion this value is passed to the other.
 
-Set two input\_datetime fields on a motion detection with the PIR. One input field is set to date/time of the last movement detected and on the next motion this value is passed to one-before-last-input boolean.
+This is used, bc it is desired that a minimum of two movements need to be detected in the last 30 minutes to keep the status of some one home, `input_boolean.iemandthuis`, to 'on'.
 
-This is used, bc it is desired that only when a minimum of two movements are detected in the last 30 minutes the status of some one should be turned to 'on'.
+**Setting the movement input\_datetime fields on motion detection**
 
 ```yaml
 - id: '1606672315270'
-  alias: Bewegingssensor last 
+  alias: Movementsensor last 
   description: ''
   trigger:
   - platform: state
@@ -526,6 +528,39 @@ This is used, bc it is desired that only when a minimum of two movements are det
     data:
       datetime: '{{ now().strftime(''%Y-%m-%d %H:%M:%S'') }}'
     entity_id: input_datetime.beweginglaatst_0
+  mode: single
+```
+
+**Turning of if not more than 1 movement detetected during day**
+
+Timespan: between wake-up time and evening time
+
+Description: Turn off the Someone home status `input_boolean.iemandthuis` when not more than 1 movement. 
+
+```
+- id: '1587319961411'
+  alias: Gedrag bewegingssensor woonkamer tussen opstaan en avond (overdag)
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{ (states.sensor.time.last_changed - states.input_datetime.bewegingeennalaatst_1.last_changed).total_seconds()
+      > 1800 }}
+
+      '
+  - platform: state
+    entity_id: person.johan
+    to: not_home
+  condition:
+  - condition: state
+    entity_id: input_boolean.iemandthuis
+    state: 'on'
+  - before: input_datetime.avond
+    condition: time
+    after: input_datetime.opstaan
+  action:
+  - data: {}
+    entity_id: input_boolean.iemandthuis
+    service: input_boolean.turn_off
   mode: single
 ```
 
