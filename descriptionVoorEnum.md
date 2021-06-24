@@ -57,7 +57,13 @@ Several integrations are used. The most important is the Generic Thermostat inte
 
 **Bedroom**
 
-*   Arduino nano with a DS18B20 temperature sensor connected via USB to the Home Assistant server
+Plastic container with a hole cut out
+
+![](https://user-images.githubusercontent.com/43075793/123302111-a640d780-d51c-11eb-89bd-f18de3fd0d83.png)
+
+In this container.
+
+*   Arduino nano with a DS18B20 temperature sensor connected via long USB cable (4 meter) to the Home Assistant server
 
 ![](https://user-images.githubusercontent.com/43075793/121677790-abcb0600-cab6-11eb-9732-bff4973d8bb1.png)
 
@@ -381,6 +387,8 @@ sensor:
 #### Setting temperature time program
 
 Two automations per room, one for setting the desired set-temperature at bedtime and one at wake-up time. Also a helper `input_number.current_insteltemp_slaapkamer` is set with the current-set temperature. This is needed for restoring the set temperatures after restart of the system and after a manual change.  
+
+I am aware that there is a Home Assistant plugin called [Schedy](https://hass-apps.readthedocs.io/en/stable/apps/schedy/index.html), which provides a lot of features that would come in hand for the desired configuration. However, as it isn't a native integration within Home Assistant, it is possible that compatibility with Home Assistant will be be lost in the future because of updates on Home Assistant. Therefore I chose to go with setting my own automations. 
 
 **Bedroom set temperature after bedtime**
 
