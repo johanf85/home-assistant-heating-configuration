@@ -405,7 +405,7 @@ Two automations per room, one for setting the desired set-temperature at bedtime
   mode: single
 ```
 
- **Living room to set temperature on wake up time**
+**Living room to set temperature on wake up time**
 
 ```yaml
 
@@ -428,7 +428,7 @@ Two automations per room, one for setting the desired set-temperature at bedtime
   mode: single
 ```
 
- **Bedroom to set temperature on wake up time**
+**Bedroom to set temperature on wake up time**
 
 ```yaml
 
@@ -451,7 +451,7 @@ Two automations per room, one for setting the desired set-temperature at bedtime
   mode: single
 ```
 
- **Living room set temperature after bedtime**
+**Living room set temperature after bedtime**
 
 ```
 
