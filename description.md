@@ -306,7 +306,6 @@ sensor:
     end: '{{ now().replace(hour=0, minute=0, second=0) }}'
     duration:
         days: 7
-
 ```
 
 #### Trend sensor for possible open window detection
@@ -342,7 +341,6 @@ binary_sensor:
         min_gradient: 0.0005
         invert: false
         friendly_name: DeltaT woonk voldoende
- 
 ```
 
 ```yaml
@@ -384,7 +382,7 @@ sensor:
 
 Two automations per room, one for setting the desired set-temperature at bedtime and one at wake-up time. Also a helper `input_number.current_insteltemp_slaapkamer` is set with the current-set temperature. This is needed for restoring the set temperatures after restart of the system and after a manual change.  
 
-##### Bedroom set temperature after bedtime
+**Bedroom set temperature after bedtime**
 
 ```yaml
 
@@ -405,10 +403,9 @@ Two automations per room, one for setting the desired set-temperature at bedtime
       value: '{{ states.input_text.slaapkamer_insteltemp_nacht.state }}'
     entity_id: input_number.current_insteltemp_slaapkamer
   mode: single
-
 ```
 
-#####  Bedroom to set temperature after bedtime
+ **Living room to set temperature on wake up time**
 
 ```yaml
 
@@ -429,10 +426,9 @@ Two automations per room, one for setting the desired set-temperature at bedtime
       value: '{{ states.input_text.woonk_overdag.state }}'
     entity_id: input_number.current_insteltemp_woonkamer
   mode: single
-
 ```
 
-#####  Bedroom to set temperature during day time
+ **Bedroom to set temperature on wake up time**
 
 ```yaml
 
@@ -453,10 +449,9 @@ Two automations per room, one for setting the desired set-temperature at bedtime
       value: '{{ states.input_text.slaapkamer_insteltemp_overdag.state }}'
     entity_id: input_number.current_insteltemp_slaapkamer
   mode: single
-
 ```
 
-#####  Living room set temperature after bedtime
+ **Living room set temperature after bedtime**
 
 ```
 
@@ -477,10 +472,9 @@ Two automations per room, one for setting the desired set-temperature at bedtime
       value: '{{ states.input_text.woonk_nacht.state }}'
     entity_id: input_number.current_insteltemp_woonkamer
   mode: single
-
 ```
 
-###  Presence detection
+####  Presence detection
 
 ![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
 
@@ -587,7 +581,6 @@ Needed for the someone home status to turn on immediately when entering the livi
     entity_id: input_boolean.iemandthuis
     service: input_boolean.turn_on
   mode: single
-
 ```
 
 #####  Automation during evening and getting up 
@@ -631,7 +624,6 @@ Needed for the someone home status to turn on immediately when entering the livi
   - data: {}
     entity_id: climate.slaapkamer
     service: climate.turn_on
-
 ```
 
 #####  Automation between getting up time and evening time
@@ -662,7 +654,6 @@ Needed for the someone home status to turn on immediately when entering the livi
     entity_id: input_boolean.iemandthuis
     service: input_boolean.turn_off
   mode: single
-
 ```
 
 ##### Behavior based on smart phone location with Home Assistant app
@@ -1118,7 +1109,6 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
     data: {}
     entity_id: climate.woonkamer
   mode: single
-
 ```
 
 ## Links to other similar
