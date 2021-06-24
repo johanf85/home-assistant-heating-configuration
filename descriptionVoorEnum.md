@@ -1169,19 +1169,25 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
   mode: single
 ```
 
+## Bypass valve
+
+When using zone heating in your house, consider adding a bypass valve to your central heating plan. A bypass valve will let through water when the pressure in the system gets too high. This avoid the pump of the boiler to start pumping and 
+
 ## Possible improvements
 
 Some possible improvements for this design to implement later on:
 
-*   Making a way to control the radiator valves within Home Assistant. As a wired solution is preferred, a possibility is using a zone valve (quite expensive) or a heating actuator. A heating actuator is usually used for floor heating distribution, but might also be suitable for a radiator. Also an interesting and cost effective way is presented here: [Hacking a Eqiva EQ-3 thermostatic radiator valve.](https://www.youtube.com/watch?v=LlPHrdXHBTU)  
-     
-*   Making use of OpenTherm. The [Opentherm module](http://ihormelnyk.com/opentherm_adapter) made by Ihor Melnyk is suitable for doing that. Already been fiddling around with this idea, see [my community post.](https://community.home-assistant.io/t/help-needed-with-arduino-sketch-opentherm-module-by-ihor-melnyk/273595/4)  
-     
-*   Making more input variables. I can probably do some more of these for instance setting the time the someone home status is turned of when no motion detection. Setting variables helps for not having to open the automations every time.   
-     
-*   Using thermal sensors for presence detection with for instance the Omron D6T sensors. 
+*   Making a way to control the radiator valves within Home Assistant. As a wired solution is preferred, a possibility is using a zone valve (quite expensive) or a heating actuator. A heating actuator is usually used for floor heating distribution, but might also be suitable for a radiator. Also an interesting and cost effective way is presented here: [Hacking a Eqiva EQ-3 thermostatic radiator valve.](https://www.youtube.com/watch?v=LlPHrdXHBTU)
+*   Making use of OpenTherm. The [OpenTherm module](http://ihormelnyk.com/opentherm_adapter) made by Ihor Melnyk is suitable for doing that. Already been fiddling around with this idea, see [my community post.](https://community.home-assistant.io/t/help-needed-with-arduino-sketch-opentherm-module-by-ihor-melnyk/273595/4)
+*   Making more input variables. I can probably do some more of these for instance setting the time the someone home status is turned of when no motion detection. Setting variables helps for not having to open the automations every time.
+*   Using thermal sensors for presence detection with for instance the Omron D6T sensors, [youtube link](https://www.youtube.com/watch?v=-beIaL-RmvQ).
 
-## Links to  similar
+### Added to the system but not described yet
+
+*   Anti frost measure, if a detected temperature is below 5 degrees, turn on the heating no matter whether the thermostat is set to off.
+*   Set a variable time of heating according to the outdoor temperature fetched from an internet source
+
+## Links to similar
 
 I used these webpages for inspiration:
 
