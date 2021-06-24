@@ -75,11 +75,11 @@ Arduino sketch used:
 
 ```c++
 {% raw %}
-&num;include <OneWire.h>
-&num;include <DallasTemperature.h>
+\#include <OneWire.h>
+\#include <DallasTemperature.h>
 
 // Data wire is plugged into port 2 on the Arduino
-&num;define ONE_WIRE_BUS 2
+\#define ONE_WIRE_BUS 2
 
 // Setup a oneWire instance to communicate with any OneWire devices (not just Maxim/Dallas temperature ICs)
 OneWire oneWire(ONE_WIRE_BUS);
