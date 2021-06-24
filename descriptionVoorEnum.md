@@ -144,8 +144,8 @@ Note: DHT11/22 sensors don't work with pi0 and Home Assistant (drive not provide
 
 ![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
 
-Store: [Aliexpress](https://s.click.aliexpress.com/e/_9HU2TH)  
-  
+Store: [Aliexpress](https://s.click.aliexpress.com/e/_9HU2TH)
+
 There are two set screws on this module, one is for measure distance and one for sensitivity (how long the signal is high)
 
 *   Relay module with wire connected to boiler for controlling on-off heating
@@ -157,20 +157,18 @@ Store: [Aliexpress](https://s.click.aliexpress.com/e/_A5z0ab)
 *   USB hub with Ethernet and connected USB storage device for the OS.
 *   MicroSD with bootcode.bin file (needed, as pi0 doesn't boot from USB by default)
 
-  
 **Note about the pi0**  
 The pi Zero W is the Raspberry with the least specifications. However it does run well for a year now, as I only use it for nothing else than the thermostat function. \`
 
 **Download location Home-Assistant OS** for pi0 at: [https://github.com/home-assistant/operating-system/releases](https://github.com/home-assistant/operating-system/releases) for pi Zero W choose: hassos\_rpi0-w-x.xx.img.xz. 
 
-**Thermostatic radiator valves**  
-  
+**Thermostatic radiator valves**
+
 Both rooms have one radiator, each is equipped with an eqiva-N thermostatic radiator valve (TRV). These are only used to open and close the radiators at the beginning and end of the day. They are programmed to setpoint 12° C when the desired heating for the room is off and to 25° C when the desired heating is on. 
 
 **Limitations**  
 The limitation of using these TRVs is that they aren't being set from within Home Assistant, as I chose a TRV without connectivity. Therefore it is important to keep in mind that there is a risk that they aren't synced to the times set in Home Assistant, as their program needs to be set separately.   
-Another limitation is that when the set temperature of the bedroom during the day is set higher than the current room temperature, the boiler will start heating but no heat will arrive at the room, as the radiator is closed. Of course it is possible to open the valve manually.   
- 
+Another limitation is that when the set temperature of the bedroom during the day is set higher than the current room temperature, the boiler will start heating but no heat will arrive at the room, as the radiator is closed. Of course it is possible to open the valve manually.   
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102992726-0a59f300-451c-11eb-83e4-a0b0d94b93bb.jpg"></figure></td></tr><tr><td><i>The eqiva-N thermostatic radiator valve (TRV)</i></td></tr></tbody></table>
 
@@ -210,6 +208,8 @@ Created the following helpers via configuration > helpers within Home Assistant
 To easily change settings to which I would like them, I make use of input variables. I made a tab in Lovelace to edit this variables.
 
 ![](https://user-images.githubusercontent.com/43075793/121800703-a941eb00-cc33-11eb-9dcc-9041997f328b.png)
+
+![](https://user-images.githubusercontent.com/43075793/123307777-2c601c80-d523-11eb-9138-1a2ba55526f1.png)
 
 Most of them speak for themselves. The someone home switch is turned on depending on presence detection. When the set temperature of the thermostat is changed manually, it will revert back to the initial set temperature according to program after the set Duration manual change value. The countdown shows the amount of time left until revert to initial set temperature. 
 
@@ -1175,10 +1175,13 @@ Some possible improvements for this design to implement later on:
 
 *   Making a way to control the radiator valves within Home Assistant. As a wired solution is preferred, a possibility is using a zone valve (quite expensive) or a heating actuator. A heating actuator is usually used for floor heating distribution, but might also be suitable for a radiator. Also an interesting and cost effective way is presented here: [Hacking a Eqiva EQ-3 thermostatic radiator valve.](https://www.youtube.com/watch?v=LlPHrdXHBTU)  
      
-*   Making use of OpenTherm. The [Opentherm module](http://ihormelnyk.com/opentherm_adapter) made by Ihor Melnyk is suitable for doing that. Already been fiddling around with this idea, see [my community post.](https://community.home-assistant.io/t/help-needed-with-arduino-sketch-opentherm-module-by-ihor-melnyk/273595/4)   
+*   Making use of OpenTherm. The [Opentherm module](http://ihormelnyk.com/opentherm_adapter) made by Ihor Melnyk is suitable for doing that. Already been fiddling around with this idea, see [my community post.](https://community.home-assistant.io/t/help-needed-with-arduino-sketch-opentherm-module-by-ihor-melnyk/273595/4)  
      
+*   Making more input variables. I can probably do some more of these for instance setting the time the someone home status is turned of when no motion detection. Setting variables helps for not having to open the automations every time.   
+     
+*   Using thermal sensors for presence detection with for instance the Omron D6T sensors. 
 
-## Links to other similar
+## Links to  similar
 
 I used these webpages for inspiration:
 
@@ -1187,3 +1190,5 @@ I used these webpages for inspiration:
 [Hacking a Eqiva EQ-3 thermostatic radiator valve.](https://www.youtube.com/watch?v=LlPHrdXHBTU)
 
 An interesting idea: [using thermal sensors as room presence detection](https://www.youtube.com/watch?v=-beIaL-RmvQ)
+
+[Opentherm module](http://ihormelnyk.com/opentherm_adapter) by Ihor Melnyk
