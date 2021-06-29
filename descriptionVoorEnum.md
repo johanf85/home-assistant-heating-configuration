@@ -18,8 +18,6 @@ And on my phone:
 
 ![](https://user-images.githubusercontent.com/43075793/110310007-51776080-8002-11eb-9b64-755373b3a415.png)
 
-{% include toc.html %}
-
 My appartement consists of a living room, a bedroom and a kitchen.
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/117958666-8a41f780-b31b-11eb-812e-aa2912945f4b.png"></figure></td></tr><tr><td>A schematic view of the floorplan with the relevant rooms</td></tr></tbody></table>
@@ -216,7 +214,53 @@ Most of them speak for themselves. The someone home switch is turned on dependin
 
 Only covering the relevant part of the configuration for the smart heating system. 
 
-#### For the generic thermostat integration
+#### Setting up sensors and relay
+
+#### **DS18b20 temperature sensor**
+
+![](https://user-images.githubusercontent.com/43075793/117957906-cb85d780-b31a-11eb-8d61-c71f36264ce6.png)
+
+  
+To detect 1-wire temperature sensors on the Raspberry pi first add to your config.txt:
+
+```yaml
+dtoverlay=w1-gpio,gpiopin=4
+```
+
+You can enter the config.txt file on Windows by reading out your SD card or USB drivee on your computer and opening the boot partition. On Mac it is possible to mount the boot drive and read it out, see instructions [here](https://community.home-assistant.io/t/pi-zero-with-enc28j60-ethernet-no-ethernet-found-solved/76509/3?u=johanf). 
+
+After this add to configuration.yaml:
+
+```yaml
+  - platform: onewire
+```
+
+Restart Home Assistant and if configuration went well, a temperature sensor is detected and a name is assigned to it, similar to `sensor.28_011937d1c3d1_temperature`. 
+
+More on configurating 1-wire sensors on the Home Assistant documentation:  [1-wire integration](https://www.home-assistant.io/integrations/onewire/).  
+  
+To read out the data of the USB connected Arduino:  
+ 
+
+#### **Relay**
+
+![](https://user-images.githubusercontent.com/43075793/117958501-5c5cb300-b31b-11eb-8065-645693a0284e.png)
+
+Added to configuration.yaml
+
+```yaml
+switch:
+  - platform: rpi_gpio
+    ports:
+     5: Relay
+```
+
+More info on Home Assistant website: [rpi\_gpio integration](https://www.home-assistant.io/integrations/rpi_gpio/)
+
+#### **Arduino**
+
+####   
+For the generic thermostat integration
 
 Home Assistant documentation: [Generic thermostat](https://www.home-assistant.io/integrations/generic_thermostat/)
 
@@ -400,8 +444,8 @@ sensor:
 
 #### Setting temperature time program
 
-Two automations per room, one for setting the desired set-temperature at bedtime and one at wake-up time. Also a helper `input_number.current_insteltemp_slaapkamer` is set with the current-set temperature. This is needed for restoring the set temperatures after restart of the system and after a manual change.    
-  
+Two automations per room, one for setting the desired set-temperature at bedtime and one at wake-up time. Also a helper `input_number.current_insteltemp_slaapkamer` is set with the current-set temperature. This is needed for restoring the set temperatures after restart of the system and after a manual change.  
+
 Uses below variables (screenshot from Lovelace dashboard)
 
 ![](https://user-images.githubusercontent.com/43075793/123770552-aa794600-d8ca-11eb-90bd-742b9d51ee14.png)
