@@ -74,11 +74,11 @@ Arduino sketch used:
 
 ```c++
 {% raw %}
-#include <OneWire.h>
-#include <DallasTemperature.h>
+\#include <OneWire.h>
+\#include <DallasTemperature.h>
 
 // Data wire is plugged into port 2 on the Arduino
-#define ONE_WIRE_BUS 2
+\#define ONE_WIRE_BUS 2
 
 // Setup a oneWire instance to communicate with any OneWire devices (not just Maxim/Dallas temperature ICs)
 OneWire oneWire(ONE_WIRE_BUS);
@@ -475,7 +475,7 @@ I am aware that there is a Home Assistant plugin called [Schedy](https://hass-ap
 
 **Living room set temperature after bedtime**
 
-```
+```yaml
 
 - id: '1587310221936'
   alias: Woonkamer instelwaarde na bedtijd
@@ -559,7 +559,7 @@ Timespan: between wake-up time and evening time
 
 Description: Turn off the Someone home status `input_boolean.iemandthuis` when not more than 1 movement. 
 
-```
+```yaml
 - id: '1587319961411'
   alias: Gedrag bewegingssensor woonkamer tussen opstaan en avond (overdag)
   description: ''
@@ -642,7 +642,7 @@ Needed for the someone home status to turn on immediately when entering the livi
 
 #####  Automation during evening and getting up 
 
-```
+```yaml
 
 - id: '1587404974211'
   alias: Aanwezigheid detectie avond tot opstaan
@@ -715,7 +715,7 @@ Needed for the someone home status to turn on immediately when entering the livi
 
 ##### Behavior based on smart phone location with Home Assistant app
 
-```
+```yaml
 
 - id: '1606221709908'
   alias: Smartphone thuiskomen / weggaan
