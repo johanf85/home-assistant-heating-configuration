@@ -1226,7 +1226,9 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
 
 ## Bypass valve
 
-When using zone heating in your house, consider adding a bypass valve to your central heating plan. A bypass valve will let through water when the pressure in the system gets too high. This avoid the pump of the boiler to start pumping and 
+When using zone heating in your house, consider adding a bypass valve to your central heating plan. A bypass valve will let through water when the pressure in the system gets too high. This avoid damage to the boiler pump because of pumping while all the radiators are closed you can open a small radiator manually or add a bypass valve. I just keep a radiator in my shower always opened.
+
+![](https://user-images.githubusercontent.com/43075793/123786721-4e1e2280-d8da-11eb-867b-88769c79d803.jpeg)
 
 ## Possible improvements
 
