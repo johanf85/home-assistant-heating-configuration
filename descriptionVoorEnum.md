@@ -396,13 +396,19 @@ sensor:
         friendly_name: 'thermostaat state'
 ```
 
-### Automations
+### Configuration elements
 
 #### Setting temperature time program
 
-Two automations per room, one for setting the desired set-temperature at bedtime and one at wake-up time. Also a helper `input_number.current_insteltemp_slaapkamer` is set with the current-set temperature. This is needed for restoring the set temperatures after restart of the system and after a manual change.  
+Two automations per room, one for setting the desired set-temperature at bedtime and one at wake-up time. Also a helper `input_number.current_insteltemp_slaapkamer` is set with the current-set temperature. This is needed for restoring the set temperatures after restart of the system and after a manual change.    
+  
+Uses below variables (screenshot from Lovelace dashboard)
 
-I am aware that there is a Home Assistant plugin called [Schedy](https://hass-apps.readthedocs.io/en/stable/apps/schedy/index.html), which provides a lot of features that would come in hand for the desired configuration. However, as it isn't a native integration within Home Assistant, it is possible that compatibility with Home Assistant will be be lost in the future because of updates on Home Assistant. Therefore I chose to go with setting my own automations. 
+![](https://user-images.githubusercontent.com/43075793/123770552-aa794600-d8ca-11eb-90bd-742b9d51ee14.png)
+
+![](https://user-images.githubusercontent.com/43075793/123771018-03e17500-d8cb-11eb-9f21-7072873c8c0f.png)
+
+I am aware that there is a Home Assistant plugin called [Schedy](https://hass-apps.readthedocs.io/en/stable/apps/schedy/index.html), which provides a lot of features that would come in hand for the desired configuration. However, as it isn't a native integration within Home Assistant, it is possible that compatibility with Home Assistant will be be lost in the future because of updates on Home Assistant. Therefore I chose to go with setting my own automations which are more reliable for the future. 
 
 **Bedroom set temperature after bedtime**
 
@@ -496,7 +502,7 @@ I am aware that there is a Home Assistant plugin called [Schedy](https://hass-ap
   mode: single
 ```
 
-####  Presence detection
+#### Presence detection
 
 ![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
 
