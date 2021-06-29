@@ -238,7 +238,25 @@ Restart Home Assistant and if configuration went well, a temperature sensor is d
 
 More on configurating 1-wire sensors on the Home Assistant documentation:  [1-wire integration](https://www.home-assistant.io/integrations/onewire/).
 
-To read out the data of the USB connected Arduino:  
+#### Correction of temperature sensors
+
+My DS18B20 sensors ([onewire](https://www.home-assistant.io/integrations/onewire/)) need a correction to match the right temperature value. With the use of [template platform](https://www.home-assistant.io/integrations/template/) a correction is applied to the onewire sensors. 
+
+See below:
+
+```yaml
+sensor:
+  - platform: template
+    sensors:
+      ds18b20_woonkamer_correctie:
+        value_template: "{{ states('sensor.28_00000913d350_temperature')|float - 1.2}}"
+        friendly_name: 'Woonkamer temp'
+        unit_of_measurement: degrees
+      ds18b20_slaapkamer_correctie:
+        value_template: "{{ states('sensor.28_011937d1c3d1_temperature')|float - 0.6}}"
+        friendly_name: 'Slaapkamer temp'
+        unit_of_measurement: degrees
+```
 
 #### **Relay**
 
@@ -346,42 +364,6 @@ notify:
   - platform: telegram
     name: Telegramnotifier
     chat_id: secret
-```
-
-#### Correction of temperature sensors
-
-My DS18B20 sensors ([onewire](https://www.home-assistant.io/integrations/onewire/)) need a correction to match the right temperature value. With the use of [template platform](https://www.home-assistant.io/integrations/template/) a correction is applied to the onewire sensors. 
-
-See below:
-
-```yaml
-sensor:
-  - platform: serial
-    serial_port: /dev/ttyUSB0
-  - platform: onewire
-  - platform: time_date
-    display_options:
-      - 'time'
-      - 'date'
-      - 'date_time'
-  - platform: template
-    sensors:
-      ds18b20_woonkamer_correctie:
-        value_template: "{{ states('sensor.28_00000913d350_temperature')|float - 1.2}}"
-        friendly_name: 'Woonkamer temp'
-        unit_of_measurement: degrees
-      ds18b20_slaapkamer_correctie:
-        value_template: "{{ states('sensor.28_011937d1c3d1_temperature')|float - 0.6}}"
-        friendly_name: 'Slaapkamer temp'
-        unit_of_measurement: degrees
-  - platform: history_stats
-    name: Aantal minuten verwarmen laatste 7 dagen
-    entity_id: sensor.heating_state
-    state: 'heating'
-    type: time
-    end: '{{ now().replace(hour=0, minute=0, second=0) }}'
-    duration:
-        days: 7
 ```
 
 #### Trend sensor for possible open window detection
@@ -860,10 +842,10 @@ After 300 seconds of heating without reaching the treshold of de trend sensor, t
 
 ![](https://user-images.githubusercontent.com/43075793/110302916-13763e80-7ffa-11eb-8579-ccd264169956.png)
 
-Translation: "Bedroom thermostat turned off bc of too slow heating up, window open?"  
-  
-**Automations:**  
-  
+Translation: "Bedroom thermostat turned off bc of too slow heating up, window open?"
+
+**Automations:**
+
 For the bedroom:
 
 ```yaml
