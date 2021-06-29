@@ -18,7 +18,8 @@ And on my phone:
 
 ![](https://user-images.githubusercontent.com/43075793/110310007-51776080-8002-11eb-9b64-755373b3a415.png)
 
-{:toc}
+*   Toc  
+    {:toc}
 
 My appartement consists of a living room, a bedroom and a kitchen.
 
