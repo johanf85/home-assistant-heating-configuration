@@ -68,7 +68,7 @@ In this container.
 
 Store: [Aliexpress](https://nl.aliexpress.com/item/1005002674336082.html)
 
-Arduino sketch used:
+Arduino sketch used:\<a name="arduinosketch">  \</a>
 
 ```c++
 {% raw %}
@@ -220,7 +220,6 @@ Only covering the relevant part of the configuration for the smart heating syste
 
 ![](https://user-images.githubusercontent.com/43075793/117957906-cb85d780-b31a-11eb-8d61-c71f36264ce6.png)
 
-  
 To detect 1-wire temperature sensors on the Raspberry pi first add to your config.txt:
 
 ```yaml
@@ -237,10 +236,9 @@ After this add to configuration.yaml:
 
 Restart Home Assistant and if configuration went well, a temperature sensor is detected and a name is assigned to it, similar to `sensor.28_011937d1c3d1_temperature`. 
 
-More on configurating 1-wire sensors on the Home Assistant documentation:  [1-wire integration](https://www.home-assistant.io/integrations/onewire/).  
-  
-To read out the data of the USB connected Arduino:  
- 
+More on configurating 1-wire sensors on the Home Assistant documentation:  [1-wire integration](https://www.home-assistant.io/integrations/onewire/).
+
+To read out the data of the USB connected Arduino:  
 
 #### **Relay**
 
@@ -259,8 +257,20 @@ More info on Home Assistant website: [rpi\_gpio integration](https://www.home-as
 
 #### **Arduino**
 
-####   
-For the generic thermostat integration
+First the sketch from the Hardware section was put on the Arduino nano, see [here](#arduinosketch) in the hardware section.
+
+```yaml
+ - platform: serial
+    serial_port: /dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A1083GTG-if00-port0
+```
+
+On the Home Assistant documentation for Arduino integration it is described that `serial_port: /dev/ttyUSB1` an be used. However, I noticed that on restarts the assignment of ttyUSB# can differ and therefore the readout of the Arduino can fail after restart. To make sure this doesn't happen the serial by-id is used. Which can be found in Supervisor - System - Click on the three dots in the Host block - Hardware
+
+### Setup the generic thermostat integration
+
+This integration adds the thermostat function and when configured makes available the thermostat function in Lovelace. 
+
+![](https://user-images.githubusercontent.com/43075793/123781158-33e14600-d8d4-11eb-81ee-56c0fa15236e.png)
 
 Home Assistant documentation: [Generic thermostat](https://www.home-assistant.io/integrations/generic_thermostat/)
 
@@ -269,6 +279,8 @@ Choices for configuration variables:
 *   `target_temp` I chose target temps within configuration.yaml lower than I actually want, cause with a sudden a reboot of the system I don't want the heating to turn on. I use automations to override the temperature to set these to desired temperatures. After a restart the `target_temp` is reverted back to the last setting before the reboot. See Automations further on.
 *   `min_cycle_duration` Set so that pump and gas furnace of boiler don't have to turn on and off that often. Set to 3 minutes for bedroom and 1 minute for living room. The living room has a larger radiator and 1 minute turned out as a good value. For the bedroom 3 minutes as the there is a smaller radiator.
 *   `heater` I use two `generic_thermostat` instances with separate heater switches, because Generic thermostat isn't able to work with multiple zones (described [here](https://community.home-assistant.io/t/need-help-with-multi-zone-generic-thermostat-climate-configuration/8563)) when one heater switch is on both rooms (they will contradict). For each room I used a [Helper](https://www.home-assistant.io/integrations/input_boolean/), `input_boolean` switch. Trough an automation I made sure these helpers are controlling the relay switch, which controls the on-off signal to the boiler, see [automations](#automations).
+
+**Part in Configuration.yaml**
 
 ```yaml
 climate:
@@ -314,7 +326,7 @@ I use [Telegram](https://telegram.org/) for notifications. Currently I am using 
 
 "Last week there were 21 hours of heating"
 
-*   When the heating is automatically turned off because of a suspected open window (See Verwijzing).
+*   When the heating is automatically turned off because of a suspected open window (See [Window open detection](#windowopendetection)).
 
 ![](https://user-images.githubusercontent.com/43075793/110302916-13763e80-7ffa-11eb-8579-ccd264169956.png)
 
@@ -840,11 +852,19 @@ Needed for the someone home status to turn on immediately when entering the livi
 
 ### Window open detection
 
-There are no window sensors, but this is based on the temperature rise during heating. If the temperature doesn't rise quickly enough, it is assumed that a window is open and thermostat function will turn off. 
+\<a name="windowopendetection">\</a>There are no window sensors, but this is based on the temperature rise during heating. If the temperature doesn't rise quickly enough, it is assumed that a window is open and thermostat function will turn off. 
 
 Uses the [Trend sensor](https://www.home-assistant.io/integrations/trend/) to make the `binary_sensor.temp_falling`
 
-After 300 seconds of heating without reaching the treshold of de trend sensor, the relay switch is turned off and sends a Telegram notification. 
+After 300 seconds of heating without reaching the treshold of de trend sensor, the relay switch is turned off and sends a Telegram notification:
+
+![](https://user-images.githubusercontent.com/43075793/110302916-13763e80-7ffa-11eb-8579-ccd264169956.png)
+
+Translation: "Bedroom thermostat turned off bc of too slow heating up, window open?"  
+  
+**Automations:**  
+  
+For the bedroom:
 
 ```yaml
 
