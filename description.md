@@ -18,8 +18,6 @@ And on my phone:
 
 ![](https://user-images.githubusercontent.com/43075793/110310007-51776080-8002-11eb-9b64-755373b3a415.png)
 
-{% include toc.html %}
-
 My appartement consists of a living room, a bedroom and a kitchen.
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/117958666-8a41f780-b31b-11eb-812e-aa2912945f4b.png"></figure></td></tr><tr><td>A schematic view of the floorplan with the relevant rooms</td></tr></tbody></table>
@@ -70,7 +68,7 @@ In this container.
 
 Store: [Aliexpress](https://nl.aliexpress.com/item/1005002674336082.html)
 
-Arduino sketch used:
+Arduino sketch used:\<a name="arduinosketch">  \</a>
 
 ```c++
 {% raw %}
@@ -216,7 +214,81 @@ Most of them speak for themselves. The someone home switch is turned on dependin
 
 Only covering the relevant part of the configuration for the smart heating system. 
 
-#### 4.3.1 For the generic thermostat integration
+#### 4.3.1 Setting up sensors and relay
+
+#### 4.3.2 **DS18b20 temperature sensor**
+
+![](https://user-images.githubusercontent.com/43075793/117957906-cb85d780-b31a-11eb-8d61-c71f36264ce6.png)
+
+To detect 1-wire temperature sensors on the Raspberry pi first add to your config.txt:
+
+```yaml
+dtoverlay=w1-gpio,gpiopin=4
+```
+
+You can enter the config.txt file on Windows by reading out your SD card or USB drivee on your computer and opening the boot partition. On Mac it is possible to mount the boot drive and read it out, see instructions [here](https://community.home-assistant.io/t/pi-zero-with-enc28j60-ethernet-no-ethernet-found-solved/76509/3?u=johanf). 
+
+After this add to configuration.yaml:
+
+```yaml
+  - platform: onewire
+```
+
+Restart Home Assistant and if configuration went well, a temperature sensor is detected and a name is assigned to it, similar to `sensor.28_011937d1c3d1_temperature`. 
+
+More on configurating 1-wire sensors on the Home Assistant documentation:  [1-wire integration](https://www.home-assistant.io/integrations/onewire/).
+
+#### 4.3.3 Correction of temperature sensors
+
+My DS18B20 sensors ([onewire](https://www.home-assistant.io/integrations/onewire/)) need a correction to match the right temperature value. With the use of [template platform](https://www.home-assistant.io/integrations/template/) a correction is applied to the onewire sensors. 
+
+See below:
+
+```yaml
+sensor:
+  - platform: template
+    sensors:
+      ds18b20_woonkamer_correctie:
+        value_template: "{{ states('sensor.28_00000913d350_temperature')|float - 1.2}}"
+        friendly_name: 'Woonkamer temp'
+        unit_of_measurement: degrees
+      ds18b20_slaapkamer_correctie:
+        value_template: "{{ states('sensor.28_011937d1c3d1_temperature')|float - 0.6}}"
+        friendly_name: 'Slaapkamer temp'
+        unit_of_measurement: degrees
+```
+
+#### 4.3.4 **Relay**
+
+![](https://user-images.githubusercontent.com/43075793/117958501-5c5cb300-b31b-11eb-8065-645693a0284e.png)
+
+Added to configuration.yaml
+
+```yaml
+switch:
+  - platform: rpi_gpio
+    ports:
+     5: Relay
+```
+
+More info on Home Assistant website: [rpi\_gpio integration](https://www.home-assistant.io/integrations/rpi_gpio/)
+
+#### 4.3.5 **Arduino**
+
+First the sketch from the Hardware section was put on the Arduino nano, see [here](#arduinosketch) in the hardware section.
+
+```yaml
+ - platform: serial
+    serial_port: /dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A1083GTG-if00-port0
+```
+
+On the Home Assistant documentation for Arduino integration it is described that `serial_port: /dev/ttyUSB1` an be used. However, I noticed that on restarts the assignment of ttyUSB# can differ and therefore the readout of the Arduino can fail after restart. To make sure this doesn't happen the serial by-id is used. Which can be found in Supervisor - System - Click on the three dots in the Host block - Hardware
+
+### 4.4 Setup the generic thermostat integration
+
+This integration adds the thermostat function and when configured makes available the thermostat function in Lovelace. 
+
+![](https://user-images.githubusercontent.com/43075793/123781158-33e14600-d8d4-11eb-81ee-56c0fa15236e.png)
 
 Home Assistant documentation: [Generic thermostat](https://www.home-assistant.io/integrations/generic_thermostat/)
 
@@ -225,6 +297,8 @@ Choices for configuration variables:
 *   `target_temp` I chose target temps within configuration.yaml lower than I actually want, cause with a sudden a reboot of the system I don't want the heating to turn on. I use automations to override the temperature to set these to desired temperatures. After a restart the `target_temp` is reverted back to the last setting before the reboot. See Automations further on.
 *   `min_cycle_duration` Set so that pump and gas furnace of boiler don't have to turn on and off that often. Set to 3 minutes for bedroom and 1 minute for living room. The living room has a larger radiator and 1 minute turned out as a good value. For the bedroom 3 minutes as the there is a smaller radiator.
 *   `heater` I use two `generic_thermostat` instances with separate heater switches, because Generic thermostat isn't able to work with multiple zones (described [here](https://community.home-assistant.io/t/need-help-with-multi-zone-generic-thermostat-climate-configuration/8563)) when one heater switch is on both rooms (they will contradict). For each room I used a [Helper](https://www.home-assistant.io/integrations/input_boolean/), `input_boolean` switch. Trough an automation I made sure these helpers are controlling the relay switch, which controls the on-off signal to the boiler, see [automations](#automations).
+
+**Part in Configuration.yaml**
 
 ```yaml
 climate:
@@ -260,7 +334,7 @@ climate:
   precision: 0.1
 ```
 
-#### 4.3.2 Telegram integration
+#### 4.4.1 Telegram integration
 
 I use [Telegram](https://telegram.org/) for notifications. Currently I am using two notifications:
 
@@ -270,7 +344,7 @@ I use [Telegram](https://telegram.org/) for notifications. Currently I am using 
 
 "Last week there were 21 hours of heating"
 
-*   When the heating is automatically turned off because of a suspected open window (See Verwijzing).
+*   When the heating is automatically turned off because of a suspected open window (See [Window open detection](#windowopendetection)).
 
 ![](https://user-images.githubusercontent.com/43075793/110302916-13763e80-7ffa-11eb-8579-ccd264169956.png)
 
@@ -292,43 +366,7 @@ notify:
     chat_id: secret
 ```
 
-#### 4.3.3 Correction of temperature sensors
-
-My DS18B20 sensors ([onewire](https://www.home-assistant.io/integrations/onewire/)) need a correction to match the right temperature value. With the use of [template platform](https://www.home-assistant.io/integrations/template/) a correction is applied to the onewire sensors. 
-
-See below:
-
-```yaml
-sensor:
-  - platform: serial
-    serial_port: /dev/ttyUSB0
-  - platform: onewire
-  - platform: time_date
-    display_options:
-      - 'time'
-      - 'date'
-      - 'date_time'
-  - platform: template
-    sensors:
-      ds18b20_woonkamer_correctie:
-        value_template: "{{ states('sensor.28_00000913d350_temperature')|float - 1.2}}"
-        friendly_name: 'Woonkamer temp'
-        unit_of_measurement: degrees
-      ds18b20_slaapkamer_correctie:
-        value_template: "{{ states('sensor.28_011937d1c3d1_temperature')|float - 0.6}}"
-        friendly_name: 'Slaapkamer temp'
-        unit_of_measurement: degrees
-  - platform: history_stats
-    name: Aantal minuten verwarmen laatste 7 dagen
-    entity_id: sensor.heating_state
-    state: 'heating'
-    type: time
-    end: '{{ now().replace(hour=0, minute=0, second=0) }}'
-    duration:
-        days: 7
-```
-
-#### 4.3.4 Trend sensor for possible open window detection
+#### 4.4.2 Trend sensor for possible open window detection
 
 Using the [trend platform](https://www.home-assistant.io/integrations/trend/) it is checked if the temperature will rise enough while heating. If not, it can be assumed that a window is open or some other error is happening and the heating is turned off. See [automations](#automations). 
 
@@ -396,12 +434,12 @@ sensor:
         friendly_name: 'thermostaat state'
 ```
 
-### 4.4 Configuration elements
+### 4.5 Configuration elements
 
-#### 4.4.1 Setting temperature time program
+#### 4.5.1 Setting temperature time program
 
-Two automations per room, one for setting the desired set-temperature at bedtime and one at wake-up time. Also a helper `input_number.current_insteltemp_slaapkamer` is set with the current-set temperature. This is needed for restoring the set temperatures after restart of the system and after a manual change.    
-  
+Two automations per room, one for setting the desired set-temperature at bedtime and one at wake-up time. Also a helper `input_number.current_insteltemp_slaapkamer` is set with the current-set temperature. This is needed for restoring the set temperatures after restart of the system and after a manual change.  
+
 Uses below variables (screenshot from Lovelace dashboard)
 
 ![](https://user-images.githubusercontent.com/43075793/123770552-aa794600-d8ca-11eb-90bd-742b9d51ee14.png)
@@ -502,7 +540,7 @@ I am aware that there is a Home Assistant plugin called [Schedy](https://hass-ap
   mode: single
 ```
 
-#### 4.4.2 Presence detection
+#### 4.5.2 Presence detection
 
 ![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
 
@@ -528,7 +566,7 @@ This configuration set up is based on a one person household, so only one smartp
 
 The following automations were set to achieve this. 
 
-##### 4.4.2.1 Automations for presence detection
+##### 4.5.2.1 Automations for presence detection
 
 **Creation of input\_datetime fields**
 
@@ -592,7 +630,7 @@ Description: Turn off the Someone home status `input_boolean.iemandthuis` when n
   mode: single
 ```
 
-##### 4.4.2.2 Reset the one-before-last-input boolean 31 minutes before waking time
+##### 4.5.2.2 Reset the one-before-last-input boolean 31 minutes before waking time
 
 Needed for the someone home status to turn on immediately when entering the living room in the morning, otherwise first two motions need to be detected, which can take a while. 
 
@@ -621,7 +659,7 @@ Needed for the someone home status to turn on immediately when entering the livi
   mode: restart
 ```
 
-##### 4.4.2.3 Automation to turn on someone home status
+##### 4.5.2.3 Automation to turn on someone home status
 
 ```yaml
 
@@ -719,7 +757,7 @@ Needed for the someone home status to turn on immediately when entering the livi
   mode: single
 ```
 
-##### 4.4.2.4 Behavior based on smart phone location with Home Assistant app
+##### 4.5.2.4 Behavior based on smart phone location with Home Assistant app
 
 ```yaml
 
@@ -765,9 +803,9 @@ Needed for the someone home status to turn on immediately when entering the livi
     service: climate.turn_off 
 ```
 
-### 4.5 Heat for 5 minutes straight
+### 4.6 Heat for 5 minutes straight
 
-##### 4.5.1.1 Automation:
+##### 4.6.1.1 Automation:
 
 ```yaml
 
@@ -794,13 +832,21 @@ Needed for the someone home status to turn on immediately when entering the livi
   mode: single
 ```
 
-### 4.6 Window open detection
+### 4.7 Window open detection
 
-There are no window sensors, but this is based on the temperature rise during heating. If the temperature doesn't rise quickly enough, it is assumed that a window is open and thermostat function will turn off. 
+\<a name="windowopendetection">\</a>There are no window sensors, but this is based on the temperature rise during heating. If the temperature doesn't rise quickly enough, it is assumed that a window is open and thermostat function will turn off. 
 
 Uses the [Trend sensor](https://www.home-assistant.io/integrations/trend/) to make the `binary_sensor.temp_falling`
 
-After 300 seconds of heating without reaching the treshold of de trend sensor, the relay switch is turned off and sends a Telegram notification. 
+After 300 seconds of heating without reaching the treshold of de trend sensor, the relay switch is turned off and sends a Telegram notification:
+
+![](https://user-images.githubusercontent.com/43075793/110302916-13763e80-7ffa-11eb-8579-ccd264169956.png)
+
+Translation: "Bedroom thermostat turned off bc of too slow heating up, window open?"
+
+**Automations:**
+
+For the bedroom:
 
 ```yaml
 
@@ -865,7 +911,7 @@ After 300 seconds of heating without reaching the treshold of de trend sensor, t
   mode: single
 ```
 
-### 4.7 Revert back to programmed set temperature after manual change  
+### 4.8 Revert back to programmed set temperature after manual change  
 
 According to `input_datetime.duur_manuele_verhoging` value a timer is started after which the set temperature will revert back to set temperature according to program. 
 
@@ -900,7 +946,7 @@ Uses the [Timer integration](https://www.home-assistant.io/integrations/timer/)
   mode: restart
 ```
 
-### 4.8 Telegram notification hours of heating past week on Sunday
+### 4.9 Telegram notification hours of heating past week on Sunday
 
 ```yaml
 - id: '1604938488226'
@@ -921,7 +967,7 @@ Uses the [Timer integration](https://www.home-assistant.io/integrations/timer/)
   mode: single
 ```
 
-### 4.9 Turn of heating when there is no signal of DS18B20 temperature sensor
+### 4.10 Turn of heating when there is no signal of DS18B20 temperature sensor
 
 It occasionally happens that there is no signal of the DS18B20 temperature sensor or that by mistake the USB cable gets unplugged. The displayed temperature then can get below set temperature and will trigger heating while not really desired. To avoid this an automation is set to turn off. 
 
@@ -948,7 +994,7 @@ It occasionally happens that there is no signal of the DS18B20 temperature senso
   mode: single
 ```
 
-### 4.10 Controlling two generic thermostat entities
+### 4.11 Controlling two generic thermostat entities
 
 The [generic thermostat integration](https://www.home-assistant.io/integrations/generic_thermostat/) is equipped to work only with one temperature sensor. You can run two instances of the generic thermostat integration. However when the heater option is set to the same switch, then when one thermostat is turned on, the other will automatically turn on too (bc they use the same switch,  generic thermostat is programmed like that). This sometimes can lead to situations in which the thermostat of a room will turn on while cold air is flowing in because of a open window. 
 
@@ -956,7 +1002,7 @@ Therefore a couple of input\_booleans are created and are set as heater switch. 
 
 Also the someone status `input_boolean.iemandthuis` is taken into account 
 
-###### 4.10.1.1.1 Living room thermostat turn on
+###### 4.11.1.1.1 Living room thermostat turn on
 
 ```yaml
 - id: '1606337912735'
@@ -991,7 +1037,7 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
   max: 10
 ```
 
-###### 4.10.1.1.2 Bedroom thermostat turn on / off 
+###### 4.11.1.1.2 Bedroom thermostat turn on / off 
 
 ```yaml
 - id: '1606338268883'
