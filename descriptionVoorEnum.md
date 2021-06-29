@@ -788,7 +788,9 @@ Needed for the someone home status to turn on immediately when entering the livi
   mode: single
 ```
 
-### Window open detection (based on speed of temperature rise)
+### Window open detection
+
+There are no window sensors, but this is based on the temperature rise during heating. If the temperature doesn't rise quickly enough, it is assumed that a window is open and thermostat function will turn off. 
 
 Uses the [Trend sensor](https://www.home-assistant.io/integrations/trend/) to make the `binary_sensor.temp_falling`
 
@@ -831,6 +833,8 @@ After 300 seconds of heating without reaching the treshold of de trend sensor, t
   mode: single
 ```
 
+ And for the living room:
+
 ```yaml
 
 - id: '1601215001454'
@@ -855,7 +859,7 @@ After 300 seconds of heating without reaching the treshold of de trend sensor, t
   mode: single
 ```
 
-##### Revert back to programmed set temperature after manual change  
+### Revert back to programmed set temperature after manual change  
 
 According to `input_datetime.duur_manuele_verhoging` value a timer is started after which the set temperature will revert back to set temperature according to program. 
 
@@ -890,7 +894,7 @@ Uses the [Timer integration](https://www.home-assistant.io/integrations/timer/)
   mode: restart
 ```
 
-##### Telegram notification hours of heating past week on Sunday
+### Telegram notification hours of heating past week on Sunday
 
 ```yaml
 - id: '1604938488226'
@@ -911,7 +915,7 @@ Uses the [Timer integration](https://www.home-assistant.io/integrations/timer/)
   mode: single
 ```
 
-##### Turn of heating when there is no signal of DS18B20 temperature sensor
+### Turn of heating when there is no signal of DS18B20 temperature sensor
 
 It occasionally happens that there is no signal of the DS18B20 temperature sensor or that by mistake the USB cable gets unplugged. The displayed temperature then can get below set temperature and will trigger heating while not really desired. To avoid this an automation is set to turn off. 
 
@@ -938,7 +942,7 @@ It occasionally happens that there is no signal of the DS18B20 temperature senso
   mode: single
 ```
 
-##### Controlling two generic thermostat entities
+### Controlling two generic thermostat entities
 
 The [generic thermostat integration](https://www.home-assistant.io/integrations/generic_thermostat/) is equipped to work only with one temperature sensor. You can run two instances of the generic thermostat integration. However when the heater option is set to the same switch, then when one thermostat is turned on, the other will automatically turn on too (bc they use the same switch,  generic thermostat is programmed like that). This sometimes can lead to situations in which the thermostat of a room will turn on while cold air is flowing in because of a open window. 
 
