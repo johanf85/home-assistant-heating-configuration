@@ -253,7 +253,6 @@ sensor:
         value_template: "{{ states('sensor.28_00000913d350_temperature')|float - 1.2}}"
         friendly_name: 'Woonkamer temp'
         unit_of_measurement: degrees
- 
 ```
 
 ##### **Relay**
@@ -568,7 +567,7 @@ This configuration set up is based on a one person household, so only one smartp
 
 The following automations were set to achieve this. 
 
-##### Automations for presence detection
+#### Automations for presence detection
 
 **Creation of input\_datetime fields**
 
@@ -632,7 +631,7 @@ Description: Turn off the Someone home status `input_boolean.iemandthuis` when n
   mode: single
 ```
 
-##### Reset the one-before-last-input boolean 31 minutes before waking time
+#### Reset the one-before-last-input boolean 31 minutes before waking time
 
 Needed for the someone home status to turn on immediately when entering the living room in the morning, otherwise first two motions need to be detected, which can take a while. 
 
@@ -661,7 +660,7 @@ Needed for the someone home status to turn on immediately when entering the livi
   mode: restart
 ```
 
-##### Automation to turn on someone home status
+#### Automation to turn on someone home status
 
 ```yaml
 
@@ -686,7 +685,7 @@ Needed for the someone home status to turn on immediately when entering the livi
   mode: single
 ```
 
-##### Automation during evening and getting up 
+#### Automation during evening and getting up 
 
 ```yaml
 
@@ -729,7 +728,7 @@ Needed for the someone home status to turn on immediately when entering the livi
     service: climate.turn_on
 ```
 
-##### Automation between waking up time and evening time
+#### Automation between waking up time and evening time
 
 ```yaml
 
@@ -759,7 +758,7 @@ Needed for the someone home status to turn on immediately when entering the livi
   mode: single
 ```
 
-##### Behavior based on smart phone location with Home Assistant app
+#### Behavior based on smart phone location with Home Assistant app
 
 ```yaml
 
@@ -785,7 +784,7 @@ Needed for the someone home status to turn on immediately when entering the livi
   mode: restart
 ```
 
-#####  Turning off thermostat when Someone home status is off
+####  Turning off thermostat when Someone home status is off
 
 ```yaml
 - id: '1587373899805'
@@ -836,11 +835,11 @@ Automation:
 
 ### Window open detection
 
-\<a name="windowopendetection">\</a>There are no window sensors, but this is based on the temperature rise during heating. If the temperature doesn't rise quickly enough, it is assumed that a window is open and thermostat function will turn off. 
+{% raw %}\<a name="windowopendetection">&nbsp;\</a>{% endraw %}There are no window sensors, but this is based on the temperature rise during heating. If the temperature doesn't rise quickly enough, it is assumed that a window is open and thermostat function will turn off. 
 
 Uses the [Trend sensor](https://www.home-assistant.io/integrations/trend/) to make the `binary_sensor.temp_falling`
 
-After 300 seconds of heating without reaching the treshold of de trend sensor, the relay switch is turned off and sends a Telegram notification:
+After 300 seconds of heating without reaching the treshold of de trend sensor, the thermostat is turned off and sends a Telegram notification:
 
 ![](https://user-images.githubusercontent.com/43075793/110302916-13763e80-7ffa-11eb-8579-ccd264169956.png)
 
@@ -1039,7 +1038,7 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
   max: 10
 ```
 
-###### Bedroom thermostat turn on / off 
+#### Bedroom thermostat turn on / off 
 
 ```yaml
 - id: '1606338268883'
@@ -1079,7 +1078,7 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
   mode: restart
 ```
 
-##### Living room turn thermostat off
+#### Living room turn thermostat off
 
 ```yaml
 
