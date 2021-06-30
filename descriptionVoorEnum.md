@@ -684,7 +684,7 @@ Needed for the someone home status to turn on immediately when entering the livi
   mode: single
 ```
 
-#####  Automation during evening and getting up 
+##### Automation during evening and getting up 
 
 ```yaml
 
@@ -727,7 +727,7 @@ Needed for the someone home status to turn on immediately when entering the livi
     service: climate.turn_on
 ```
 
-#####  Automation between getting up time and evening time
+##### Automation between waking up time and evening time
 
 ```yaml
 
@@ -805,7 +805,7 @@ Needed for the someone home status to turn on immediately when entering the livi
 
 ### Heat for 5 minutes straight
 
-##### Automation:
+Automation:
 
 ```yaml
 
