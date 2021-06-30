@@ -1231,7 +1231,7 @@ When using zone heating in your house, consider adding a bypass valve to your ce
 
 ![](https://user-images.githubusercontent.com/43075793/123786721-4e1e2280-d8da-11eb-867b-88769c79d803.jpeg)
 
-## Possible improvements
+## Possible improvements to this configuration
 
 Some possible improvements for this design to implement later on:
 
