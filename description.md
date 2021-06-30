@@ -1,6 +1,6 @@
-#  My home smart heating configuration with the use of Home Assistant
+# My home smart heating configuration with the use of Home Assistant
 
-## 1. Introduction
+## 1\. Introduction
 
 Home Assistant is Open Source software that runs on various devices, for instance Raspberry Pi, and acts as a central server for smart home devices and/or self build modules to make automatizations in the home. It has an active community and a large library of integrations with products on the market. Home Assistant is a non-cloud system, which means there is not necessarily a dependance on external cloud services (and an internet connection).
 
@@ -22,7 +22,7 @@ And on my phone:
 
 ![](https://user-images.githubusercontent.com/43075793/110310007-51776080-8002-11eb-9b64-755373b3a415.png)
 
-## 2. Floorplan of my appartment 
+## 2\. Floorplan of my appartment 
 
 My appartement consists of a living room, a bedroom and a kitchen.
 
@@ -34,7 +34,7 @@ The appartement has a boiler (Intergas kompakt hre 24/18) for central heating wh
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/117959173-08060300-b31c-11eb-9171-167f414ecc1a.png"></figure></td></tr><tr><td>Intergas hre 24/18</td></tr></tbody></table>
 
-## 3. The design wishes for the system
+## 3\. The design wishes for the system
 
 *   Multi zone: Heat the bedroom to a desired temperature at night (while living room radiator closed) and the living room during the day and evening (while bedroom radiator closed)
 *   Turn off the thermostat function when no one home
@@ -44,7 +44,7 @@ The appartement has a boiler (Intergas kompakt hre 24/18) for central heating wh
 *   Reverting to normal set temperature after a certain amount of time after a manual change
 *   Easily setting variables like bedtime, waking time and revert-to-initial-time with input fields in the front-end
 
-## 4. Software
+## 4\. Software
 
 [Home Assistant](https://www.home-assistant.io/) (The main platform on which everything is running)
 
@@ -56,7 +56,7 @@ Several integrations are used. The most important is the Generic Thermostat inte
 
 *   [Generic Thermostat integration](https://www.home-assistant.io/integrations/generic_thermostat/)
 
-## 5. Hardware
+## 5\. Hardware
 
 **Bedroom**
 
@@ -195,7 +195,7 @@ A doorspring was put on both rooms door, so that they will be kept closed as muc
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102992183-0b3e5500-451b-11eb-8786-723f359d2996.jpeg"></figure></td></tr><tr><td><i>Doorspring for door closing</i></td></tr></tbody></table>
 
-## 6. Home Assistant configuration 
+## 6\. Home Assistant configuration 
 
 ### 6.1 Helpers 
 
@@ -586,6 +586,249 @@ I am aware that there is a Home Assistant plugin called [Schedy](https://hass-ap
   {% endraw %}
 ```
 
+### 6.11 Triggering heating with two generic thermostat entities
+
+As there are two zones in this situation, living room and bedroom, two thermostat instances are needed.  
+The [generic thermostat integration](https://www.home-assistant.io/integrations/generic_thermostat/) is equipped to work only with one temperature sensor. You can run two instances of the generic thermostat integration. However when the heater option is set to the same switch, then when one thermostat is turned on, the other will automatically turn on too (bc they use the same switch,  generic thermostat is programmed like that). This sometimes can lead to situations in which the thermostat of a room will turn on while cold air is flowing in because of a open window. 
+
+Therefore a couple of input\_booleans are created and are set as heater switch. Via an automation the relay switch will be turned on if one of these input\_booleans are turned on. 
+
+Also the someone status `input_boolean.iemandthuis` is taken into account 
+
+#### Turning on the thermostat when someone home
+
+```yaml
+- id: '1587373774458'
+  alias: Thermostaat aan bij iemand thuis
+  description: ''
+  trigger:
+  - entity_id: input_boolean.iemandthuis
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data: {}
+    entity_id: climate.woonkamer
+    service: climate.turn_on
+  - data: {}
+    entity_id: climate.slaapkamer
+    service: climate.turn_on
+```
+
+#### 6.11.1 Living room thermostat turn on
+
+```yaml
+{% raw %}
+- id: '1606337912735'
+  alias: Woonkamer thermostaat aan
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{state_attr(''climate.woonkamer'', ''temperature'') > state_attr(''climate.woonkamer'',
+      ''current_temperature'')}}'
+  - platform: template
+    value_template: '{{ (states.sensor.time.last_changed - states.input_boolean.iemandthuis.last_changed).total_seconds()
+      > 5 }}
+
+      '
+  - platform: time_pattern
+    minutes: '3'
+  condition:
+  - condition: template
+    value_template: '{{state_attr(''climate.woonkamer'', ''temperature'')  > state_attr(''climate.woonkamer'',
+      ''current_temperature'')}}'
+  - condition: state
+    entity_id: input_boolean.iemandthuis
+    state: 'on'
+  - condition: state
+    entity_id: climate.woonkamer
+    state: 'off'
+  action:
+  - service: climate.turn_on
+    data: {}
+    entity_id: climate.woonkamer
+  mode: single
+  max: 10
+  {% endraw %}
+```
+
+#### 6.11.2 Bedroom thermostat turn on / off 
+
+```yaml
+{% raw %}
+- id: '1606338268883'
+  alias: 'Slaapkamer thermostaat aan '
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{state_attr(''climate.slaapkamer'', ''temperature'') > state_attr(''climate.slaapkamer'',
+      ''current_temperature'')}}'
+  - platform: time_pattern
+    minutes: '3'
+  - platform: template
+    value_template: '
+
+      {{ (states.sensor.time.last_changed - states.input_boolean.iemandthuis.last_changed).total_seconds()
+      > 5 }}
+
+      '
+  condition:
+  - condition: template
+    value_template: '{{state_attr(''climate.slaapkamer'', ''temperature'') > state_attr(''climate.slaapkamer'',
+      ''current_temperature'')}}'
+  - condition: state
+    entity_id: input_boolean.iemandthuis
+    state: 'on'
+  action:
+  - service: climate.turn_on
+    data: {}
+    entity_id: climate.slaapkamer
+  - wait_for_trigger:
+    - platform: template
+      value_template: '{{state_attr(''climate.slaapkamer'', ''temperature'') < state_attr(''climate.slaapkamer'',
+        ''current_temperature'')}}'
+  - service: climate.turn_off
+    data: {}
+    entity_id: climate.slaapkamer
+  mode: restart
+ {% endraw %} 
+```
+
+#### 6.11.3 Living room turn thermostat off
+
+```yaml
+{% raw %}
+- id: '1606839006446'
+  alias: Woonkamer thermostaat uit
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{state_attr(''climate.woonkamer'', ''temperature'') < state_attr(''climate.woonkamer'',
+      ''current_temperature'')}}'
+  - platform: time_pattern
+    minutes: '2'
+  condition:
+  - condition: state
+    entity_id: climate.woonkamer
+    state: 'on'
+  - condition: template
+    value_template: '{{state_attr(''climate.woonkamer'', ''temperature'') < state_attr(''climate.woonkamer'',
+      ''current_temperature'')}}'
+  action:
+  - service: climate.turn_off
+    data: {}
+    entity_id: climate.woonkamer
+  mode: restart
+  max: 10
+
+- id: '1608297641472'
+  alias: terug naar instelwaarde bij restart
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: '15'
+  condition: []
+  action:
+  - service: climate.set_temperature
+    data:
+      temperature: '{{states(''input_number.current_insteltemp_slaapkamer'')}}'
+    entity_id: climate.slaapkamer
+  - service: climate.set_temperature
+    data:
+      temperature: '{{states(''input_number.current_insteltemp_woonkamer'')}}'
+    entity_id: climate.woonkamer
+  mode: single
+- id: '1608298248187'
+  alias: Helper schakelaars voor klimaat
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.schakelaar_slaapkamer
+    to: 'on'
+  - platform: state
+    entity_id: input_boolean.schakelaar_woonkamer
+    to: 'on'
+  condition: []
+  action:
+  - service: switch.turn_on
+    data: {}
+    entity_id: switch.relay
+  mode: single
+- id: '1608298257006'
+  alias: Helper schakelaars UIT klimaat
+  description: ''
+  trigger:
+  - platform: time_pattern
+    seconds: '5'
+  - platform: state
+    entity_id: input_boolean.schakelaar_slaapkamer
+    to: 'off'
+  - platform: state
+    entity_id: input_boolean.schakelaar_woonkamer
+    to: 'off'
+  condition:
+  - condition: state
+    entity_id: input_boolean.schakelaar_slaapkamer
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.schakelaar_woonkamer
+    state: 'off'
+  action:
+  - service: switch.turn_off
+    data: {}
+    entity_id: switch.relay
+  mode: single
+- id: '1608318082068'
+  alias: Aanwezigheid aan
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.iemandthuis
+    to: 'on'
+  condition: []
+  action:
+  - service: climate.turn_on
+    data: {}
+    entity_id: climate.slaapkamer
+  - service: climate.turn_on
+    data: {}
+    entity_id: climate.woonkamer
+  mode: single
+- id: '1608318174333'
+  alias: Aanwezigheid uit
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.iemandthuis
+    to: 'off'
+  condition: []
+  action:
+  - service: climate.turn_off
+    data: {}
+    entity_id: climate.slaapkamer
+  - service: climate.turn_off
+    data: {}
+    entity_id: climate.woonkamer
+  mode: single
+- id: '1608318195860'
+  alias: Aanwezigheid uit
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.iemandthuis
+    to: 'off'
+  condition: []
+  action:
+  - service: climate.turn_off
+    data: {}
+    entity_id: climate.slaapkamer
+  - service: climate.turn_off
+    data: {}
+    entity_id: climate.woonkamer
+  mode: single
+  {% endraw %}
+```
+
 ### 6.5 Presence detection
 
 ![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
@@ -739,6 +982,8 @@ Needed for the someone home status to turn on immediately when entering the livi
 
 #### 6.5.4 Automation during evening and getting up 
 
+Causes 
+
 ```yaml
 {% raw %}
 - id: '1587404974211'
@@ -763,22 +1008,28 @@ Needed for the someone home status to turn on immediately when entering the livi
     entity_id: input_boolean.iemandthuis
     service: input_boolean.turn_on
   mode: single
-- id: '1587373774458'
-  alias: Thermostaat aan bij iemand thuis
+ {% endraw %}         
+```
+
+#### Turn off someone home status at wakeup
+
+If home status was on during night it should turn of at waking time in case I wake up later than usual or leave house earlier.
+
+```yaml
+{% raw %}
+- id: '1608290218329'
+  alias: Bij opstaan aanwezigheid uit
   description: ''
   trigger:
-  - entity_id: input_boolean.iemandthuis
-    platform: state
-    to: 'on'
+  - platform: time
+    at: input_datetime.opstaan
   condition: []
   action:
-  - data: {}
-    entity_id: climate.woonkamer
-    service: climate.turn_on
-  - data: {}
-    entity_id: climate.slaapkamer
-    service: climate.turn_on
- {% endraw %}   
+  - service: input_boolean.turn_off
+    data: {}
+    entity_id: input_boolean.iemandthuis
+  mode: single
+{% endraw %}
 ```
 
 #### 6.5.5 Automation between waking up time and evening time
@@ -839,7 +1090,7 @@ Needed for the someone home status to turn on immediately when entering the livi
  {% endraw %} 
 ```
 
-####  Turning off thermostat when Someone home status is off
+#### Turning off thermostat when Someone home status is off
 
 ```yaml
 - id: '1587373899805'
@@ -1026,7 +1277,7 @@ Uses the [Timer integration](https://www.home-assistant.io/integrations/timer/)
       message: De afgelopen week is er {{ states.sensor.aantal_minuten_verwarmen_laatste_7_dagen.state
         | int}} uren verwarmd.
   mode: single
-  {% endraw %}
+{% endraw %}
 ```
 
 ### 6.10 Turn of heating when there is no signal of DS18B20 temperature sensor
@@ -1058,248 +1309,13 @@ It occasionally happens that there is no signal of the DS18B20 temperature senso
   {% endraw %}
 ```
 
-### 6.11 Controlling two generic thermostat entities
-
-The [generic thermostat integration](https://www.home-assistant.io/integrations/generic_thermostat/) is equipped to work only with one temperature sensor. You can run two instances of the generic thermostat integration. However when the heater option is set to the same switch, then when one thermostat is turned on, the other will automatically turn on too (bc they use the same switch,  generic thermostat is programmed like that). This sometimes can lead to situations in which the thermostat of a room will turn on while cold air is flowing in because of a open window. 
-
-Therefore a couple of input\_booleans are created and are set as heater switch. Via an automation the relay switch will be turned on if one of these input\_booleans are turned on. 
-
-Also the someone status `input_boolean.iemandthuis` is taken into account 
-
-#### 6.11.1 Living room thermostat turn on
-
-```yaml
-{% raw %}
-- id: '1606337912735'
-  alias: Woonkamer thermostaat aan
-  description: ''
-  trigger:
-  - platform: template
-    value_template: '{{state_attr(''climate.woonkamer'', ''temperature'') > state_attr(''climate.woonkamer'',
-      ''current_temperature'')}}'
-  - platform: template
-    value_template: '{{ (states.sensor.time.last_changed - states.input_boolean.iemandthuis.last_changed).total_seconds()
-      > 5 }}
-
-      '
-  - platform: time_pattern
-    minutes: '3'
-  condition:
-  - condition: template
-    value_template: '{{state_attr(''climate.woonkamer'', ''temperature'')  > state_attr(''climate.woonkamer'',
-      ''current_temperature'')}}'
-  - condition: state
-    entity_id: input_boolean.iemandthuis
-    state: 'on'
-  - condition: state
-    entity_id: climate.woonkamer
-    state: 'off'
-  action:
-  - service: climate.turn_on
-    data: {}
-    entity_id: climate.woonkamer
-  mode: single
-  max: 10
-  {% endraw %}
-```
-
-#### 6.11.2 Bedroom thermostat turn on / off 
-
-```yaml
-{% raw %}
-- id: '1606338268883'
-  alias: 'Slaapkamer thermostaat aan '
-  description: ''
-  trigger:
-  - platform: template
-    value_template: '{{state_attr(''climate.slaapkamer'', ''temperature'') > state_attr(''climate.slaapkamer'',
-      ''current_temperature'')}}'
-  - platform: time_pattern
-    minutes: '3'
-  - platform: template
-    value_template: '
-
-      {{ (states.sensor.time.last_changed - states.input_boolean.iemandthuis.last_changed).total_seconds()
-      > 5 }}
-
-      '
-  condition:
-  - condition: template
-    value_template: '{{state_attr(''climate.slaapkamer'', ''temperature'') > state_attr(''climate.slaapkamer'',
-      ''current_temperature'')}}'
-  - condition: state
-    entity_id: input_boolean.iemandthuis
-    state: 'on'
-  action:
-  - service: climate.turn_on
-    data: {}
-    entity_id: climate.slaapkamer
-  - wait_for_trigger:
-    - platform: template
-      value_template: '{{state_attr(''climate.slaapkamer'', ''temperature'') < state_attr(''climate.slaapkamer'',
-        ''current_temperature'')}}'
-  - service: climate.turn_off
-    data: {}
-    entity_id: climate.slaapkamer
-  mode: restart
- {% endraw %} 
-```
-
-#### 6.11.3 Living room turn thermostat off
-
-```yaml
-{% raw %}
-
-- id: '1606839006446'
-  alias: Woonkamer thermostaat uit
-  description: ''
-  trigger:
-  - platform: template
-    value_template: '{{state_attr(''climate.woonkamer'', ''temperature'') < state_attr(''climate.woonkamer'',
-      ''current_temperature'')}}'
-  - platform: time_pattern
-    minutes: '2'
-  condition:
-  - condition: state
-    entity_id: climate.woonkamer
-    state: 'on'
-  - condition: template
-    value_template: '{{state_attr(''climate.woonkamer'', ''temperature'') < state_attr(''climate.woonkamer'',
-      ''current_temperature'')}}'
-  action:
-  - service: climate.turn_off
-    data: {}
-    entity_id: climate.woonkamer
-  mode: restart
-  max: 10
-
-- id: '1608290218329'
-  alias: Bij opstaan aanwezigheid uit
-  description: ''
-  trigger:
-  - platform: time
-    at: input_datetime.opstaan
-  condition: []
-  action:
-  - service: input_boolean.turn_off
-    data: {}
-    entity_id: input_boolean.iemandthuis
-  mode: single
-- id: '1608297641472'
-  alias: terug naar instelwaarde bij restart
-  description: ''
-  trigger:
-  - platform: time_pattern
-    minutes: '15'
-  condition: []
-  action:
-  - service: climate.set_temperature
-    data:
-      temperature: '{{states(''input_number.current_insteltemp_slaapkamer'')}}'
-    entity_id: climate.slaapkamer
-  - service: climate.set_temperature
-    data:
-      temperature: '{{states(''input_number.current_insteltemp_woonkamer'')}}'
-    entity_id: climate.woonkamer
-  mode: single
-- id: '1608298248187'
-  alias: Helper schakelaars voor klimaat
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.schakelaar_slaapkamer
-    to: 'on'
-  - platform: state
-    entity_id: input_boolean.schakelaar_woonkamer
-    to: 'on'
-  condition: []
-  action:
-  - service: switch.turn_on
-    data: {}
-    entity_id: switch.relay
-  mode: single
-- id: '1608298257006'
-  alias: Helper schakelaars UIT klimaat
-  description: ''
-  trigger:
-  - platform: time_pattern
-    seconds: '5'
-  - platform: state
-    entity_id: input_boolean.schakelaar_slaapkamer
-    to: 'off'
-  - platform: state
-    entity_id: input_boolean.schakelaar_woonkamer
-    to: 'off'
-  condition:
-  - condition: state
-    entity_id: input_boolean.schakelaar_slaapkamer
-    state: 'off'
-  - condition: state
-    entity_id: input_boolean.schakelaar_woonkamer
-    state: 'off'
-  action:
-  - service: switch.turn_off
-    data: {}
-    entity_id: switch.relay
-  mode: single
-- id: '1608318082068'
-  alias: Aanwezigheid aan
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.iemandthuis
-    to: 'on'
-  condition: []
-  action:
-  - service: climate.turn_on
-    data: {}
-    entity_id: climate.slaapkamer
-  - service: climate.turn_on
-    data: {}
-    entity_id: climate.woonkamer
-  mode: single
-- id: '1608318174333'
-  alias: Aanwezigheid uit
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.iemandthuis
-    to: 'off'
-  condition: []
-  action:
-  - service: climate.turn_off
-    data: {}
-    entity_id: climate.slaapkamer
-  - service: climate.turn_off
-    data: {}
-    entity_id: climate.woonkamer
-  mode: single
-- id: '1608318195860'
-  alias: Aanwezigheid uit
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.iemandthuis
-    to: 'off'
-  condition: []
-  action:
-  - service: climate.turn_off
-    data: {}
-    entity_id: climate.slaapkamer
-  - service: climate.turn_off
-    data: {}
-    entity_id: climate.woonkamer
-  mode: single
-  {% endraw %}
-```
-
-## 7. Bypass valve
+## 7\. Bypass valve
 
 When using zone heating in your house, consider adding a bypass valve to your central heating plan. A bypass valve will let through water when the pressure in the system gets too high. This avoid damage to the boiler pump because of pumping while all the radiators are closed you can open a small radiator manually or add a bypass valve. I just keep a radiator in my shower always opened.
 
 ![](https://user-images.githubusercontent.com/43075793/123786721-4e1e2280-d8da-11eb-867b-88769c79d803.jpeg)
 
-## 8. Possible improvements to this configuration
+## 8\. Possible improvements to this configuration
 
 Some possible improvements for this design to implement later on:
 
@@ -1313,7 +1329,7 @@ Some possible improvements for this design to implement later on:
 *   Anti frost measure, if a detected temperature is below 5 degrees, turn on the heating no matter whether the thermostat is set to off.
 *   Set a variable time of heating according to the outdoor temperature fetched from an internet source
 
-## 9. Links to similar
+## 9\. Links to similar
 
 I used these webpages for inspiration:
 
