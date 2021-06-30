@@ -1,6 +1,6 @@
-# My home smart heating configuration with the use of Home Assistant
+#  My home smart heating configuration with the use of Home Assistant
 
-## 1\. Introduction
+## 1. 1\. Introduction
 
 Home Assistant is Open Source software that runs on various devices, for instance Raspberry Pi, and acts as a central server for smart home devices and/or self build modules to make automatizations in the home. It has an active community and a large library of integrations with products on the market. Home Assistant is a non-cloud system, which means there is not necessarily a dependance on external cloud services (and an internet connection).
 
@@ -22,7 +22,7 @@ And on my phone:
 
 ![](https://user-images.githubusercontent.com/43075793/110310007-51776080-8002-11eb-9b64-755373b3a415.png)
 
-## 2\. Floorplan of my appartment 
+## 2. 2\. Floorplan of my appartment 
 
 My appartement consists of a living room, a bedroom and a kitchen.
 
@@ -34,7 +34,7 @@ The appartement has a boiler (Intergas kompakt hre 24/18) for central heating wh
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/117959173-08060300-b31c-11eb-9171-167f414ecc1a.png"></figure></td></tr><tr><td>Intergas hre 24/18</td></tr></tbody></table>
 
-## 3\. The design wishes for the system
+## 3. 3\. The design wishes for the system
 
 *   Multi zone: Heat the bedroom to a desired temperature at night (while living room radiator closed) and the living room during the day and evening (while bedroom radiator closed)
 *   Turn off the thermostat function when no one home
@@ -44,7 +44,7 @@ The appartement has a boiler (Intergas kompakt hre 24/18) for central heating wh
 *   Reverting to normal set temperature after a certain amount of time after a manual change
 *   Easily setting variables like bedtime, waking time and revert-to-initial-time with input fields in the front-end
 
-## 4\. Software
+## 4. 4\. Software
 
 [Home Assistant](https://www.home-assistant.io/) (The main platform on which everything is running)
 
@@ -56,7 +56,7 @@ Several integrations are used. The most important is the Generic Thermostat inte
 
 *   [Generic Thermostat integration](https://www.home-assistant.io/integrations/generic_thermostat/)
 
-## 5\. Hardware
+## 5. 5\. Hardware
 
 **Bedroom**
 
@@ -195,7 +195,7 @@ A doorspring was put on both rooms door, so that they will be kept closed as muc
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102992183-0b3e5500-451b-11eb-8786-723f359d2996.jpeg"></figure></td></tr><tr><td><i>Doorspring for door closing</i></td></tr></tbody></table>
 
-## 6\. Home Assistant configuration 
+## 6. 6\. Home Assistant configuration 
 
 ### 6.1 Helpers 
 
@@ -586,7 +586,7 @@ I am aware that there is a Home Assistant plugin called [Schedy](https://hass-ap
   {% endraw %}
 ```
 
-### 6.11 Triggering heating with two generic thermostat entities
+### 6.5 Triggering heating with two generic thermostat entities
 
 As there are two zones in this situation, living room and bedroom, two thermostat instances are needed.  
 The [generic thermostat integration](https://www.home-assistant.io/integrations/generic_thermostat/) is equipped to work only with one temperature sensor. You can run two instances of the generic thermostat integration. However when the heater option is set to the same switch, then when one thermostat is turned on, the other will automatically turn on too (bc they use the same switch,  generic thermostat is programmed like that). This sometimes can lead to situations in which the thermostat of a room will turn on while cold air is flowing in because of a open window. 
@@ -595,7 +595,7 @@ Therefore a couple of input\_booleans are created and are set as heater switch. 
 
 Also the someone status `input_boolean.iemandthuis` is taken into account 
 
-#### Turning on the thermostat when someone home
+#### 6.5.1 Turning on the thermostat when someone home
 
 ```yaml
 - id: '1587373774458'
@@ -615,7 +615,7 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
     service: climate.turn_on
 ```
 
-#### 6.11.1 Living room thermostat turn on
+#### 6.5.2 Living room thermostat turn on
 
 ```yaml
 {% raw %}
@@ -652,7 +652,7 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
   {% endraw %}
 ```
 
-#### 6.11.2 Bedroom thermostat turn on / off 
+#### 6.5.3 Bedroom thermostat turn on / off 
 
 ```yaml
 {% raw %}
@@ -694,7 +694,7 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
  {% endraw %} 
 ```
 
-#### 6.11.3 Living room turn thermostat off
+#### 6.5.4 Living room turn thermostat off
 
 ```yaml
 {% raw %}
@@ -829,7 +829,7 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
   {% endraw %}
 ```
 
-### 6.5 Presence detection
+### 6.6 Presence detection
 
 ![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
 
@@ -855,7 +855,7 @@ This configuration set up is based on a one person household, so only one smartp
 
 The following automations were set to achieve this. 
 
-#### 6.5.1 Automations for presence detection
+#### 6.6.1 Automations for presence detection
 
 **Creation of input\_datetime fields**
 
@@ -923,7 +923,7 @@ Description: Turn off the Someone home status `input_boolean.iemandthuis` when n
 {% endraw %}  
 ```
 
-#### 6.5.2 Reset the one-before-last-input boolean 31 minutes before waking time
+#### 6.6.2 Reset the one-before-last-input boolean 31 minutes before waking time
 
 Needed for the someone home status to turn on immediately when entering the living room in the morning, otherwise first two motions need to be detected, which can take a while. 
 
@@ -954,7 +954,7 @@ Needed for the someone home status to turn on immediately when entering the livi
   {% endraw %}
 ```
 
-#### 6.5.3 Automation to turn on someone home status
+#### 6.6.3 Automation to turn on someone home status
 
 ```yaml
 {% raw %}
@@ -980,7 +980,7 @@ Needed for the someone home status to turn on immediately when entering the livi
  {% endraw %}
 ```
 
-#### 6.5.4 Automation during evening and getting up 
+#### 6.6.4 Automation during evening and getting up 
 
 Causes 
 
@@ -1011,7 +1011,7 @@ Causes 
  {% endraw %}         
 ```
 
-#### Turn off someone home status at wakeup
+#### 6.6.5 Turn off someone home status at wakeup
 
 If home status was on during night it should turn of at waking time in case I wake up later than usual or leave house earlier.
 
@@ -1032,7 +1032,7 @@ If home status was on during night it should turn of at waking time in case I wa
 {% endraw %}
 ```
 
-#### 6.5.5 Automation between waking up time and evening time
+#### 6.6.6 Automation between waking up time and evening time
 
 ```yaml
 {% raw %}
@@ -1063,7 +1063,7 @@ If home status was on during night it should turn of at waking time in case I wa
   {% endraw %}
 ```
 
-#### 6.5.6 Behavior based on smart phone location with Home Assistant app
+#### 6.6.7 Behavior based on smart phone location with Home Assistant app
 
 ```yaml
 {% raw %}
@@ -1090,7 +1090,7 @@ If home status was on during night it should turn of at waking time in case I wa
  {% endraw %} 
 ```
 
-#### Turning off thermostat when Someone home status is off
+#### 6.6.8 Turning off thermostat when Someone home status is off
 
 ```yaml
 - id: '1587373899805'
@@ -1110,7 +1110,7 @@ If home status was on during night it should turn of at waking time in case I wa
     service: climate.turn_off 
 ```
 
-### 6.6 Heat for 5 minutes straight
+### 6.7 Heat for 5 minutes straight
 
 Automation:
 
@@ -1139,7 +1139,7 @@ Automation:
   mode: single
 ```
 
-### 6.7 Window open detection
+### 6.8 Window open detection
 
 {% raw %}\<a name="windowopendetection"> \</a>{% endraw %}There are no window sensors, but this is based on the temperature rise during heating. If the temperature doesn't rise quickly enough, it is assumed that a window is open and thermostat function will turn off. 
 
@@ -1220,7 +1220,7 @@ For the bedroom:
   {% endraw %}
 ```
 
-### 6.8 Revert back to programmed set temperature after manual change  
+### 6.9 Revert back to programmed set temperature after manual change  
 
 According to `input_datetime.duur_manuele_verhoging` value a timer is started after which the set temperature will revert back to set temperature according to program. 
 
@@ -1257,7 +1257,7 @@ Uses the [Timer integration](https://www.home-assistant.io/integrations/timer/)
  {% endraw %} 
 ```
 
-### 6.9 Telegram notification hours of heating past week on Sunday
+### 6.10 Telegram notification hours of heating past week on Sunday
 
 ```yaml
 {% raw %}
@@ -1280,7 +1280,7 @@ Uses the [Timer integration](https://www.home-assistant.io/integrations/timer/)
 {% endraw %}
 ```
 
-### 6.10 Turn of heating when there is no signal of DS18B20 temperature sensor
+### 6.11 Turn of heating when there is no signal of DS18B20 temperature sensor
 
 It occasionally happens that there is no signal of the DS18B20 temperature sensor or that by mistake the USB cable gets unplugged. The displayed temperature then can get below set temperature and will trigger heating while not really desired. To avoid this an automation is set to turn off. 
 
@@ -1309,13 +1309,13 @@ It occasionally happens that there is no signal of the DS18B20 temperature senso
   {% endraw %}
 ```
 
-## 7\. Bypass valve
+## 7. 7\. Bypass valve
 
 When using zone heating in your house, consider adding a bypass valve to your central heating plan. A bypass valve will let through water when the pressure in the system gets too high. This avoid damage to the boiler pump because of pumping while all the radiators are closed you can open a small radiator manually or add a bypass valve. I just keep a radiator in my shower always opened.
 
 ![](https://user-images.githubusercontent.com/43075793/123786721-4e1e2280-d8da-11eb-867b-88769c79d803.jpeg)
 
-## 8\. Possible improvements to this configuration
+## 8. 8\. Possible improvements to this configuration
 
 Some possible improvements for this design to implement later on:
 
@@ -1329,7 +1329,7 @@ Some possible improvements for this design to implement later on:
 *   Anti frost measure, if a detected temperature is below 5 degrees, turn on the heating no matter whether the thermostat is set to off.
 *   Set a variable time of heating according to the outdoor temperature fetched from an internet source
 
-## 9\. Links to similar
+## 9. 9\. Links to similar
 
 I used these webpages for inspiration:
 
