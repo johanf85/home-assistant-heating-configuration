@@ -77,6 +77,7 @@ Store: [Aliexpress](https://nl.aliexpress.com/item/1005002674336082.html)
 Arduino sketch used:   
 
 ```c++
+{% raw %}
 //remove the / before the # signs, it is bc of github pages these are added. 
 
 \#include <OneWire.h>
@@ -118,6 +119,7 @@ void loop(void)
 
   delay(30000);
 }
+{% endraw %}
 ```
 
 **Living room**
@@ -204,31 +206,30 @@ Created the following helpers via configuration > helpers within Home Assistant
 | **Someone home?** | input\_boolean (toggle) | input\_boolean.aanwezig |
 |   |   | input\_datetime.bedtijd |
 |   |   | input\_datetime.avond |
-|   |   | input\_datetime.opstaan  
-  |
+|   |   | input\_datetime.opstaan |
 
-|   |   | input\_text.woonk\_nacht |
-|   |   | input\_text.woonk\_overdag |
-|   |   | input\_number.current\_insteltemp\_woonkamer |
-|   
+|   |   | input\_text.woonk\_nacht |  
+|   |   | input\_text.woonk\_overdag |  
+|   |   | input\_number.current\_insteltemp\_woonkamer |  
+|  
 Countdown timer | timer | timer.countdown |
 
 |   |   | input\_datetime.bewegingeennalaatst\_1  
-  |
+  |  
 |   |   | input\_datetime.beweginglaatst\_0  
   |
 
 |   |   | input\_number.current\_insteltemp\_slaapkamer |
 
-|   |   | input\_number.current\_insteltemp\_woonkamer |
+|   |   | input\_number.current\_insteltemp\_woonkamer |  
 |   |   | input\_datetime.duur\_manuele\_verhoging |
 
 |   |   | input\_number.huidige\_insteltemperatuur\_slaapkamer |
 
-|   |   | input\_boolean.schakelaar\_slaapkamer |
+|   |   | input\_boolean.schakelaar\_slaapkamer |  
 |   |   | input\_boolean.schakelaar\_woonkamer |
 
-|   |   | input\_text.slaapkamer\_insteltemp\_nacht |
+|   |   | input\_text.slaapkamer\_insteltemp\_nacht |  
 |   |   | input\_text.slaapkamer\_insteltemp\_overdag |
 
 |   |   | input\_datetime.tijdelijk\_verwarmen |
@@ -280,6 +281,7 @@ My DS18B20 sensors ([onewire](https://www.home-assistant.io/integrations/onewire
 See below:
 
 ```yaml
+{% raw %}
 sensor:
   - platform: template
     sensors:
@@ -287,6 +289,7 @@ sensor:
         value_template: "{{ states('sensor.28_00000913d350_temperature')|float - 1.2}}"
         friendly_name: 'Woonkamer temp'
         unit_of_measurement: degrees
+ {% endraw %}
 ```
 
 ##### **Relay**
@@ -350,6 +353,7 @@ Choices for configuration variables:
 **Part in Configuration.yaml**
 
 ```yaml
+{% raw %}
 climate:
 - platform: generic_thermostat
   name: Livingroom
@@ -381,6 +385,7 @@ climate:
   initial_hvac_mode: "heat"
   away_temp: 16
   precision: 0.1
+  {% endraw %}
 ```
 
 #### Telegram integration
@@ -442,6 +447,7 @@ The `min_gradient` value, which is the temperature rising per second, for each r
 ```
 
 ```yaml
+{% raw %}
 sensor:
   - platform: time_date
     display_options:
@@ -469,6 +475,7 @@ sensor:
       heating_state:
         value_template: "{{state_attr('climate.woonkamer', 'hvac_action')}}"
         friendly_name: 'thermostaat state'
+{% endraw %}   
 ```
 
 ### Setting temperature time program
@@ -486,7 +493,7 @@ I am aware that there is a Home Assistant plugin called [Schedy](https://hass-ap
 **Bedroom set temperature after bedtime**
 
 ```yaml
-
+{% raw %}
 - id: '1587807892892'
   alias: Slaapkamer naar instelwaarde 's nachts
   description: ''
@@ -504,12 +511,13 @@ I am aware that there is a Home Assistant plugin called [Schedy](https://hass-ap
       value: '{{ states.input_text.slaapkamer_insteltemp_nacht.state }}'
     entity_id: input_number.current_insteltemp_slaapkamer
   mode: single
+  {% endraw %}
 ```
 
 **Living room to set temperature on wake up time**
 
 ```yaml
-
+{% raw %}
 - id: '1589611935632'
   alias: Woonkamer instelwaarde na opstaan
   description: ''
@@ -527,12 +535,13 @@ I am aware that there is a Home Assistant plugin called [Schedy](https://hass-ap
       value: '{{ states.input_text.woonk_overdag.state }}'
     entity_id: input_number.current_insteltemp_woonkamer
   mode: single
+  {% endraw %}
 ```
 
 **Bedroom to set temperature on wake up time**
 
 ```yaml
-
+{% raw %}
 - id: '1587807715263'
   alias: Slaapkamer naar instelwaarde overdag
   description: ''
@@ -550,12 +559,13 @@ I am aware that there is a Home Assistant plugin called [Schedy](https://hass-ap
       value: '{{ states.input_text.slaapkamer_insteltemp_overdag.state }}'
     entity_id: input_number.current_insteltemp_slaapkamer
   mode: single
+  {% endraw %}
 ```
 
 **Living room set temperature after bedtime**
 
 ```yaml
-
+{% raw %}
 - id: '1587310221936'
   alias: Woonkamer instelwaarde na bedtijd
   description: ''
@@ -573,6 +583,7 @@ I am aware that there is a Home Assistant plugin called [Schedy](https://hass-ap
       value: '{{ states.input_text.woonk_nacht.state }}'
     entity_id: input_number.current_insteltemp_woonkamer
   mode: single
+  {% endraw %}
 ```
 
 ### Presence detection
@@ -612,6 +623,7 @@ This is used, bc it is desired that a minimum of two movements need to be detect
 **Setting the movement input\_datetime fields on motion detection**
 
 ```yaml
+{% raw %}
 - id: '1606672315270'
   alias: Movementsensor last 
   description: ''
@@ -630,6 +642,7 @@ This is used, bc it is desired that a minimum of two movements need to be detect
       datetime: '{{ now().strftime(''%Y-%m-%d %H:%M:%S'') }}'
     entity_id: input_datetime.beweginglaatst_0
   mode: single
+  {% endraw %}
 ```
 
 **Turning of if not more than 1 movement detetected during day**
@@ -639,6 +652,7 @@ Timespan: between wake-up time and evening time
 Description: Turn off the Someone home status `input_boolean.iemandthuis` when not more than 1 movement. 
 
 ```yaml
+{% raw %}
 - id: '1587319961411'
   alias: Gedrag bewegingssensor woonkamer tussen opstaan en avond (overdag)
   description: ''
@@ -663,6 +677,7 @@ Description: Turn off the Someone home status `input_boolean.iemandthuis` when n
     entity_id: input_boolean.iemandthuis
     service: input_boolean.turn_off
   mode: single
+{% endraw %}  
 ```
 
 #### Reset the one-before-last-input boolean 31 minutes before waking time
@@ -670,6 +685,7 @@ Description: Turn off the Someone home status `input_boolean.iemandthuis` when n
 Needed for the someone home status to turn on immediately when entering the living room in the morning, otherwise first two motions need to be detected, which can take a while. 
 
 ```yaml
+{% raw %}
 - id: '1606905142912'
   alias: Reset 1 na laatste beweging 31 min voor opstaan
   description: ''
@@ -692,12 +708,13 @@ Needed for the someone home status to turn on immediately when entering the livi
       datetime: '{{now().strftime(''%Y-%m-%d %H:%M:%S'')}}'
     entity_id: input_datetime.bewegingeennalaatst_1
   mode: restart
+  {% endraw %}
 ```
 
 #### Automation to turn on someone home status
 
 ```yaml
-
+{% raw %}
 - id: '1587319960331'
   alias: Turn on someone home status
   description: ''
@@ -717,12 +734,13 @@ Needed for the someone home status to turn on immediately when entering the livi
     entity_id: input_boolean.iemandthuis
     service: input_boolean.turn_on
   mode: single
+ {% endraw %}
 ```
 
 #### Automation during evening and getting up 
 
 ```yaml
-
+{% raw %}
 - id: '1587404974211'
   alias: Aanwezigheid detectie avond tot opstaan
   description: ''
@@ -760,12 +778,13 @@ Needed for the someone home status to turn on immediately when entering the livi
   - data: {}
     entity_id: climate.slaapkamer
     service: climate.turn_on
+ {% endraw %}   
 ```
 
 #### Automation between waking up time and evening time
 
 ```yaml
-
+{% raw %}
 - id: '1587319961411'
   alias: Behaviour of motion sensor living room between wakeup time and evening time
   description: ''
@@ -790,12 +809,13 @@ Needed for the someone home status to turn on immediately when entering the livi
     entity_id: input_boolean.iemandthuis
     service: input_boolean.turn_off
   mode: single
+  {% endraw %}
 ```
 
 #### Behavior based on smart phone location with Home Assistant app
 
 ```yaml
-
+{% raw %}
 - id: '1606221709908'
   alias: Smartphone thuiskomen / weggaan
   description: ''
@@ -816,6 +836,7 @@ Needed for the someone home status to turn on immediately when entering the livi
     data: {}
     entity_id: input_boolean.iemandthuis
   mode: restart
+ {% endraw %} 
 ```
 
 ####  Turning off thermostat when Someone home status is off
@@ -884,7 +905,7 @@ Translation: "Bedroom thermostat turned off bc of too slow heating up, window op
 For the bedroom:
 
 ```yaml
-
+{% raw %}
 - id: '1588799650928'
   alias: Relay beveiging raam open
   description: ''
@@ -918,12 +939,13 @@ For the bedroom:
     data: {}
     entity_id: climate.slaapkamer
   mode: single
+  {% endraw %}
 ```
 
  And for the living room:
 
 ```yaml
-
+{% raw %}
 - id: '1601215001454'
   alias: Relay beveiging raam open (woonkamer)
   description: ''
@@ -944,6 +966,7 @@ For the bedroom:
     data: {}
     entity_id: climate.woonkamer
   mode: single
+  {% endraw %}
 ```
 
 ### Revert back to programmed set temperature after manual change  
@@ -953,6 +976,7 @@ According to `input_datetime.duur_manuele_verhoging` value a timer is started af
 Uses the [Timer integration](https://www.home-assistant.io/integrations/timer/)
 
 ```yaml
+{% raw %}
 - id: '1604920070266'
   alias: Countdown bij manual wijziging
   description: ''
@@ -979,11 +1003,13 @@ Uses the [Timer integration](https://www.home-assistant.io/integrations/timer/)
       temperature: '{{ states.input_number.current_insteltemp_woonkamer.state  }}'
     entity_id: climate.woonkamer
   mode: restart
+ {% endraw %} 
 ```
 
 ### Telegram notification hours of heating past week on Sunday
 
 ```yaml
+{% raw %}
 - id: '1604938488226'
   alias: Notificatie aantal uren verwarmen in week
   description: ''
@@ -1000,6 +1026,7 @@ Uses the [Timer integration](https://www.home-assistant.io/integrations/timer/)
       message: De afgelopen week is er {{ states.sensor.aantal_minuten_verwarmen_laatste_7_dagen.state
         | int}} uren verwarmd.
   mode: single
+  {% endraw %}
 ```
 
 ### Turn of heating when there is no signal of DS18B20 temperature sensor
@@ -1007,6 +1034,7 @@ Uses the [Timer integration](https://www.home-assistant.io/integrations/timer/)
 It occasionally happens that there is no signal of the DS18B20 temperature sensor or that by mistake the USB cable gets unplugged. The displayed temperature then can get below set temperature and will trigger heating while not really desired. To avoid this an automation is set to turn off. 
 
 ```yaml
+{% raw %}
 - id: '1606221459609'
   alias: Beveiliging uitvallen temp sensor
   description: ''
@@ -1027,6 +1055,7 @@ It occasionally happens that there is no signal of the DS18B20 temperature senso
     data: {}
     entity_id: climate.woonkamer
   mode: single
+  {% endraw %}
 ```
 
 ### Controlling two generic thermostat entities
@@ -1040,6 +1069,7 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
 #### Living room thermostat turn on
 
 ```yaml
+{% raw %}
 - id: '1606337912735'
   alias: Woonkamer thermostaat aan
   description: ''
@@ -1070,11 +1100,13 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
     entity_id: climate.woonkamer
   mode: single
   max: 10
+  {% endraw %}
 ```
 
 #### Bedroom thermostat turn on / off 
 
 ```yaml
+{% raw %}
 - id: '1606338268883'
   alias: 'Slaapkamer thermostaat aan '
   description: ''
@@ -1110,12 +1142,13 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
     data: {}
     entity_id: climate.slaapkamer
   mode: restart
+ {% endraw %} 
 ```
 
 #### Living room turn thermostat off
 
 ```yaml
-
+{% raw %}
 
 - id: '1606839006446'
   alias: Woonkamer thermostaat uit
@@ -1257,6 +1290,7 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
     data: {}
     entity_id: climate.woonkamer
   mode: single
+  {% endraw %}
 ```
 
 ## Bypass valve
