@@ -1077,7 +1077,7 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
   mode: restart
 ```
 
-#####  Living room turn thermostat off
+##### Living room turn thermostat off
 
 ```yaml
 
