@@ -273,6 +273,24 @@ switch:
 
 More info on Home Assistant website: [rpi\_gpio integration](https://www.home-assistant.io/integrations/rpi_gpio/)
 
+**Motion sensor**
+
+![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
+
+Connected to gpio pin 26
+
+```yaml
+binary_sensor:
+  - platform: rpi_gpio
+    invert_logic: false
+    ports:
+     26: Motion sensor
+```
+
+More info on Home Assistant website: [rpi\_gpio integration](https://www.home-assistant.io/integrations/rpi_gpio/)  
+  
+After connecting set do desired behavior with the two set screws on the PIR module.  
+
 #### **Arduino**
 
 First the sketch from the Hardware section was put on the Arduino nano, see [here](#arduinosketch) in the hardware section.
@@ -284,7 +302,7 @@ First the sketch from the Hardware section was put on the Arduino nano, see [her
 
 On the Home Assistant documentation for Arduino integration it is described that `serial_port: /dev/ttyUSB1` an be used. However, I noticed that on restarts the assignment of ttyUSB# can differ and therefore the readout of the Arduino can fail after restart. To make sure this doesn't happen the serial by-id is used. Which can be found in Supervisor - System - Click on the three dots in the Host block - Hardware
 
-### Setup the generic thermostat integration
+#### Setup the generic thermostat integration
 
 This integration adds the thermostat function and when configured makes available the thermostat function in Lovelace. 
 
@@ -342,7 +360,7 @@ I use [Telegram](https://telegram.org/) for notifications. Currently I am using 
 
 ![](https://user-images.githubusercontent.com/43075793/110303144-53d5bc80-7ffa-11eb-98dc-0a7ae96f4686.png)
 
-"Last week there were 21 hours of heating"
+Translation: "Last week there were 21 hours of heating"
 
 *   When the heating is automatically turned off because of a suspected open window (See [Window open detection](#windowopendetection)).
 
@@ -374,15 +392,6 @@ The `min_gradient` value, which is the temperature rising per second, for each r
 
 ```yaml
 
-binary_sensor:
-  - platform: rpi_gpio
-    invert_logic: false
-    ports:
-     16: Kleine Motion sensor
-  - platform: rpi_gpio
-    invert_logic: false
-    ports:
-     26: Motion sensor
   - platform: trend
     sensors:
       temp_falling_slaapkamer:
@@ -403,9 +412,6 @@ binary_sensor:
 
 ```yaml
 sensor:
-  - platform: serial
-    serial_port: /dev/ttyUSB0
-  - platform: onewire
   - platform: time_date
     display_options:
       - 'time'
