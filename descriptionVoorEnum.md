@@ -6,7 +6,9 @@ Home Assistant is Open Source software that runs on various devices, for instanc
 
 ![https://www.home-assistant.io/](https://user-images.githubusercontent.com/43075793/110300847-b4172f00-7ff7-11eb-94d2-3394992bd090.png)
 
-With the use of Home Assistant I created a smart thermostat, which I was able to customize to my personal situation. Against low costs and all wired to limit the EMF radiation in the home. In this document I will describe my configuration. I am Dutch, so the names I chose for various entities are in Dutch.
+Website Home Assistant: www.home-assistant.io
+
+With the use of Home Assistant I created a smart thermostat, which I was able to customize to my personal situation. Against low costs, about  $35 and all wired to limit the EMF radiation in the home. In this document I will describe my configuration. I am Dutch, so the names I chose for various entities are in Dutch.
 
 **Screenshots of my dashboard:**
 
@@ -58,7 +60,7 @@ Several integrations are used. The most important is the Generic Thermostat inte
 
 **Bedroom**
 
-Plastic container with a hole cut out
+Plastic container with a hole cut out with a 5 meter USB extension cable to the server.
 
 ![](https://user-images.githubusercontent.com/43075793/123302111-a640d780-d51c-11eb-89bd-f18de3fd0d83.png)
 
@@ -197,12 +199,39 @@ A doorspring was put on both rooms door, so that they will be kept closed as muc
 
 Created the following helpers via configuration > helpers within Home Assistant
 
-|   | Type |   |
+|   | Type | Name: |
 | --- | --- | --- |
-| **Someone home?** | input\_boolean (toggle) |   |
+| **Someone home?** | input\_boolean (toggle) | input\_boolean.aanwezig |
 |   |   | input\_datetime.bedtijd |
+|   |   | input\_datetime.avond |
+|   |   | input\_datetime.opstaan  
+  |
+
 |   |   | input\_text.woonk\_nacht |
-| input\_number.current\_insteltemp\_woonkamer |   |   |
+|   |   | input\_text.woonk\_overdag |
+|   |   | input\_number.current\_insteltemp\_woonkamer |
+|   
+Countdown timer | timer | timer.countdown |
+
+|   |   | input\_datetime.bewegingeennalaatst\_1  
+  |
+|   |   | input\_datetime.beweginglaatst\_0  
+  |
+
+|   |   | input\_number.current\_insteltemp\_slaapkamer |
+
+|   |   | input\_number.current\_insteltemp\_woonkamer |
+|   |   | input\_datetime.duur\_manuele\_verhoging |
+
+|   |   | input\_number.huidige\_insteltemperatuur\_slaapkamer |
+
+|   |   | input\_boolean.schakelaar\_slaapkamer |
+|   |   | input\_boolean.schakelaar\_woonkamer |
+
+|   |   | input\_text.slaapkamer\_insteltemp\_nacht |
+|   |   | input\_text.slaapkamer\_insteltemp\_overdag |
+
+|   |   | input\_datetime.tijdelijk\_verwarmen |
 
 |
 
