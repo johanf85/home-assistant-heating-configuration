@@ -68,10 +68,10 @@ In this container.
 
 Store: [Aliexpress](https://nl.aliexpress.com/item/1005002674336082.html)
 
-Arduino sketch used:\<a name="arduinosketch">  \</a>
+Arduino sketch used:{% raw %}  
+\<a name="arduinosketch">&nbsp;  \</a>{% endraw %}
 
 ```c++
-{% raw %}
 \#include <OneWire.h>
 \#include <DallasTemperature.h>
 
@@ -111,7 +111,6 @@ void loop(void)
 
   delay(30000);
 }
-{% endraw %}
 ```
 
 **Living room**
@@ -198,7 +197,10 @@ Created the following helpers via configuration > helpers within Home Assistant
 | **Someone home?** | input\_boolean (toggle) |   |
 |   |   | input\_datetime.bedtijd |
 |   |   | input\_text.woonk\_nacht |
-|   |   | input\_number.current\_insteltemp\_woonkamer |
+|   |   | 
+input\_number.current\_insteltemp\_woonkamer
+
+ |
 
 ### Variables
 
@@ -216,7 +218,7 @@ Only covering the relevant part of the configuration for the smart heating syste
 
 #### Setting up sensors and relay
 
-#### **DS18b20 temperature sensor**
+##### **DS18b20 temperature sensor**
 
 ![](https://user-images.githubusercontent.com/43075793/117957906-cb85d780-b31a-11eb-8d61-c71f36264ce6.png)
 
@@ -258,7 +260,7 @@ sensor:
         unit_of_measurement: degrees
 ```
 
-#### **Relay**
+##### **Relay**
 
 ![](https://user-images.githubusercontent.com/43075793/117958501-5c5cb300-b31b-11eb-8065-645693a0284e.png)
 
@@ -273,7 +275,7 @@ switch:
 
 More info on Home Assistant website: [rpi\_gpio integration](https://www.home-assistant.io/integrations/rpi_gpio/)
 
-**Motion sensor**
+##### **Motion sensor**
 
 ![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
 
@@ -287,11 +289,11 @@ binary_sensor:
      26: Motion sensor
 ```
 
-More info on Home Assistant website: [rpi\_gpio integration](https://www.home-assistant.io/integrations/rpi_gpio/)  
-  
+More info on Home Assistant website: [rpi\_gpio integration](https://www.home-assistant.io/integrations/rpi_gpio/)
+
 After connecting set do desired behavior with the two set screws on the PIR module.  
 
-#### **Arduino**
+##### **Arduino**
 
 First the sketch from the Hardware section was put on the Arduino nano, see [here](#arduinosketch) in the hardware section.
 
