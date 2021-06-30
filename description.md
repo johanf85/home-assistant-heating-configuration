@@ -1,12 +1,16 @@
 #  My home smart heating configuration with the use of Home Assistant
 
+## 1. Introduction
+
 Home Assistant is Open Source software that runs on various devices, for instance Raspberry Pi, and acts as a central server for smart home devices and/or self build modules to make automatizations in the home. It has an active community and a large library of integrations with products on the market. Home Assistant is a non-cloud system, which means there is not necessarily a dependance on external cloud services (and an internet connection).
 
 ![https://www.home-assistant.io/](https://user-images.githubusercontent.com/43075793/110300847-b4172f00-7ff7-11eb-94d2-3394992bd090.png)
 
-With the use of Home Assistant I created a smart thermostat, which I was able to customize to my personal situation. Against low costs and all wired to limit the EMF radiation in the home. In this document I will describe my configuration. I am Dutch, so the names I chose for various entities are in Dutch.
+Website Home Assistant: www.home-assistant.io
 
-Screenshots of my dashboard:
+With the use of Home Assistant I created a smart thermostat, which I was able to customize to my personal situation. Against low costs, about  $35 and all wired to limit the EMF radiation in the home. In this document I will describe my configuration. I am Dutch, so the names I chose for various entities are in Dutch.
+
+**Screenshots of my dashboard:**
 
 ![](https://user-images.githubusercontent.com/43075793/110309572-ce560a80-8001-11eb-85fc-a04b34ca5de8.png)
 
@@ -18,6 +22,8 @@ And on my phone:
 
 ![](https://user-images.githubusercontent.com/43075793/110310007-51776080-8002-11eb-9b64-755373b3a415.png)
 
+## 2. Floorplan of my appartment 
+
 My appartement consists of a living room, a bedroom and a kitchen.
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/117958666-8a41f780-b31b-11eb-812e-aa2912945f4b.png"></figure></td></tr><tr><td>A schematic view of the floorplan with the relevant rooms</td></tr></tbody></table>
@@ -28,7 +34,7 @@ The appartement has a boiler (Intergas kompakt hre 24/18) for central heating wh
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/117959173-08060300-b31c-11eb-9171-167f414ecc1a.png"></figure></td></tr><tr><td>Intergas hre 24/18</td></tr></tbody></table>
 
-## 1. The design wishes for the system
+## 3. The design wishes for the system
 
 *   Multi zone: Heat the bedroom to a desired temperature at night (while living room radiator closed) and the living room during the day and evening (while bedroom radiator closed)
 *   Turn off the thermostat function when no one home
@@ -38,7 +44,7 @@ The appartement has a boiler (Intergas kompakt hre 24/18) for central heating wh
 *   Reverting to normal set temperature after a certain amount of time after a manual change
 *   Easily setting variables like bedtime, waking time and revert-to-initial-time with input fields in the front-end
 
-## 2. Software
+## 4. Software
 
 [Home Assistant](https://www.home-assistant.io/) (The main platform on which everything is running)
 
@@ -50,11 +56,11 @@ Several integrations are used. The most important is the Generic Thermostat inte
 
 *   [Generic Thermostat integration](https://www.home-assistant.io/integrations/generic_thermostat/)
 
-## 3. Hardware
+## 5. Hardware
 
 **Bedroom**
 
-Plastic container with a hole cut out
+Plastic container with a hole cut out with a 5 meter USB extension cable to the server.
 
 ![](https://user-images.githubusercontent.com/43075793/123302111-a640d780-d51c-11eb-89bd-f18de3fd0d83.png)
 
@@ -68,10 +74,11 @@ In this container.
 
 Store: [Aliexpress](https://nl.aliexpress.com/item/1005002674336082.html)
 
-Arduino sketch used:  
-  
+Arduino sketch used:   
 
 ```c++
+//remove the / before the # signs, it is bc of github pages these are added. 
+
 \#include <OneWire.h>
 \#include <DallasTemperature.h>
 
@@ -186,22 +193,49 @@ A doorspring was put on both rooms door, so that they will be kept closed as muc
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102992183-0b3e5500-451b-11eb-8786-723f359d2996.jpeg"></figure></td></tr><tr><td><i>Doorspring for door closing</i></td></tr></tbody></table>
 
-## 4. Home Assistant configuration 
+## 6. Home Assistant configuration 
 
-### 4.1 Helpers 
+### 6.1 Helpers 
 
 Created the following helpers via configuration > helpers within Home Assistant
 
-|   | Type |   |
+|   | Type | Name: |
 | --- | --- | --- |
-| **Someone home?** | input\_boolean (toggle) |   |
+| **Someone home?** | input\_boolean (toggle) | input\_boolean.aanwezig |
 |   |   | input\_datetime.bedtijd |
+|   |   | input\_datetime.avond |
+|   |   | input\_datetime.opstaan  
+  |
+
 |   |   | input\_text.woonk\_nacht |
-| input\_number.current\_insteltemp\_woonkamer |   |   |
+|   |   | input\_text.woonk\_overdag |
+|   |   | input\_number.current\_insteltemp\_woonkamer |
+|   
+Countdown timer | timer | timer.countdown |
+
+|   |   | input\_datetime.bewegingeennalaatst\_1  
+  |
+|   |   | input\_datetime.beweginglaatst\_0  
+  |
+
+|   |   | input\_number.current\_insteltemp\_slaapkamer |
+
+|   |   | input\_number.current\_insteltemp\_woonkamer |
+|   |   | input\_datetime.duur\_manuele\_verhoging |
+
+|   |   | input\_number.huidige\_insteltemperatuur\_slaapkamer |
+
+|   |   | input\_boolean.schakelaar\_slaapkamer |
+|   |   | input\_boolean.schakelaar\_woonkamer |
+
+|   |   | input\_text.slaapkamer\_insteltemp\_nacht |
+|   |   | input\_text.slaapkamer\_insteltemp\_overdag |
+
+|   |   | input\_datetime.tijdelijk\_verwarmen |
 
 |
 
-### 4.2 Variables
+### 6.2 Variables
 
 To easily change settings to which I would like them, I make use of input variables. I made a tab in Lovelace to edit this variables.
 
@@ -211,13 +245,13 @@ To easily change settings to which I would like them, I make use of input variab
 
 Most of them speak for themselves. The someone home switch is turned on depending on presence detection. When the set temperature of the thermostat is changed manually, it will revert back to the initial set temperature according to program after the set Duration manual change value. The countdown shows the amount of time left until revert to initial set temperature. 
 
-### 4.3 Configuration.yaml
+### 6.3 Configuration.yaml
 
 Only covering the relevant part of the configuration for the smart heating system. 
 
-#### 4.3.1 Setting up sensors and relay
+#### 6.3.1 Setting up sensors and relay
 
-##### 4.3.1.1 **DS18b20 temperature sensor**
+##### 6.3.1.1 **DS18b20 temperature sensor**
 
 ![](https://user-images.githubusercontent.com/43075793/117957906-cb85d780-b31a-11eb-8d61-c71f36264ce6.png)
 
@@ -239,7 +273,7 @@ Restart Home Assistant and if configuration went well, a temperature sensor is d
 
 More on configurating 1-wire sensors on the Home Assistant documentation:  [1-wire integration](https://www.home-assistant.io/integrations/onewire/).
 
-##### 4.3.1.2 **Correction of temperature sensor**
+##### 6.3.1.2 **Correction of temperature sensor**
 
 My DS18B20 sensors ([onewire](https://www.home-assistant.io/integrations/onewire/)) need a correction to match the right temperature value. With the use of [template platform](https://www.home-assistant.io/integrations/template/) a correction is applied to the onewire sensors. 
 
@@ -255,7 +289,7 @@ sensor:
         unit_of_measurement: degrees
 ```
 
-##### 4.3.1.3 **Relay**
+##### 6.3.1.3 **Relay**
 
 ![](https://user-images.githubusercontent.com/43075793/117958501-5c5cb300-b31b-11eb-8065-645693a0284e.png)
 
@@ -270,7 +304,7 @@ switch:
 
 More info on Home Assistant website: [rpi\_gpio integration](https://www.home-assistant.io/integrations/rpi_gpio/)
 
-##### 4.3.1.4 **Motion sensor**
+##### 6.3.1.4 **Motion sensor**
 
 ![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
 
@@ -288,9 +322,9 @@ More info on Home Assistant website: [rpi\_gpio integration](https://www.home-as
 
 After connecting set do desired behavior with the two set screws on the PIR module.  
 
-##### 4.3.1.5 **Arduino**
+##### 6.3.1.5 **Arduino**
 
-First the sketch from the Hardware section was put on the Arduino nano, see [here](#arduinosketch) in the hardware section.
+First the sketch from the Hardware section was put on the Arduino nano, see the hardware section.
 
 ```yaml
  - platform: serial
@@ -299,7 +333,7 @@ First the sketch from the Hardware section was put on the Arduino nano, see [her
 
 On the Home Assistant documentation for Arduino integration it is described that `serial_port: /dev/ttyUSB1` an be used. However, I noticed that on restarts the assignment of ttyUSB# can differ and therefore the readout of the Arduino can fail after restart. To make sure this doesn't happen the serial by-id is used. Which can be found in Supervisor - System - Click on the three dots in the Host block - Hardware
 
-#### 4.3.2 Setup the generic thermostat integration
+#### 6.3.2 Setup the generic thermostat integration
 
 This integration adds the thermostat function and when configured makes available the thermostat function in Lovelace. 
 
@@ -349,7 +383,7 @@ climate:
   precision: 0.1
 ```
 
-#### 4.3.3 Telegram integration
+#### 6.3.3 Telegram integration
 
 I use [Telegram](https://telegram.org/) for notifications. Currently I am using two notifications:
 
@@ -381,7 +415,7 @@ notify:
     chat_id: secret
 ```
 
-#### 4.3.4 Trend sensor for possible open window detection
+#### 6.3.4 Trend sensor for possible open window detection
 
 Using the [trend platform](https://www.home-assistant.io/integrations/trend/) it is checked if the temperature will rise enough while heating. If not, it can be assumed that a window is open or some other error is happening and the heating is turned off. See [automations](#automations). 
 
@@ -437,7 +471,7 @@ sensor:
         friendly_name: 'thermostaat state'
 ```
 
-### 4.4 Setting temperature time program
+### 6.4 Setting temperature time program
 
 Two automations per room, one for setting the desired set-temperature at bedtime and one at wake-up time. Also a helper `input_number.current_insteltemp_slaapkamer` is set with the current-set temperature. This is needed for restoring the set temperatures after restart of the system and after a manual change.  
 
@@ -541,7 +575,7 @@ I am aware that there is a Home Assistant plugin called [Schedy](https://hass-ap
   mode: single
 ```
 
-### 4.5 Presence detection
+### 6.5 Presence detection
 
 ![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
 
@@ -567,7 +601,7 @@ This configuration set up is based on a one person household, so only one smartp
 
 The following automations were set to achieve this. 
 
-#### 4.5.1 Automations for presence detection
+#### 6.5.1 Automations for presence detection
 
 **Creation of input\_datetime fields**
 
@@ -631,7 +665,7 @@ Description: Turn off the Someone home status `input_boolean.iemandthuis` when n
   mode: single
 ```
 
-#### 4.5.2 Reset the one-before-last-input boolean 31 minutes before waking time
+#### 6.5.2 Reset the one-before-last-input boolean 31 minutes before waking time
 
 Needed for the someone home status to turn on immediately when entering the living room in the morning, otherwise first two motions need to be detected, which can take a while. 
 
@@ -660,7 +694,7 @@ Needed for the someone home status to turn on immediately when entering the livi
   mode: restart
 ```
 
-#### 4.5.3 Automation to turn on someone home status
+#### 6.5.3 Automation to turn on someone home status
 
 ```yaml
 
@@ -685,7 +719,7 @@ Needed for the someone home status to turn on immediately when entering the livi
   mode: single
 ```
 
-#### 4.5.4 Automation during evening and getting up 
+#### 6.5.4 Automation during evening and getting up 
 
 ```yaml
 
@@ -728,7 +762,7 @@ Needed for the someone home status to turn on immediately when entering the livi
     service: climate.turn_on
 ```
 
-#### 4.5.5 Automation between waking up time and evening time
+#### 6.5.5 Automation between waking up time and evening time
 
 ```yaml
 
@@ -758,7 +792,7 @@ Needed for the someone home status to turn on immediately when entering the livi
   mode: single
 ```
 
-#### 4.5.6 Behavior based on smart phone location with Home Assistant app
+#### 6.5.6 Behavior based on smart phone location with Home Assistant app
 
 ```yaml
 
@@ -804,7 +838,7 @@ Needed for the someone home status to turn on immediately when entering the livi
     service: climate.turn_off 
 ```
 
-### 4.6 Heat for 5 minutes straight
+### 6.6 Heat for 5 minutes straight
 
 Automation:
 
@@ -833,7 +867,7 @@ Automation:
   mode: single
 ```
 
-### 4.7 Window open detection
+### 6.7 Window open detection
 
 {% raw %}\<a name="windowopendetection"> \</a>{% endraw %}There are no window sensors, but this is based on the temperature rise during heating. If the temperature doesn't rise quickly enough, it is assumed that a window is open and thermostat function will turn off. 
 
@@ -912,7 +946,7 @@ For the bedroom:
   mode: single
 ```
 
-### 4.8 Revert back to programmed set temperature after manual change  
+### 6.8 Revert back to programmed set temperature after manual change  
 
 According to `input_datetime.duur_manuele_verhoging` value a timer is started after which the set temperature will revert back to set temperature according to program. 
 
@@ -947,7 +981,7 @@ Uses the [Timer integration](https://www.home-assistant.io/integrations/timer/)
   mode: restart
 ```
 
-### 4.9 Telegram notification hours of heating past week on Sunday
+### 6.9 Telegram notification hours of heating past week on Sunday
 
 ```yaml
 - id: '1604938488226'
@@ -968,7 +1002,7 @@ Uses the [Timer integration](https://www.home-assistant.io/integrations/timer/)
   mode: single
 ```
 
-### 4.10 Turn of heating when there is no signal of DS18B20 temperature sensor
+### 6.10 Turn of heating when there is no signal of DS18B20 temperature sensor
 
 It occasionally happens that there is no signal of the DS18B20 temperature sensor or that by mistake the USB cable gets unplugged. The displayed temperature then can get below set temperature and will trigger heating while not really desired. To avoid this an automation is set to turn off. 
 
@@ -995,7 +1029,7 @@ It occasionally happens that there is no signal of the DS18B20 temperature senso
   mode: single
 ```
 
-### 4.11 Controlling two generic thermostat entities
+### 6.11 Controlling two generic thermostat entities
 
 The [generic thermostat integration](https://www.home-assistant.io/integrations/generic_thermostat/) is equipped to work only with one temperature sensor. You can run two instances of the generic thermostat integration. However when the heater option is set to the same switch, then when one thermostat is turned on, the other will automatically turn on too (bc they use the same switch,  generic thermostat is programmed like that). This sometimes can lead to situations in which the thermostat of a room will turn on while cold air is flowing in because of a open window. 
 
@@ -1003,7 +1037,7 @@ Therefore a couple of input\_booleans are created and are set as heater switch. 
 
 Also the someone status `input_boolean.iemandthuis` is taken into account 
 
-#### 4.11.1 Living room thermostat turn on
+#### 6.11.1 Living room thermostat turn on
 
 ```yaml
 - id: '1606337912735'
@@ -1038,7 +1072,7 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
   max: 10
 ```
 
-#### 4.11.2 Bedroom thermostat turn on / off 
+#### 6.11.2 Bedroom thermostat turn on / off 
 
 ```yaml
 - id: '1606338268883'
@@ -1078,7 +1112,7 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
   mode: restart
 ```
 
-#### 4.11.3 Living room turn thermostat off
+#### 6.11.3 Living room turn thermostat off
 
 ```yaml
 
@@ -1225,13 +1259,13 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
   mode: single
 ```
 
-## 5. Bypass valve
+## 7. Bypass valve
 
 When using zone heating in your house, consider adding a bypass valve to your central heating plan. A bypass valve will let through water when the pressure in the system gets too high. This avoid damage to the boiler pump because of pumping while all the radiators are closed you can open a small radiator manually or add a bypass valve. I just keep a radiator in my shower always opened.
 
 ![](https://user-images.githubusercontent.com/43075793/123786721-4e1e2280-d8da-11eb-867b-88769c79d803.jpeg)
 
-## 6. Possible improvements to this configuration
+## 8. Possible improvements to this configuration
 
 Some possible improvements for this design to implement later on:
 
@@ -1240,12 +1274,12 @@ Some possible improvements for this design to implement later on:
 *   Making more input variables. I can probably do some more of these for instance setting the time the someone home status is turned of when no motion detection. Setting variables helps for not having to open the automations every time.
 *   Using thermal sensors for presence detection with for instance the Omron D6T sensors, [youtube link](https://www.youtube.com/watch?v=-beIaL-RmvQ).
 
-### 6.1 Added to the system but not described yet
+### 8.1 Added to the system but not described yet
 
 *   Anti frost measure, if a detected temperature is below 5 degrees, turn on the heating no matter whether the thermostat is set to off.
 *   Set a variable time of heating according to the outdoor temperature fetched from an internet source
 
-## 7. Links to similar
+## 9. Links to similar
 
 I used these webpages for inspiration:
 
