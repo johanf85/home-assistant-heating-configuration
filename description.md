@@ -68,10 +68,10 @@ In this container.
 
 Store: [Aliexpress](https://nl.aliexpress.com/item/1005002674336082.html)
 
-Arduino sketch used:\<a name="arduinosketch">  \</a>
+Arduino sketch used:{% raw %}  
+\<a name="arduinosketch">&nbsp;  \</a>{% endraw %}
 
 ```c++
-{% raw %}
 \#include <OneWire.h>
 \#include <DallasTemperature.h>
 
@@ -111,7 +111,6 @@ void loop(void)
 
   delay(30000);
 }
-{% endraw %}
 ```
 
 **Living room**
@@ -198,7 +197,10 @@ Created the following helpers via configuration > helpers within Home Assistant
 | **Someone home?** | input\_boolean (toggle) |   |
 |   |   | input\_datetime.bedtijd |
 |   |   | input\_text.woonk\_nacht |
-|   |   | input\_number.current\_insteltemp\_woonkamer |
+|   |   | 
+input\_number.current\_insteltemp\_woonkamer
+
+ |
 
 ### 4.2 Variables
 
@@ -216,7 +218,7 @@ Only covering the relevant part of the configuration for the smart heating syste
 
 #### 4.3.1 Setting up sensors and relay
 
-#### 4.3.2 **DS18b20 temperature sensor**
+##### 4.3.1.1 **DS18b20 temperature sensor**
 
 ![](https://user-images.githubusercontent.com/43075793/117957906-cb85d780-b31a-11eb-8d61-c71f36264ce6.png)
 
@@ -238,7 +240,7 @@ Restart Home Assistant and if configuration went well, a temperature sensor is d
 
 More on configurating 1-wire sensors on the Home Assistant documentation:  [1-wire integration](https://www.home-assistant.io/integrations/onewire/).
 
-#### 4.3.3 Correction of temperature sensors
+#### 4.3.2 Correction of temperature sensors
 
 My DS18B20 sensors ([onewire](https://www.home-assistant.io/integrations/onewire/)) need a correction to match the right temperature value. With the use of [template platform](https://www.home-assistant.io/integrations/template/) a correction is applied to the onewire sensors. 
 
@@ -258,7 +260,7 @@ sensor:
         unit_of_measurement: degrees
 ```
 
-#### 4.3.4 **Relay**
+##### 4.3.2.1 **Relay**
 
 ![](https://user-images.githubusercontent.com/43075793/117958501-5c5cb300-b31b-11eb-8065-645693a0284e.png)
 
@@ -273,7 +275,25 @@ switch:
 
 More info on Home Assistant website: [rpi\_gpio integration](https://www.home-assistant.io/integrations/rpi_gpio/)
 
-#### 4.3.5 **Arduino**
+##### 4.3.2.2 **Motion sensor**
+
+![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
+
+Connected to gpio pin 26
+
+```yaml
+binary_sensor:
+  - platform: rpi_gpio
+    invert_logic: false
+    ports:
+     26: Motion sensor
+```
+
+More info on Home Assistant website: [rpi\_gpio integration](https://www.home-assistant.io/integrations/rpi_gpio/)
+
+After connecting set do desired behavior with the two set screws on the PIR module.  
+
+##### 4.3.2.3 **Arduino**
 
 First the sketch from the Hardware section was put on the Arduino nano, see [here](#arduinosketch) in the hardware section.
 
@@ -284,7 +304,7 @@ First the sketch from the Hardware section was put on the Arduino nano, see [her
 
 On the Home Assistant documentation for Arduino integration it is described that `serial_port: /dev/ttyUSB1` an be used. However, I noticed that on restarts the assignment of ttyUSB# can differ and therefore the readout of the Arduino can fail after restart. To make sure this doesn't happen the serial by-id is used. Which can be found in Supervisor - System - Click on the three dots in the Host block - Hardware
 
-### 4.4 Setup the generic thermostat integration
+#### 4.3.3 Setup the generic thermostat integration
 
 This integration adds the thermostat function and when configured makes available the thermostat function in Lovelace. 
 
@@ -334,7 +354,7 @@ climate:
   precision: 0.1
 ```
 
-#### 4.4.1 Telegram integration
+#### 4.3.4 Telegram integration
 
 I use [Telegram](https://telegram.org/) for notifications. Currently I am using two notifications:
 
@@ -342,7 +362,7 @@ I use [Telegram](https://telegram.org/) for notifications. Currently I am using 
 
 ![](https://user-images.githubusercontent.com/43075793/110303144-53d5bc80-7ffa-11eb-98dc-0a7ae96f4686.png)
 
-"Last week there were 21 hours of heating"
+Translation: "Last week there were 21 hours of heating"
 
 *   When the heating is automatically turned off because of a suspected open window (See [Window open detection](#windowopendetection)).
 
@@ -366,7 +386,7 @@ notify:
     chat_id: secret
 ```
 
-#### 4.4.2 Trend sensor for possible open window detection
+#### 4.3.5 Trend sensor for possible open window detection
 
 Using the [trend platform](https://www.home-assistant.io/integrations/trend/) it is checked if the temperature will rise enough while heating. If not, it can be assumed that a window is open or some other error is happening and the heating is turned off. See [automations](#automations). 
 
@@ -374,15 +394,6 @@ The `min_gradient` value, which is the temperature rising per second, for each r
 
 ```yaml
 
-binary_sensor:
-  - platform: rpi_gpio
-    invert_logic: false
-    ports:
-     16: Kleine Motion sensor
-  - platform: rpi_gpio
-    invert_logic: false
-    ports:
-     26: Motion sensor
   - platform: trend
     sensors:
       temp_falling_slaapkamer:
@@ -403,9 +414,6 @@ binary_sensor:
 
 ```yaml
 sensor:
-  - platform: serial
-    serial_port: /dev/ttyUSB0
-  - platform: onewire
   - platform: time_date
     display_options:
       - 'time'
@@ -434,9 +442,7 @@ sensor:
         friendly_name: 'thermostaat state'
 ```
 
-### 4.5 Configuration elements
-
-#### 4.5.1 Setting temperature time program
+### 4.4 Setting temperature time program
 
 Two automations per room, one for setting the desired set-temperature at bedtime and one at wake-up time. Also a helper `input_number.current_insteltemp_slaapkamer` is set with the current-set temperature. This is needed for restoring the set temperatures after restart of the system and after a manual change.  
 
@@ -540,7 +546,7 @@ I am aware that there is a Home Assistant plugin called [Schedy](https://hass-ap
   mode: single
 ```
 
-#### 4.5.2 Presence detection
+### 4.5 Presence detection
 
 ![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
 
@@ -566,7 +572,7 @@ This configuration set up is based on a one person household, so only one smartp
 
 The following automations were set to achieve this. 
 
-##### 4.5.2.1 Automations for presence detection
+##### 4.5.1.1 Automations for presence detection
 
 **Creation of input\_datetime fields**
 
@@ -630,7 +636,7 @@ Description: Turn off the Someone home status `input_boolean.iemandthuis` when n
   mode: single
 ```
 
-##### 4.5.2.2 Reset the one-before-last-input boolean 31 minutes before waking time
+##### 4.5.1.2 Reset the one-before-last-input boolean 31 minutes before waking time
 
 Needed for the someone home status to turn on immediately when entering the living room in the morning, otherwise first two motions need to be detected, which can take a while. 
 
@@ -659,7 +665,7 @@ Needed for the someone home status to turn on immediately when entering the livi
   mode: restart
 ```
 
-##### 4.5.2.3 Automation to turn on someone home status
+##### 4.5.1.3 Automation to turn on someone home status
 
 ```yaml
 
@@ -684,7 +690,7 @@ Needed for the someone home status to turn on immediately when entering the livi
   mode: single
 ```
 
-##### 4.5.2.4 Automation during evening and getting up 
+##### 4.5.1.4 Automation during evening and getting up 
 
 ```yaml
 
@@ -727,7 +733,7 @@ Needed for the someone home status to turn on immediately when entering the livi
     service: climate.turn_on
 ```
 
-##### 4.5.2.5 Automation between waking up time and evening time
+##### 4.5.1.5 Automation between waking up time and evening time
 
 ```yaml
 
@@ -757,7 +763,7 @@ Needed for the someone home status to turn on immediately when entering the livi
   mode: single
 ```
 
-##### 4.5.2.6 Behavior based on smart phone location with Home Assistant app
+##### 4.5.1.6 Behavior based on smart phone location with Home Assistant app
 
 ```yaml
 
