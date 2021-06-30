@@ -68,10 +68,11 @@ In this container.
 
 Store: [Aliexpress](https://nl.aliexpress.com/item/1005002674336082.html)
 
-Arduino sketch used:  
-  
+Arduino sketch used:   
 
 ```c++
+//remove the / before the # signs, it is bc of github pages these are added. 
+
 \#include <OneWire.h>
 \#include <DallasTemperature.h>
 
@@ -290,7 +291,7 @@ After connecting set do desired behavior with the two set screws on the PIR modu
 
 ##### **Arduino**
 
-First the sketch from the Hardware section was put on the Arduino nano, see [here](#arduinosketch) in the hardware section.
+First the sketch from the Hardware section was put on the Arduino nano, see the hardware section.
 
 ```yaml
  - platform: serial
