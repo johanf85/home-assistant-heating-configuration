@@ -69,7 +69,7 @@ In this container.
 Store: [Aliexpress](https://nl.aliexpress.com/item/1005002674336082.html)
 
 Arduino sketch used:{% raw %}  
-\<a name="arduinosketch">&nbsp;  \</a>{% endraw %}
+\<a name="arduinosketch">   \</a>{% endraw %}
 
 ```c++
 \#include <OneWire.h>
@@ -197,10 +197,9 @@ Created the following helpers via configuration > helpers within Home Assistant
 | **Someone home?** | input\_boolean (toggle) |   |
 |   |   | input\_datetime.bedtijd |
 |   |   | input\_text.woonk\_nacht |
-|   |   | 
-input\_number.current\_insteltemp\_woonkamer
+| input\_number.current\_insteltemp\_woonkamer |   |   |
 
- |
+|
 
 ### Variables
 
@@ -240,7 +239,7 @@ Restart Home Assistant and if configuration went well, a temperature sensor is d
 
 More on configurating 1-wire sensors on the Home Assistant documentation:  [1-wire integration](https://www.home-assistant.io/integrations/onewire/).
 
-#### Correction of temperature sensors
+##### **Correction of temperature sensor**
 
 My DS18B20 sensors ([onewire](https://www.home-assistant.io/integrations/onewire/)) need a correction to match the right temperature value. With the use of [template platform](https://www.home-assistant.io/integrations/template/) a correction is applied to the onewire sensors. 
 
@@ -254,10 +253,7 @@ sensor:
         value_template: "{{ states('sensor.28_00000913d350_temperature')|float - 1.2}}"
         friendly_name: 'Woonkamer temp'
         unit_of_measurement: degrees
-      ds18b20_slaapkamer_correctie:
-        value_template: "{{ states('sensor.28_011937d1c3d1_temperature')|float - 0.6}}"
-        friendly_name: 'Slaapkamer temp'
-        unit_of_measurement: degrees
+ 
 ```
 
 ##### **Relay**
