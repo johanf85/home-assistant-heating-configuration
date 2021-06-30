@@ -835,7 +835,7 @@ Automation:
 
 ### Window open detection
 
-{% raw %}\<a name="windowopendetection">&nbsp;\</a>{% endraw %}There are no window sensors, but this is based on the temperature rise during heating. If the temperature doesn't rise quickly enough, it is assumed that a window is open and thermostat function will turn off. 
+{% raw %}\<a name="windowopendetection"> \</a>{% endraw %}There are no window sensors, but this is based on the temperature rise during heating. If the temperature doesn't rise quickly enough, it is assumed that a window is open and thermostat function will turn off. 
 
 Uses the [Trend sensor](https://www.home-assistant.io/integrations/trend/) to make the `binary_sensor.temp_falling`
 
@@ -1003,7 +1003,7 @@ Therefore a couple of input\_booleans are created and are set as heater switch. 
 
 Also the someone status `input_boolean.iemandthuis` is taken into account 
 
-###### Living room thermostat turn on
+#### Living room thermostat turn on
 
 ```yaml
 - id: '1606337912735'
