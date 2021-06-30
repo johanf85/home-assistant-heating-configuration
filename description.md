@@ -684,7 +684,7 @@ Needed for the someone home status to turn on immediately when entering the livi
   mode: single
 ```
 
-#####  Automation during evening and getting up 
+##### 4.5.2.4 Automation during evening and getting up 
 
 ```yaml
 
@@ -727,7 +727,7 @@ Needed for the someone home status to turn on immediately when entering the livi
     service: climate.turn_on
 ```
 
-#####  Automation between getting up time and evening time
+##### 4.5.2.5 Automation between waking up time and evening time
 
 ```yaml
 
@@ -757,7 +757,7 @@ Needed for the someone home status to turn on immediately when entering the livi
   mode: single
 ```
 
-##### 4.5.2.4 Behavior based on smart phone location with Home Assistant app
+##### 4.5.2.6 Behavior based on smart phone location with Home Assistant app
 
 ```yaml
 
@@ -805,7 +805,7 @@ Needed for the someone home status to turn on immediately when entering the livi
 
 ### 4.6 Heat for 5 minutes straight
 
-##### 4.6.1.1 Automation:
+Automation:
 
 ```yaml
 
@@ -1226,7 +1226,9 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
 
 ## 5. Bypass valve
 
-When using zone heating in your house, consider adding a bypass valve to your central heating plan. A bypass valve will let through water when the pressure in the system gets too high. This avoid the pump of the boiler to start pumping and 
+When using zone heating in your house, consider adding a bypass valve to your central heating plan. A bypass valve will let through water when the pressure in the system gets too high. This avoid damage to the boiler pump because of pumping while all the radiators are closed you can open a small radiator manually or add a bypass valve. I just keep a radiator in my shower always opened.
+
+![](https://user-images.githubusercontent.com/43075793/123786721-4e1e2280-d8da-11eb-867b-88769c79d803.jpeg)
 
 ## 6. Possible improvements
 
