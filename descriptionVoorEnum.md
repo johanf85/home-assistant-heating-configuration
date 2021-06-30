@@ -434,9 +434,7 @@ sensor:
         friendly_name: 'thermostaat state'
 ```
 
-### Configuration elements
-
-#### Setting temperature time program
+### Setting temperature time program
 
 Two automations per room, one for setting the desired set-temperature at bedtime and one at wake-up time. Also a helper `input_number.current_insteltemp_slaapkamer` is set with the current-set temperature. This is needed for restoring the set temperatures after restart of the system and after a manual change.  
 
@@ -540,7 +538,7 @@ I am aware that there is a Home Assistant plugin called [Schedy](https://hass-ap
   mode: single
 ```
 
-#### Presence detection
+### Presence detection
 
 ![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
 
