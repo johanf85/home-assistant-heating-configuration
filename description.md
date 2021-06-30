@@ -68,8 +68,8 @@ In this container.
 
 Store: [Aliexpress](https://nl.aliexpress.com/item/1005002674336082.html)
 
-Arduino sketch used:{% raw %}  
-\<a name="arduinosketch">   \</a>{% endraw %}
+Arduino sketch used:  
+  
 
 ```c++
 \#include <OneWire.h>
