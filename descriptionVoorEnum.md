@@ -175,34 +175,21 @@ Created the following helpers via configuration > helpers within Home Assistant
 |   |   | input\_datetime.bedtijd |
 |   |   | input\_datetime.avond |
 |   |   | input\_datetime.opstaan |
-
-|   |   | input\_text.woonk\_nacht |  
-|   |   | input\_text.woonk\_overdag |  
-|   |   | input\_number.current\_insteltemp\_woonkamer |  
-|  
-Countdown timer | timer | timer.countdown |
-
-|   |   | input\_datetime.bewegingeennalaatst\_1  
-  |  
-|   |   | input\_datetime.beweginglaatst\_0  
-  |
-
+|   |   | input\_text.woonk\_nacht |
+|   |   | input\_text.woonk\_overdag |
+|   |   | input\_number.current\_insteltemp\_woonkamer |
+| Countdown timer | timer | timer.countdown |
+|   |   | input\_datetime.bewegingeennalaatst\_1 |
+|   |   | input\_datetime.beweginglaatst\_0 |
 |   |   | input\_number.current\_insteltemp\_slaapkamer |
-
-|   |   | input\_number.current\_insteltemp\_woonkamer |  
+|   |   | input\_number.current\_insteltemp\_woonkamer |
 |   |   | input\_datetime.duur\_manuele\_verhoging |
-
 |   |   | input\_number.huidige\_insteltemperatuur\_slaapkamer |
-
-|   |   | input\_boolean.schakelaar\_slaapkamer |  
+|   |   | input\_boolean.schakelaar\_slaapkamer |
 |   |   | input\_boolean.schakelaar\_woonkamer |
-
-|   |   | input\_text.slaapkamer\_insteltemp\_nacht |  
+|   |   | input\_text.slaapkamer\_insteltemp\_nacht |
 |   |   | input\_text.slaapkamer\_insteltemp\_overdag |
-
 |   |   | input\_datetime.tijdelijk\_verwarmen |
-
-|
 
 ### 6.2 Variables
 
