@@ -143,7 +143,7 @@ Contains:
 
 Store: [Aliexpress](https://nl.aliexpress.com/item/1005002674336082.html)
 
-Note: DHT11/22 sensors don't work with pi0 and Home Assistant (drive not provided), if desired use an Arduino with DHT sensor and connect to Home Assistant.
+Note: DHT11/22 sensors don't work with pi0 and Home Assistant (driver not provided), if desired use an Arduino with DHT sensor and connect to Home Assistant.
 
 *   PIR motion sensor module
 
