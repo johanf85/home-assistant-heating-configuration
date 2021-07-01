@@ -197,7 +197,7 @@ A doorspring was put on both rooms door, so that they will be kept closed as muc
 
 ## Home Assistant configuration 
 
-### Helpers 
+### 6.1 Helpers 
 
 Created the following helpers via configuration > helpers within Home Assistant
 
@@ -236,7 +236,7 @@ Countdown timer | timer | timer.countdown |
 
 |
 
-### Variables
+### 6.2 Variables
 
 To easily change settings to which I would like them, I make use of input variables. I made a tab in Lovelace to edit this variables.
 
@@ -246,13 +246,13 @@ To easily change settings to which I would like them, I make use of input variab
 
 Most of them speak for themselves. The someone home switch is turned on depending on presence detection. When the set temperature of the thermostat is changed manually, it will revert back to the initial set temperature according to program after the set Duration manual change value. The countdown shows the amount of time left until revert to initial set temperature. 
 
-### Configuration.yaml
+### 6.3 Configuration.yaml
 
 Only covering the relevant part of the configuration for the smart heating system. 
 
-#### Setting up sensors and relay
+#### 6.3.1 Setting up sensors and relay
 
-##### **DS18b20 temperature sensor**
+##### 6.3.1.1 **DS18b20 temperature sensor**
 
 ![](https://user-images.githubusercontent.com/43075793/117957906-cb85d780-b31a-11eb-8d61-c71f36264ce6.png)
 
@@ -274,7 +274,7 @@ Restart Home Assistant and if configuration went well, a temperature sensor is d
 
 More on configurating 1-wire sensors on the Home Assistant documentation:  [1-wire integration](https://www.home-assistant.io/integrations/onewire/).
 
-##### **Correction of temperature sensor**
+##### 6.3.1.2 **Correction of temperature sensor**
 
 My DS18B20 sensors ([onewire](https://www.home-assistant.io/integrations/onewire/)) need a correction to match the right temperature value. With the use of [template platform](https://www.home-assistant.io/integrations/template/) a correction is applied to the onewire sensors. 
 
@@ -292,7 +292,7 @@ sensor:
  {% endraw %}
 ```
 
-##### **Relay**
+##### 6.3.1.3 **Relay**
 
 ![](https://user-images.githubusercontent.com/43075793/117958501-5c5cb300-b31b-11eb-8065-645693a0284e.png)
 
@@ -307,7 +307,7 @@ switch:
 
 More info on Home Assistant website: [rpi\_gpio integration](https://www.home-assistant.io/integrations/rpi_gpio/)
 
-##### **Motion sensor**
+##### 6.3.1.4 **Motion sensor**
 
 ![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
 
@@ -325,7 +325,7 @@ More info on Home Assistant website: [rpi\_gpio integration](https://www.home-as
 
 After connecting set do desired behavior with the two set screws on the PIR module.  
 
-##### **Arduino**
+##### 6.3.1.5 **Arduino**
 
 First the sketch from the Hardware section was put on the Arduino nano, see the hardware section.
 
@@ -336,7 +336,7 @@ First the sketch from the Hardware section was put on the Arduino nano, see the 
 
 On the Home Assistant documentation for Arduino integration it is described that `serial_port: /dev/ttyUSB1` an be used. However, I noticed that on restarts the assignment of ttyUSB# can differ and therefore the readout of the Arduino can fail after restart. To make sure this doesn't happen the serial by-id is used. Which can be found in Supervisor - System - Click on the three dots in the Host block - Hardware
 
-#### Setup the generic thermostat integration
+#### 6.3.2 Setup the generic thermostat integration
 
 This integration adds the thermostat function and when configured makes available the thermostat function in Lovelace. 
 
@@ -388,7 +388,7 @@ climate:
   {% endraw %}
 ```
 
-#### Telegram integration
+#### 6.3.3 Telegram integration
 
 I use [Telegram](https://telegram.org/) for notifications. Currently I am using two notifications:
 
@@ -420,7 +420,7 @@ notify:
     chat_id: secret
 ```
 
-#### Trend sensor for possible open window detection
+#### 6.3.4 Trend sensor for possible open window detection
 
 Using the [trend platform](https://www.home-assistant.io/integrations/trend/) it is checked if the temperature will rise enough while heating. If not, it can be assumed that a window is open or some other error is happening and the heating is turned off. See [automations](#automations). 
 
@@ -478,7 +478,7 @@ sensor:
 {% endraw %}   
 ```
 
-### Setting temperature time program
+### 6.4 Setting temperature time program
 
 Two automations per room, one for setting the desired set-temperature at bedtime and one at wake-up time. Also a helper `input_number.current_insteltemp_slaapkamer` is set with the current-set temperature. This is needed for restoring the set temperatures after restart of the system and after a manual change.  
 
@@ -586,183 +586,18 @@ I am aware that there is a Home Assistant plugin called [Schedy](https://hass-ap
   {% endraw %}
 ```
 
-### Presence detection
+### 6.5 Triggering heating with two generic thermostat entities
 
-![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
+As there are two zones in this situation, living room and bedroom, two thermostat instances are needed.  
+The [generic thermostat integration](https://www.home-assistant.io/integrations/generic_thermostat/) is equipped to work only with one temperature sensor. You can run two instances of the generic thermostat integration. However when the heater option is set to the same switch, then when one thermostat is turned on, the other will automatically turn on too (bc they use the same switch,  generic thermostat is programmed like that). This sometimes can lead to situations in which the thermostat of a room will turn on while cold air is flowing in because of a open window. 
 
-Presence detection is done with both the mobile phone GPS location and a PIR movement sensor in the living room. If the mobile phone was the only source for presence detection this would have been used, but since there is a PIR as well, the away modus of Generic thermostat integration isn't used in this configuration, instead of this a helper switch input (Someone home?).  
+Therefore a couple of input\_booleans are created and are set as heater switch. Via an automation the relay switch will be turned on if one of these input\_booleans are turned on. 
 
-I used a PIR sensor next to the smartphone, because there are some disadvantages in using smartphones only for presence detection. There are scenarios like when the battery is down or the phone is on flight mode, in which the system will think someones is home.  Also it is less suitable when having guests if the smartphone is used as only presence detection source. 
+Also the someone status `input_boolean.iemandthuis` is taken into account 
 
-The configuration is set so, that when the phone `device_tracker.pra_lx1` changes location from away to home or home to away the helper switch `input_boolean.iemandthuis`  is toggled. So only on **state change**, not on current state. Next to that, the rule is followed that if two movements aren't being detected within the last half hour, the 'someone home status' `input_boolean.iemandthuis` is set to off. 
-
-In the evening the presence detection by the PIR motion detector should be different. It is assumed that if two times a motion is detected within half an hour during `evening time` and `bedtime`, that someone will be home during the entire night. 
-
-As it was noticed that the PIR used in very few occasions can have a false motion detection, the number of two motion detections was chosen. 
-
-This configuration set up is based on a one person household, so only one smartphone with the home assistant app running. 
-
-| Triggers | Between hours | set 'someone home status' to |
-| --- | --- | --- |
-| Two times a motion detected within 30 minutes period 'someone home status' is off | waking up and evening | on |
-| An half an hour with one or less motion detected while 'someone home status' is on | waking up and evening | off |
-| Two times a motion detected within 30 minutes period while 'someone home status' is off | evening and bedtime | on |
-| Smartphone location state change to away | always | off |
-| Smartphone location state change to home | always | on |
-
-The following automations were set to achieve this. 
-
-#### Automations for presence detection
-
-**Creation of input\_datetime fields**
-
-Two input\_datetime fields have been created for the purpose of presence detection: `input_datetime.beweginglaatst_0` and `input_datetime.bewegingeennalaatst_1` . On a motion detection one is to date/time of the last movement detected and on the next detected motion this value is passed to the other.
-
-This is used, bc it is desired that a minimum of two movements need to be detected in the last 30 minutes to keep the status of some one home, `input_boolean.iemandthuis`, to 'on'.
-
-**Setting the movement input\_datetime fields on motion detection**
+#### 6.5.1 Turning on the thermostat when someone home
 
 ```yaml
-{% raw %}
-- id: '1606672315270'
-  alias: Movementsensor last 
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.motion_sensor
-    to: 'on'
-  condition: []
-  action:
-  - service: input_datetime.set_datetime
-    data:
-      datetime: '{{states(''input_datetime.beweginglaatst_0'')}}'
-    entity_id: input_datetime.bewegingeennalaatst_1
-  - service: input_datetime.set_datetime
-    data:
-      datetime: '{{ now().strftime(''%Y-%m-%d %H:%M:%S'') }}'
-    entity_id: input_datetime.beweginglaatst_0
-  mode: single
-  {% endraw %}
-```
-
-**Turning of if not more than 1 movement detetected during day**
-
-Timespan: between wake-up time and evening time
-
-Description: Turn off the Someone home status `input_boolean.iemandthuis` when not more than 1 movement. 
-
-```yaml
-{% raw %}
-- id: '1587319961411'
-  alias: Gedrag bewegingssensor woonkamer tussen opstaan en avond (overdag)
-  description: ''
-  trigger:
-  - platform: template
-    value_template: '{{ (states.sensor.time.last_changed - states.input_datetime.bewegingeennalaatst_1.last_changed).total_seconds()
-      > 1800 }}
-
-      '
-  - platform: state
-    entity_id: person.johan
-    to: not_home
-  condition:
-  - condition: state
-    entity_id: input_boolean.iemandthuis
-    state: 'on'
-  - before: input_datetime.avond
-    condition: time
-    after: input_datetime.opstaan
-  action:
-  - data: {}
-    entity_id: input_boolean.iemandthuis
-    service: input_boolean.turn_off
-  mode: single
-{% endraw %}  
-```
-
-#### Reset the one-before-last-input boolean 31 minutes before waking time
-
-Needed for the someone home status to turn on immediately when entering the living room in the morning, otherwise first two motions need to be detected, which can take a while. 
-
-```yaml
-{% raw %}
-- id: '1606905142912'
-  alias: Reset 1 na laatste beweging 31 min voor opstaan
-  description: ''
-  trigger:
-  - platform: time_pattern
-    seconds: '30'
-  condition:
-  - condition: template
-    value_template: '{/% set current_time = now().hour * 60 + now().minute %}
-
-      {/% set opstaan_hour, opstaan_minute, opstaan_second = states(''input_datetime.opstaan'').split('':'')
-      %}
-
-      {/% set opstaan_time = opstaan_hour | int * 60 + opstaan_minute | int %}
-
-      {{ current_time == opstaan_time - 32 }}'
-  action:
-  - service: input_datetime.set_datetime
-    data:
-      datetime: '{{now().strftime(''%Y-%m-%d %H:%M:%S'')}}'
-    entity_id: input_datetime.bewegingeennalaatst_1
-  mode: restart
-  {% endraw %}
-```
-
-#### Automation to turn on someone home status
-
-```yaml
-{% raw %}
-- id: '1587319960331'
-  alias: Turn on someone home status
-  description: ''
-  trigger:
-  - entity_id: device_tracker.pra_lx1
-    platform: state
-    to: home
-  - entity_id: binary_sensor.motion_sensor
-    platform: state
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: input_boolean.iemandthuis
-    state: 'off'
-  action:
-  - data: {}
-    entity_id: input_boolean.iemandthuis
-    service: input_boolean.turn_on
-  mode: single
- {% endraw %}
-```
-
-#### Automation during evening and getting up 
-
-```yaml
-{% raw %}
-- id: '1587404974211'
-  alias: Aanwezigheid detectie avond tot opstaan
-  description: ''
-  trigger:
-  - platform: template
-    value_template: '{{ (states.sensor.time.last_changed - states.input_datetime.bewegingeennalaatst_1.last_changed).total_seconds()
-      == 300 }}'
-  condition:
-  - condition: state
-    entity_id: input_boolean.iemandthuis
-    state: 'off'
-  - before: input_datetime.opstaan
-    condition: time
-    after: input_datetime.avond
-  - condition: template
-    value_template: '{{ (states.sensor.time.last_changed - states.input_datetime.bewegingeennalaatst_1.last_changed).total_seconds()
-      < 300 }}'
-  action:
-  - data: {}
-    entity_id: input_boolean.iemandthuis
-    service: input_boolean.turn_on
-  mode: single
 - id: '1587373774458'
   alias: Thermostaat aan bij iemand thuis
   description: ''
@@ -778,295 +613,9 @@ Needed for the someone home status to turn on immediately when entering the livi
   - data: {}
     entity_id: climate.slaapkamer
     service: climate.turn_on
- {% endraw %}   
 ```
 
-#### Automation between waking up time and evening time
-
-```yaml
-{% raw %}
-- id: '1587319961411'
-  alias: Behaviour of motion sensor living room between wakeup time and evening time
-  description: ''
-  trigger:
-  - platform: template
-    value_template: '{{ (states.sensor.time.last_changed - states.input_datetime.bewegingeennalaatst_1.last_changed).total_seconds()
-      > 1800 }}
-
-      '
-  - platform: state
-    entity_id: person.johan
-    to: not_home
-  condition:
-  - condition: state
-    entity_id: input_boolean.iemandthuis
-    state: 'on'
-  - before: input_datetime.bedtijd
-    condition: time
-    after: input_datetime.opstaan
-  action:
-  - data: {}
-    entity_id: input_boolean.iemandthuis
-    service: input_boolean.turn_off
-  mode: single
-  {% endraw %}
-```
-
-#### Behavior based on smart phone location with Home Assistant app
-
-```yaml
-{% raw %}
-- id: '1606221709908'
-  alias: Smartphone thuiskomen / weggaan
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: person.johan
-    to: not_home
-  condition: []
-  action:
-  - service: input_boolean.turn_off
-    data: {}
-    entity_id: input_boolean.iemandthuis
-  - wait_for_trigger:
-    - platform: state
-      entity_id: person.johan
-      to: home
-  - service: input_boolean.turn_on
-    data: {}
-    entity_id: input_boolean.iemandthuis
-  mode: restart
- {% endraw %} 
-```
-
-####  Turning off thermostat when Someone home status is off
-
-```yaml
-- id: '1587373899805'
-  alias: Thermostaat uit bij niemand thuis
-  description: ''
-  trigger:
-  - entity_id: input_boolean.iemandthuis
-    platform: state
-    to: 'off'
-  condition: []
-  action:
-  - data: {}
-    entity_id: climate.woonkamer
-    service: climate.turn_off
-  - data: {}
-    entity_id: climate.slaapkamer
-    service: climate.turn_off 
-```
-
-### Heat for 5 minutes straight
-
-Automation:
-
-```yaml
-
-- id: '1588717917351'
-  alias: 5 minuten verwarmen als schakelaar aan
-  description: ''
-  trigger:
-  - entity_id: input_boolean.30_min_verwarmen_schakelaar
-    platform: state
-    to: 'on'
-  condition: []
-  action:
-  - data: {}
-    entity_id: switch.relay
-    service: switch.turn_on
-  - timeout: 00:05
-    wait_template: ''
-  - data: {}
-    entity_id: switch.relay
-    service: switch.turn_off
-  - service: input_boolean.turn_off
-    data: {}
-    entity_id: input_boolean.30_min_verwarmen_schakelaar
-  mode: single
-```
-
-### Window open detection
-
-{% raw %}\<a name="windowopendetection"> \</a>{% endraw %}There are no window sensors, but this is based on the temperature rise during heating. If the temperature doesn't rise quickly enough, it is assumed that a window is open and thermostat function will turn off. 
-
-Uses the [Trend sensor](https://www.home-assistant.io/integrations/trend/) to make the `binary_sensor.temp_falling`
-
-After 300 seconds of heating without reaching the treshold of de trend sensor, the thermostat is turned off and sends a Telegram notification:
-
-![](https://user-images.githubusercontent.com/43075793/110302916-13763e80-7ffa-11eb-8579-ccd264169956.png)
-
-Translation: "Bedroom thermostat turned off bc of too slow heating up, window open?"
-
-**Automations:**
-
-For the bedroom:
-
-```yaml
-{% raw %}
-- id: '1588799650928'
-  alias: Relay beveiging raam open
-  description: ''
-  trigger:
-  - platform: time_pattern
-    minutes: '5'
-  condition:
-  - condition: state
-    entity_id: binary_sensor.temp_falling
-    state: 'off'
-  - condition: template
-    value_template: '{{state_attr(''climate.slaapkamer'', ''temperature'') | float
-      > state_attr(''climate.slaapkamer'', ''current_temperature'')}}'
-  - condition: state
-    entity_id: switch.relay
-    state: 'on'
-  - condition: template
-    value_template: '{{ (states.sensor.time.last_changed  - states.switch.relay.last_changed).total_seconds()
-      > 310 }}'
-  action:
-  - service: telegram_bot.send_message
-    data:
-      message: Slaapkamer thermostaat uitgeschakeld ivm te langzame opwarming, raam
-        open?
-      target: [chat-number]
-  - data: {}
-    entity_id: climate.slaapkamer
-    service: climate.turn_off
-  - delay: 00:45:00
-  - service: climate.turn_on
-    data: {}
-    entity_id: climate.slaapkamer
-  mode: single
-  {% endraw %}
-```
-
- And for the living room:
-
-```yaml
-{% raw %}
-- id: '1601215001454'
-  alias: Relay beveiging raam open (woonkamer)
-  description: ''
-  trigger:
-  - platform: template
-    value_template: '{{ (states.sensor.time.last_changed  - states.switch.relay.last_changed).total_seconds()
-      > 400 }}'
-  condition:
-  - condition: state
-    entity_id: automation.slaapkamer_overgang_off_on_set_schakelaar
-    state: 'on'
-  action:
-  - data: {}
-    entity_id: climate.woonkamer
-    service: climate.turn_off
-  - delay: 00:59:00
-  - service: climate.turn_on
-    data: {}
-    entity_id: climate.woonkamer
-  mode: single
-  {% endraw %}
-```
-
-### Revert back to programmed set temperature after manual change  
-
-According to `input_datetime.duur_manuele_verhoging` value a timer is started after which the set temperature will revert back to set temperature according to program. 
-
-Uses the [Timer integration](https://www.home-assistant.io/integrations/timer/)
-
-```yaml
-{% raw %}
-- id: '1604920070266'
-  alias: Countdown bij manual wijziging
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: climate.slaapkamer
-    attribute: temperature
-  - platform: state
-    entity_id: climate.woonkamer
-    attribute: temperature
-  condition: []
-  action:
-  - service: timer.start
-    data:
-      duration: '{{ states.input_datetime.duur_manuele_verhoging.state }}'
-    entity_id: timer.countdown
-  - delay: '{{ states.input_datetime.duur_manuele_verhoging.state }}'
-  - service: climate.set_temperature
-    data:
-      temperature: '{{ states.input_number.current_insteltemp_slaapkamer.state  }}'
-    entity_id: climate.slaapkamer
-  - service: climate.set_temperature
-    data:
-      temperature: '{{ states.input_number.current_insteltemp_woonkamer.state  }}'
-    entity_id: climate.woonkamer
-  mode: restart
- {% endraw %} 
-```
-
-### Telegram notification hours of heating past week on Sunday
-
-```yaml
-{% raw %}
-- id: '1604938488226'
-  alias: Notificatie aantal uren verwarmen in week
-  description: ''
-  trigger:
-  - platform: time
-    at: '18:00'
-  condition:
-  - condition: time
-    weekday:
-    - sun
-  action:
-  - service: telegram_bot.send_message
-    data:
-      message: De afgelopen week is er {{ states.sensor.aantal_minuten_verwarmen_laatste_7_dagen.state
-        | int}} uren verwarmd.
-  mode: single
-  {% endraw %}
-```
-
-### Turn of heating when there is no signal of DS18B20 temperature sensor
-
-It occasionally happens that there is no signal of the DS18B20 temperature sensor or that by mistake the USB cable gets unplugged. The displayed temperature then can get below set temperature and will trigger heating while not really desired. To avoid this an automation is set to turn off. 
-
-```yaml
-{% raw %}
-- id: '1606221459609'
-  alias: Beveiliging uitvallen temp sensor
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: climate.slaapkamer
-    attribute: current_temperature
-    below: '10'
-  - platform: numeric_state
-    entity_id: sensor.ds18b20_woonkamer_correctie
-    below: '10'
-  condition: []
-  action:
-  - service: climate.turn_off
-    data: {}
-    entity_id: climate.slaapkamer
-  - service: climate.turn_off
-    data: {}
-    entity_id: climate.woonkamer
-  mode: single
-  {% endraw %}
-```
-
-### Controlling two generic thermostat entities
-
-The [generic thermostat integration](https://www.home-assistant.io/integrations/generic_thermostat/) is equipped to work only with one temperature sensor. You can run two instances of the generic thermostat integration. However when the heater option is set to the same switch, then when one thermostat is turned on, the other will automatically turn on too (bc they use the same switch,  generic thermostat is programmed like that). This sometimes can lead to situations in which the thermostat of a room will turn on while cold air is flowing in because of a open window. 
-
-Therefore a couple of input\_booleans are created and are set as heater switch. Via an automation the relay switch will be turned on if one of these input\_booleans are turned on. 
-
-Also the someone status `input_boolean.iemandthuis` is taken into account 
-
-#### Living room thermostat turn on
+#### 6.5.2 Living room thermostat turn on
 
 ```yaml
 {% raw %}
@@ -1103,7 +652,7 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
   {% endraw %}
 ```
 
-#### Bedroom thermostat turn on / off 
+#### 6.5.3 Bedroom thermostat turn on / off 
 
 ```yaml
 {% raw %}
@@ -1145,11 +694,10 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
  {% endraw %} 
 ```
 
-#### Living room turn thermostat off
+#### 6.5.4 Living room turn thermostat off
 
 ```yaml
 {% raw %}
-
 - id: '1606839006446'
   alias: Woonkamer thermostaat uit
   description: ''
@@ -1173,18 +721,6 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
   mode: restart
   max: 10
 
-- id: '1608290218329'
-  alias: Bij opstaan aanwezigheid uit
-  description: ''
-  trigger:
-  - platform: time
-    at: input_datetime.opstaan
-  condition: []
-  action:
-  - service: input_boolean.turn_off
-    data: {}
-    entity_id: input_boolean.iemandthuis
-  mode: single
 - id: '1608297641472'
   alias: terug naar instelwaarde bij restart
   description: ''
@@ -1293,6 +829,486 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
   {% endraw %}
 ```
 
+### 6.6 Presence detection
+
+![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
+
+Presence detection is done with both the mobile phone GPS location and a PIR movement sensor in the living room. If the mobile phone was the only source for presence detection this would have been used, but since there is a PIR as well, the away modus of Generic thermostat integration isn't used in this configuration, instead of this a helper switch input (Someone home?).  
+
+I used a PIR sensor next to the smartphone, because there are some disadvantages in using smartphones only for presence detection. There are scenarios like when the battery is down or the phone is on flight mode, in which the system will think someones is home.  Also it is less suitable when having guests if the smartphone is used as only presence detection source. 
+
+The configuration is set so, that when the phone `device_tracker.pra_lx1` changes location from away to home or home to away the helper switch `input_boolean.iemandthuis`  is toggled. So only on **state change**, not on current state. Next to that, the rule is followed that if two movements aren't being detected within the last half hour, the 'someone home status' `input_boolean.iemandthuis` is set to off. 
+
+In the evening the presence detection by the PIR motion detector should be different. It is assumed that if two times a motion is detected within half an hour during `evening time` and `bedtime`, that someone will be home during the entire night. 
+
+As it was noticed that the PIR used in very few occasions can have a false motion detection, the number of two motion detections was chosen. 
+
+This configuration set up is based on a one person household, so only one smartphone with the home assistant app running. 
+
+| Triggers | Between hours | set 'someone home status' to |
+| --- | --- | --- |
+| Two times a motion detected within 30 minutes period 'someone home status' is off | waking up and evening | on |
+| An half an hour with one or less motion detected while 'someone home status' is on | waking up and evening | off |
+| Two times a motion detected within 30 minutes period while 'someone home status' is off | evening and bedtime | on |
+| Smartphone location state change to away | always | off |
+| Smartphone location state change to home | always | on |
+
+The following automations were set to achieve this. 
+
+#### 6.6.1 Automations for presence detection
+
+**Creation of input\_datetime fields**
+
+Two input\_datetime fields have been created for the purpose of presence detection: `input_datetime.beweginglaatst_0` and `input_datetime.bewegingeennalaatst_1` . On a motion detection one is to date/time of the last movement detected and on the next detected motion this value is passed to the other.
+
+This is used, bc it is desired that a minimum of two movements need to be detected in the last 30 minutes to keep the status of some one home, `input_boolean.iemandthuis`, to 'on'.
+
+**Setting the movement input\_datetime fields on motion detection**
+
+```yaml
+{% raw %}
+- id: '1606672315270'
+  alias: Movementsensor last 
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_sensor
+    to: 'on'
+  condition: []
+  action:
+  - service: input_datetime.set_datetime
+    data:
+      datetime: '{{states(''input_datetime.beweginglaatst_0'')}}'
+    entity_id: input_datetime.bewegingeennalaatst_1
+  - service: input_datetime.set_datetime
+    data:
+      datetime: '{{ now().strftime(''%Y-%m-%d %H:%M:%S'') }}'
+    entity_id: input_datetime.beweginglaatst_0
+  mode: single
+  {% endraw %}
+```
+
+**Turning of if not more than 1 movement detetected during day**
+
+Timespan: between wake-up time and evening time
+
+Description: Turn off the Someone home status `input_boolean.iemandthuis` when not more than 1 movement. 
+
+```yaml
+{% raw %}
+- id: '1587319961411'
+  alias: Gedrag bewegingssensor woonkamer tussen opstaan en avond (overdag)
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{ (states.sensor.time.last_changed - states.input_datetime.bewegingeennalaatst_1.last_changed).total_seconds()
+      > 1800 }}
+
+      '
+  - platform: state
+    entity_id: person.johan
+    to: not_home
+  condition:
+  - condition: state
+    entity_id: input_boolean.iemandthuis
+    state: 'on'
+  - before: input_datetime.avond
+    condition: time
+    after: input_datetime.opstaan
+  action:
+  - data: {}
+    entity_id: input_boolean.iemandthuis
+    service: input_boolean.turn_off
+  mode: single
+{% endraw %}  
+```
+
+#### 6.6.2 Reset the one-before-last-input boolean 31 minutes before waking time
+
+Needed for the someone home status to turn on immediately when entering the living room in the morning, otherwise first two motions need to be detected, which can take a while. 
+
+```yaml
+{% raw %}
+- id: '1606905142912'
+  alias: Reset 1 na laatste beweging 31 min voor opstaan
+  description: ''
+  trigger:
+  - platform: time_pattern
+    seconds: '30'
+  condition:
+  - condition: template
+    value_template: '{/% set current_time = now().hour * 60 + now().minute %}
+
+      {/% set opstaan_hour, opstaan_minute, opstaan_second = states(''input_datetime.opstaan'').split('':'')
+      %}
+
+      {/% set opstaan_time = opstaan_hour | int * 60 + opstaan_minute | int %}
+
+      {{ current_time == opstaan_time - 32 }}'
+  action:
+  - service: input_datetime.set_datetime
+    data:
+      datetime: '{{now().strftime(''%Y-%m-%d %H:%M:%S'')}}'
+    entity_id: input_datetime.bewegingeennalaatst_1
+  mode: restart
+  {% endraw %}
+```
+
+#### 6.6.3 Automation to turn on someone home status
+
+```yaml
+{% raw %}
+- id: '1587319960331'
+  alias: Turn on someone home status
+  description: ''
+  trigger:
+  - entity_id: device_tracker.pra_lx1
+    platform: state
+    to: home
+  - entity_id: binary_sensor.motion_sensor
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.iemandthuis
+    state: 'off'
+  action:
+  - data: {}
+    entity_id: input_boolean.iemandthuis
+    service: input_boolean.turn_on
+  mode: single
+ {% endraw %}
+```
+
+#### 6.6.4 Automation during evening and getting up 
+
+Causes 
+
+```yaml
+{% raw %}
+- id: '1587404974211'
+  alias: Aanwezigheid detectie avond tot opstaan
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{ (states.sensor.time.last_changed - states.input_datetime.bewegingeennalaatst_1.last_changed).total_seconds()
+      == 300 }}'
+  condition:
+  - condition: state
+    entity_id: input_boolean.iemandthuis
+    state: 'off'
+  - before: input_datetime.opstaan
+    condition: time
+    after: input_datetime.avond
+  - condition: template
+    value_template: '{{ (states.sensor.time.last_changed - states.input_datetime.bewegingeennalaatst_1.last_changed).total_seconds()
+      < 300 }}'
+  action:
+  - data: {}
+    entity_id: input_boolean.iemandthuis
+    service: input_boolean.turn_on
+  mode: single
+ {% endraw %}         
+```
+
+#### 6.6.5 Turn off someone home status at wakeup
+
+If home status was on during night it should turn of at waking time in case I wake up later than usual or leave house earlier.
+
+```yaml
+{% raw %}
+- id: '1608290218329'
+  alias: Bij opstaan aanwezigheid uit
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.opstaan
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+    entity_id: input_boolean.iemandthuis
+  mode: single
+{% endraw %}
+```
+
+#### 6.6.6 Automation between waking up time and evening time
+
+```yaml
+{% raw %}
+- id: '1587319961411'
+  alias: Behaviour of motion sensor living room between wakeup time and evening time
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{ (states.sensor.time.last_changed - states.input_datetime.bewegingeennalaatst_1.last_changed).total_seconds()
+      > 1800 }}
+
+      '
+  - platform: state
+    entity_id: person.johan
+    to: not_home
+  condition:
+  - condition: state
+    entity_id: input_boolean.iemandthuis
+    state: 'on'
+  - before: input_datetime.bedtijd
+    condition: time
+    after: input_datetime.opstaan
+  action:
+  - data: {}
+    entity_id: input_boolean.iemandthuis
+    service: input_boolean.turn_off
+  mode: single
+  {% endraw %}
+```
+
+#### 6.6.7 Behavior based on smart phone location with Home Assistant app
+
+```yaml
+{% raw %}
+- id: '1606221709908'
+  alias: Smartphone thuiskomen / weggaan
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: person.johan
+    to: not_home
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+    entity_id: input_boolean.iemandthuis
+  - wait_for_trigger:
+    - platform: state
+      entity_id: person.johan
+      to: home
+  - service: input_boolean.turn_on
+    data: {}
+    entity_id: input_boolean.iemandthuis
+  mode: restart
+ {% endraw %} 
+```
+
+#### 6.6.8 Turning off thermostat when Someone home status is off
+
+```yaml
+- id: '1587373899805'
+  alias: Thermostaat uit bij niemand thuis
+  description: ''
+  trigger:
+  - entity_id: input_boolean.iemandthuis
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data: {}
+    entity_id: climate.woonkamer
+    service: climate.turn_off
+  - data: {}
+    entity_id: climate.slaapkamer
+    service: climate.turn_off 
+```
+
+### 6.7 Heat for 5 minutes straight
+
+Automation:
+
+```yaml
+
+- id: '1588717917351'
+  alias: 5 minuten verwarmen als schakelaar aan
+  description: ''
+  trigger:
+  - entity_id: input_boolean.30_min_verwarmen_schakelaar
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data: {}
+    entity_id: switch.relay
+    service: switch.turn_on
+  - timeout: 00:05
+    wait_template: ''
+  - data: {}
+    entity_id: switch.relay
+    service: switch.turn_off
+  - service: input_boolean.turn_off
+    data: {}
+    entity_id: input_boolean.30_min_verwarmen_schakelaar
+  mode: single
+```
+
+### 6.8 Window open detection
+
+{% raw %}\<a name="windowopendetection"> \</a>{% endraw %}There are no window sensors, but this is based on the temperature rise during heating. If the temperature doesn't rise quickly enough, it is assumed that a window is open and thermostat function will turn off. 
+
+Uses the [Trend sensor](https://www.home-assistant.io/integrations/trend/) to make the `binary_sensor.temp_falling`
+
+After 300 seconds of heating without reaching the treshold of de trend sensor, the thermostat is turned off and sends a Telegram notification:
+
+![](https://user-images.githubusercontent.com/43075793/110302916-13763e80-7ffa-11eb-8579-ccd264169956.png)
+
+Translation: "Bedroom thermostat turned off bc of too slow heating up, window open?"
+
+**Automations:**
+
+For the bedroom:
+
+```yaml
+{% raw %}
+- id: '1588799650928'
+  alias: Relay beveiging raam open
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: '5'
+  condition:
+  - condition: state
+    entity_id: binary_sensor.temp_falling
+    state: 'off'
+  - condition: template
+    value_template: '{{state_attr(''climate.slaapkamer'', ''temperature'') | float
+      > state_attr(''climate.slaapkamer'', ''current_temperature'')}}'
+  - condition: state
+    entity_id: switch.relay
+    state: 'on'
+  - condition: template
+    value_template: '{{ (states.sensor.time.last_changed  - states.switch.relay.last_changed).total_seconds()
+      > 310 }}'
+  action:
+  - service: telegram_bot.send_message
+    data:
+      message: Slaapkamer thermostaat uitgeschakeld ivm te langzame opwarming, raam
+        open?
+      target: [chat-number]
+  - data: {}
+    entity_id: climate.slaapkamer
+    service: climate.turn_off
+  - delay: 00:45:00
+  - service: climate.turn_on
+    data: {}
+    entity_id: climate.slaapkamer
+  mode: single
+  {% endraw %}
+```
+
+ And for the living room:
+
+```yaml
+{% raw %}
+- id: '1601215001454'
+  alias: Relay beveiging raam open (woonkamer)
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{ (states.sensor.time.last_changed  - states.switch.relay.last_changed).total_seconds()
+      > 400 }}'
+  condition:
+  - condition: state
+    entity_id: automation.slaapkamer_overgang_off_on_set_schakelaar
+    state: 'on'
+  action:
+  - data: {}
+    entity_id: climate.woonkamer
+    service: climate.turn_off
+  - delay: 00:59:00
+  - service: climate.turn_on
+    data: {}
+    entity_id: climate.woonkamer
+  mode: single
+  {% endraw %}
+```
+
+### 6.9 Revert back to programmed set temperature after manual change  
+
+According to `input_datetime.duur_manuele_verhoging` value a timer is started after which the set temperature will revert back to set temperature according to program. 
+
+Uses the [Timer integration](https://www.home-assistant.io/integrations/timer/)
+
+```yaml
+{% raw %}
+- id: '1604920070266'
+  alias: Countdown bij manual wijziging
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: climate.slaapkamer
+    attribute: temperature
+  - platform: state
+    entity_id: climate.woonkamer
+    attribute: temperature
+  condition: []
+  action:
+  - service: timer.start
+    data:
+      duration: '{{ states.input_datetime.duur_manuele_verhoging.state }}'
+    entity_id: timer.countdown
+  - delay: '{{ states.input_datetime.duur_manuele_verhoging.state }}'
+  - service: climate.set_temperature
+    data:
+      temperature: '{{ states.input_number.current_insteltemp_slaapkamer.state  }}'
+    entity_id: climate.slaapkamer
+  - service: climate.set_temperature
+    data:
+      temperature: '{{ states.input_number.current_insteltemp_woonkamer.state  }}'
+    entity_id: climate.woonkamer
+  mode: restart
+ {% endraw %} 
+```
+
+### 6.10 Telegram notification hours of heating past week on Sunday
+
+```yaml
+{% raw %}
+- id: '1604938488226'
+  alias: Notificatie aantal uren verwarmen in week
+  description: ''
+  trigger:
+  - platform: time
+    at: '18:00'
+  condition:
+  - condition: time
+    weekday:
+    - sun
+  action:
+  - service: telegram_bot.send_message
+    data:
+      message: De afgelopen week is er {{ states.sensor.aantal_minuten_verwarmen_laatste_7_dagen.state
+        | int}} uren verwarmd.
+  mode: single
+{% endraw %}
+```
+
+### 6.11 Turn of heating when there is no signal of DS18B20 temperature sensor
+
+It occasionally happens that there is no signal of the DS18B20 temperature sensor or that by mistake the USB cable gets unplugged. The displayed temperature then can get below set temperature and will trigger heating while not really desired. To avoid this an automation is set to turn off. 
+
+```yaml
+{% raw %}
+- id: '1606221459609'
+  alias: Beveiliging uitvallen temp sensor
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: climate.slaapkamer
+    attribute: current_temperature
+    below: '10'
+  - platform: numeric_state
+    entity_id: sensor.ds18b20_woonkamer_correctie
+    below: '10'
+  condition: []
+  action:
+  - service: climate.turn_off
+    data: {}
+    entity_id: climate.slaapkamer
+  - service: climate.turn_off
+    data: {}
+    entity_id: climate.woonkamer
+  mode: single
+  {% endraw %}
+```
+
 ## Bypass valve
 
 When using zone heating in your house, consider adding a bypass valve to your central heating plan. A bypass valve will let through water when the pressure in the system gets too high. This avoid damage to the boiler pump because of pumping while all the radiators are closed you can open a small radiator manually or add a bypass valve. I just keep a radiator in my shower always opened.
@@ -1308,7 +1324,7 @@ Some possible improvements for this design to implement later on:
 *   Making more input variables. I can probably do some more of these for instance setting the time the someone home status is turned of when no motion detection. Setting variables helps for not having to open the automations every time.
 *   Using thermal sensors for presence detection with for instance the Omron D6T sensors, [youtube link](https://www.youtube.com/watch?v=-beIaL-RmvQ).
 
-### Added to the system but not described yet
+### 8.1 Added to the system but not described yet
 
 *   Anti frost measure, if a detected temperature is below 5 degrees, turn on the heating no matter whether the thermostat is set to off.
 *   Set a variable time of heating according to the outdoor temperature fetched from an internet source
