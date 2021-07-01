@@ -2,8 +2,6 @@ Arduino sketch used:   
 
 ```c++
 {% raw %}
-//remove the / before the # signs, it is bc of github pages these are added. 
-
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
