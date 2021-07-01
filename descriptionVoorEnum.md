@@ -304,6 +304,10 @@ First the sketch from the Hardware section was put on the Arduino nano, see the 
 
 On the Home Assistant documentation for Arduino integration it is described that `serial_port: /dev/ttyUSB1` an be used. However, I noticed that on restarts the assignment of ttyUSB# can differ and therefore the readout of the Arduino can fail after restart. To make sure this doesn't happen the serial by-id is used. Which can be found in Supervisor - System - Click on the three dots in the Host block - Hardware
 
+See below GIF:
+
+![](https://user-images.githubusercontent.com/43075793/124147866-5ff4f680-da8f-11eb-9b1b-1c47cd8149ed.gif)
+
 #### 6.3.2 Setup the generic thermostat integration
 
 This integration adds the thermostat function and when configured makes available the thermostat function in Lovelace. 
