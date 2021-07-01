@@ -7,7 +7,7 @@ description: My configuration for smart heating thermostat with the use of Home 
 remote_theme: rundocs/jekyll-rtd-theme
 
 kramdown:
-#  toc_level: 2
+  toc_levels: "2,3"
   parse_block_html: true
 
 readme_index:
