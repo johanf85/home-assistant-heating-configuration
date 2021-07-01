@@ -22,6 +22,8 @@ And on my phone:
 
 ![](https://user-images.githubusercontent.com/43075793/110310007-51776080-8002-11eb-9b64-755373b3a415.png)
 
+{% include toc.html %}
+
 ## Floor plan of my apartment 
 
 My appartement consists of a living room, a bedroom and a kitchen.
@@ -177,8 +179,7 @@ The pi Zero W is the Raspberry with the least powerful specifications. However, 
 
 **Download location Home-Assistant OS** for pi0 at: [https://github.com/home-assistant/operating-system/releases](https://github.com/home-assistant/operating-system/releases) for pi Zero W choose: hassos\_rpi0-w-x.xx.img.xz. 
 
-**Thermostatic radiator valves**
-
+**Thermostatic radiator valves**  
 Both rooms have one radiator, each is equipped with an eqiva-N thermostatic radiator valve (TRV). These are only used to open and close the radiators at the beginning and end of the day. They are programmed to setpoint 12° C when the desired heating for the room is off and to 25° C when the desired heating is on. 
 
 **Limitations**  
