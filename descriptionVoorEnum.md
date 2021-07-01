@@ -1,14 +1,14 @@
-# My home smart heating configuration with the use of Home Assistant
+# My home multi zone smart heating configuration with the use of Home Assistant
 
 ## Introduction
 
-Home Assistant is Open Source software that runs on various devices, for instance Raspberry Pi, and acts as a central server for smart home devices and/or self build modules to make automatizations in the home. It has an active community and a large library of integrations with products on the market. Home Assistant is a non-cloud system, which means there is not necessarily a dependance on external cloud services (and an internet connection).
+Home Assistant is Open Source software that runs on various devices, for instance Raspberry Pi, and acts as a central server for smart home devices and/or self build modules to make automatizations in the home. It has an active community and a large library of integrations with products on the market. Home Assistant is a non-cloud system, which means there is not necessarily a dependance on external cloud services and an internet connection.
 
 ![https://www.home-assistant.io/](https://user-images.githubusercontent.com/43075793/110300847-b4172f00-7ff7-11eb-94d2-3394992bd090.png)
 
 Website Home Assistant: www.home-assistant.io
 
-With the use of Home Assistant I created a smart thermostat, which I was able to customize to my personal situation. Against low costs, about  $35 and all wired to limit the EMF radiation in the home. In this document I will describe my configuration. I am Dutch, so the names I chose for various entities are in Dutch.
+With the use of Home Assistant I created a multi zone smart thermostat, which I was able to customize to my personal situation. Against low costs, about  $50 and all wired to limit the EMF radiation in the home. In this document I will describe my configuration. I am Dutch, so the names I chose for various entities are in Dutch.
 
 **Screenshots of my dashboard:**
 
@@ -22,11 +22,11 @@ And on my phone:
 
 ![](https://user-images.githubusercontent.com/43075793/110310007-51776080-8002-11eb-9b64-755373b3a415.png)
 
-## Floorplan of my appartment 
+## Floor plan of my apartment 
 
 My appartement consists of a living room, a bedroom and a kitchen.
 
-<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/117958666-8a41f780-b31b-11eb-812e-aa2912945f4b.png"></figure></td></tr><tr><td>A schematic view of the floorplan with the relevant rooms</td></tr></tbody></table>
+<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/117958666-8a41f780-b31b-11eb-812e-aa2912945f4b.png"></figure></td></tr><tr><td>A schematic view of the floor plan with the relevant rooms</td></tr></tbody></table>
 
 <table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/110297333-a790d780-7ff3-11eb-839d-b3b001fa90a7.png"></figure></td></tr><tr><td>A 3D view of the floorplan, the door between living room and bedroom can be closed off<br>(made with <a href="https://roomstyler.com/3dplanner">https://roomstyler.com/3dplanner</a>)</td></tr></tbody></table>
 
@@ -162,8 +162,18 @@ Store: [Aliexpress](https://s.click.aliexpress.com/e/_A5z0ab)
 *   USB hub with Ethernet and connected USB storage device for the OS.
 *   MicroSD with bootcode.bin file (needed, as pi0 doesn't boot from USB by default)
 
+**Connnected together:**
+
+![](https://user-images.githubusercontent.com/43075793/124072302-e33b2b80-da40-11eb-9abe-87776fa8579a.png)
+
+In casing:
+
+![](https://user-images.githubusercontent.com/43075793/124072551-2b5a4e00-da41-11eb-9eda-5743ec8151d7.jpeg)
+
+The casing is too small to fit al the parts, so the USB hub is connected outside the casing. 
+
 **Note about the pi0**  
-The pi Zero W is the Raspberry with the least specifications. However it does run well for a year now, as I only use it for nothing else than the thermostat function. \`
+The pi Zero W is the Raspberry with the least powerful specifications. However, it does run well for a year now, as I only use it for nothing else than the thermostat function. \`
 
 **Download location Home-Assistant OS** for pi0 at: [https://github.com/home-assistant/operating-system/releases](https://github.com/home-assistant/operating-system/releases) for pi Zero W choose: hassos\_rpi0-w-x.xx.img.xz. 
 
@@ -1333,10 +1343,12 @@ Some possible improvements for this design to implement later on:
 
 I used these webpages for inspiration:
 
-[Siytek - the ultimate home-assistant DIY guide for multiple zone heating](https://siytek.com/the-ultimate-home-assistant-diy-thermostat-guide-for-single-or-multiple-zone-heating/)
+A tutorial:  [Siytek - the ultimate home-assistant DIY guide for multiple zone heating](https://siytek.com/the-ultimate-home-assistant-diy-thermostat-guide-for-single-or-multiple-zone-heating/)
+
+A nice project by Davide Perini which also uses a PIR motion detector and has a 3D printed case and a LCD screen:  [github.com/sblantipodi/smart\_thermostat](https://github.com/sblantipodi/smart_thermostat)
 
 [Hacking a Eqiva EQ-3 thermostatic radiator valve.](https://www.youtube.com/watch?v=LlPHrdXHBTU)
 
-An interesting idea: [using thermal sensors as room presence detection](https://www.youtube.com/watch?v=-beIaL-RmvQ)
+An interesting idea: [using Omron D6T thermal sensors as room presence detection](https://www.youtube.com/watch?v=-beIaL-RmvQ)
 
 [Opentherm module](http://ihormelnyk.com/opentherm_adapter) by Ihor Melnyk
