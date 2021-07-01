@@ -16,6 +16,10 @@ readme_index:
 plugins:
   - jekyll-readme-index
   - jekyll-numbered-headings
+  - jekyll-last-modified-at
+
+last-modified-at:
+    date-format: '%d %b %y'  
 
 google:
   gtag: G-ERSFN94HKL
