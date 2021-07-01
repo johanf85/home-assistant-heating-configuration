@@ -1152,7 +1152,7 @@ Automation:
 
 ### 6.8 Window open detection
 
-\<a name="windowopendetection">&nbsp; \</a>There are no window sensors, but this is based on the temperature rise during heating. If the temperature doesn't rise quickly enough, it is assumed that a window is open and thermostat function will turn off. 
+{% include anchorwindoopendetection.html %}There are no window sensors, but this is based on the temperature rise during heating. If the temperature doesn't rise quickly enough, it is assumed that a window is open and thermostat function will turn off. 
 
 Uses the [Trend sensor](https://www.home-assistant.io/integrations/trend/) to make the `binary_sensor.temp_falling`
 
