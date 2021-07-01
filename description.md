@@ -5,7 +5,7 @@ Latest modification: {{ page.last_modified_at }}
 
 ## 1. Introduction
 
-{% last_modified_at %}
+Laatst: {% last_modified_at %}
 
 Home Assistant is Open Source software that runs on various devices, for instance Raspberry Pi, and acts as a central server for smart home devices and/or self build modules to make automatizations in the home. It has an active community and a large library of integrations with products on the market. Home Assistant is a non-cloud system, which means there is not necessarily a dependance on external cloud services and an internet connection.
 
