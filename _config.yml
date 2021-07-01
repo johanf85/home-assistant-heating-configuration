@@ -18,8 +18,9 @@ plugins:
   - jekyll-numbered-headings
   - jekyll-last-modified-at
 
-last-modified-at:
-    date-format: '%d %b %y'  
+scss: |
+  .tableofcontentswrappper{background-color:grey;}
+  .tableofcontentswrappper ul li{list-style-type: none;}
 
 google:
   gtag: G-ERSFN94HKL
