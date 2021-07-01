@@ -165,7 +165,7 @@ Store: [Aliexpress](https://s.click.aliexpress.com/e/_A5z0ab)
 **Note about the pi0**  
 The pi Zero W is the Raspberry with the least specifications. However it does run well for a year now, as I only use it for nothing else than the thermostat function. \`
 
-**Download location Home-Assistant OS** for pi0 at: [https://github.com/home-assistant/operating-system/releases](https://github.com/home-assistant/operating-system/releases) for pi Zero W choose: hassos\_rpi0-w-x.xx.img.xz. 
+**Download location Home-Assistant OS** for pi0 at: [github.com/home-assistant/operating-system/releases](https://github.com/home-assistant/operating-system/releases) for pi Zero W choose: hassos\_rpi0-w-x.xx.img.xz. 
 
 **Thermostatic radiator valves**
 
