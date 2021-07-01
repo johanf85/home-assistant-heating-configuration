@@ -1,6 +1,6 @@
 #  My home multi zone smart heating configuration with the use of Home Assistant
 
-Date first published: july 1 2021  
+Date first published: July 1 2021  
 Latest modification: {{ page.last_modified_at }}
 
 ## 1. Introduction
