@@ -15,7 +15,7 @@ With the use of Home Assistant I created a multi zone smart thermostat, which I 
 
 **Screenshots of my dashboard:**
 
-![](https://user-images.githubusercontent.com/43075793/110309572-ce560a80-8001-11eb-85fc-a04b34ca5de8.png)
+![](images/110309572-ce560a80-8001-11eb-85fc-a04b34ca5de8.png)
 
 Here is a tab with variables:
 
@@ -186,7 +186,7 @@ Created the following helpers via configuration > helpers within Home Assistant
 | Second to last movement recorded |   | input\_datetime.bewegingeennalaatst\_1 |
 | Last movement recorded |   | input\_datetime.beweginglaatst\_0 |
 | Current set temperature living room according to program |   | input\_number.current\_insteltemp\_slaapkamer |
-| Hours and minutes for a manual change in set temperature before reverting to program  |   | input\_datetime.duur\_manuele\_verhoging |
+| Hours and minutes for a manual change in set temperature before reverting to program |   | input\_datetime.duur\_manuele\_verhoging |
 | Heating toggle switch for bedroom (used in generic thermostat as heating switch) |   | input\_boolean.schakelaar\_slaapkamer |
 | Heating toggle switch for Living room (used in generic thermostat as heating switch) |   | input\_boolean.schakelaar\_woonkamer |
 | Set temperature living room night |   | input\_text.slaapkamer\_insteltemp\_nacht |
