@@ -7,7 +7,7 @@ Latest modification: July 2 2021
 
 Home Assistant is Open Source software that runs on various devices, for instance Raspberry Pi, and acts as a central server for smart home devices and/or self build modules to make automatizations in the home. It has an active community and a large library of integrations with products on the market. Home Assistant is a non-cloud system, which means there is not necessarily a dependance on external cloud services and an internet connection.
 
-![https://www.home-assistant.io/](https://user-images.githubusercontent.com/43075793/110300847-b4172f00-7ff7-11eb-94d2-3394992bd090.png)
+![https://www.home-assistant.io/](images/110300847-b4172f00-7ff7-11eb-94d2-3394992bd090.png)
 
 Website Home Assistant: [home-assistant.io](https://www.home-assistant.io)
 
@@ -15,15 +15,15 @@ With the use of Home Assistant I created a multi zone smart thermostat, which I 
 
 **Screenshots of my dashboard:**
 
-![](https://user-images.githubusercontent.com/43075793/110309572-ce560a80-8001-11eb-85fc-a04b34ca5de8.png)
+![](images/110309572-ce560a80-8001-11eb-85fc-a04b34ca5de8.png)
 
 Here is a tab with variables:
 
-![](https://user-images.githubusercontent.com/43075793/110309259-699ab000-8001-11eb-95a1-4a28d13302c3.png)
+![](images/110309259-699ab000-8001-11eb-95a1-4a28d13302c3.png)
 
 And on my phone:
 
-![](https://user-images.githubusercontent.com/43075793/110310007-51776080-8002-11eb-9b64-755373b3a415.png)
+![](images/110310007-51776080-8002-11eb-9b64-755373b3a415.png)
 
 {% include toc.html %}
 
@@ -31,13 +31,13 @@ And on my phone:
 
 My appartement consists of a living room, a bedroom and a kitchen.
 
-<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/117958666-8a41f780-b31b-11eb-812e-aa2912945f4b.png"></figure></td></tr><tr><td>A schematic view of the floor plan with the relevant rooms</td></tr></tbody></table>
+<table><tbody><tr><td><figure class="image"><img src="images/117958666-8a41f780-b31b-11eb-812e-aa2912945f4b.png"></figure></td></tr><tr><td>A schematic view of the floor plan with the relevant rooms</td></tr></tbody></table>
 
-<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/110297333-a790d780-7ff3-11eb-839d-b3b001fa90a7.png"></figure></td></tr><tr><td>A 3D view of the floorplan, the door between living room and bedroom can be closed off<br>(made with <a href="https://roomstyler.com/3dplanner">https://roomstyler.com/3dplanner</a>)</td></tr></tbody></table>
+<table><tbody><tr><td><figure class="image"><img src="images/110297333-a790d780-7ff3-11eb-839d-b3b001fa90a7.png"></figure></td></tr><tr><td>A 3D view of the floorplan, the door between living room and bedroom can be closed off<br>(made with <a href="https://roomstyler.com/3dplanner">https://roomstyler.com/3dplanner</a>)</td></tr></tbody></table>
 
 The appartement has a boiler (Intergas kompakt hre 24/18) for central heating which can use a on-off control and OpenTherm.  
 
-<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/117959173-08060300-b31c-11eb-9171-167f414ecc1a.png"></figure></td></tr><tr><td>Intergas hre 24/18</td></tr></tbody></table>
+<table><tbody><tr><td><figure class="image"><img src="images/117959173-08060300-b31c-11eb-9171-167f414ecc1a.png"></figure></td></tr><tr><td>Intergas hre 24/18</td></tr></tbody></table>
 
 ## 3. The design wishes for the system
 
@@ -71,15 +71,15 @@ Several integrations are used. The most important is the Generic Thermostat inte
 
 Plastic container with a hole cut out with a 5 meter USB extension cable to the server.
 
-![](https://user-images.githubusercontent.com/43075793/123302111-a640d780-d51c-11eb-89bd-f18de3fd0d83.png)
+![](images/123302111-a640d780-d51c-11eb-89bd-f18de3fd0d83.png)
 
 In this container.
 
 *   Arduino nano with a DS18B20 temperature sensor connected via long USB cable (4 meter) to the Home Assistant server
 
-![](https://user-images.githubusercontent.com/43075793/121677790-abcb0600-cab6-11eb-9732-bff4973d8bb1.png)
+![](images/121677790-abcb0600-cab6-11eb-9732-bff4973d8bb1.png)
 
-![](https://user-images.githubusercontent.com/43075793/117957906-cb85d780-b31a-11eb-8d61-c71f36264ce6.png)
+![](images/117957906-cb85d780-b31a-11eb-8d61-c71f36264ce6.png)
 
 Store: [Aliexpress](https://nl.aliexpress.com/item/1005002674336082.html)
 
@@ -89,7 +89,7 @@ Store: [Aliexpress](https://nl.aliexpress.com/item/1005002674336082.html)
 
 **Server with sensors:**
 
-![](https://user-images.githubusercontent.com/43075793/121671494-e6c93b80-caae-11eb-8e96-3eeadb19c349.png)
+![](images/121671494-e6c93b80-caae-11eb-8e96-3eeadb19c349.png)
 
 Case: [Aliexpress](https://s.click.aliexpress.com/e/_ABlPWR)  
 PIR case (only used as case and fitted in 5V PIR): [Aliexpress](https://s.click.aliexpress.com/e/_A9CbmJ)
@@ -98,11 +98,11 @@ Contains:
 
 *   Raspberry pi Zero W (acts as server) with:
 
-![](https://user-images.githubusercontent.com/43075793/117957217-210db480-b31a-11eb-834b-1250b6fbd008.png)
+![](images/117957217-210db480-b31a-11eb-834b-1250b6fbd008.png)
 
 *   DS18B20 temperature sensor
 
-![](https://user-images.githubusercontent.com/43075793/117957906-cb85d780-b31a-11eb-8d61-c71f36264ce6.png)
+![](images/117957906-cb85d780-b31a-11eb-8d61-c71f36264ce6.png)
 
 Store: [Aliexpress](https://nl.aliexpress.com/item/1005002674336082.html)
 
@@ -110,7 +110,7 @@ Note: DHT11/22 sensors don't work with pi0 and Home Assistant (driver not provid
 
 *   PIR motion sensor module
 
-![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
+![](images/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
 
 Store: [Aliexpress](https://s.click.aliexpress.com/e/_9HU2TH)
 
@@ -118,7 +118,7 @@ There are two set screws on this module, one is for measure distance and one for
 
 *   Relay module with wire connected to boiler for controlling on-off heating
 
-![](https://user-images.githubusercontent.com/43075793/117958501-5c5cb300-b31b-11eb-8065-645693a0284e.png)
+![](images/117958501-5c5cb300-b31b-11eb-8065-645693a0284e.png)
 
 Store: [Aliexpress](https://s.click.aliexpress.com/e/_A5z0ab)
 
@@ -127,11 +127,11 @@ Store: [Aliexpress](https://s.click.aliexpress.com/e/_A5z0ab)
 
 **Connnected together:**
 
-![](https://user-images.githubusercontent.com/43075793/124072302-e33b2b80-da40-11eb-9abe-87776fa8579a.png)
+![](images/124072302-e33b2b80-da40-11eb-9abe-87776fa8579a.png)
 
 In casing:
 
-![](https://user-images.githubusercontent.com/43075793/124072551-2b5a4e00-da41-11eb-9eda-5743ec8151d7.jpeg)
+![](images/124072551-2b5a4e00-da41-11eb-9eda-5743ec8151d7.jpeg)
 
 The casing is too small to fit al the parts, so the USB hub is connected outside the casing. 
 
@@ -147,25 +147,25 @@ Both rooms have one radiator, each is equipped with an eqiva-N thermostatic radi
 The limitation of using these TRVs is that they aren't being set from within Home Assistant, as I chose a TRV without connectivity. Therefore it is important to keep in mind that there is a risk that they aren't synced to the times set in Home Assistant, as their program needs to be set separately.   
 Another limitation is that when the set temperature of the bedroom during the day is set higher than the current room temperature, the boiler will start heating but no heat will arrive at the room, as the radiator is closed. Of course it is possible to open the valve manually.   
 
-<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102992726-0a59f300-451c-11eb-83e4-a0b0d94b93bb.jpg"></figure></td></tr><tr><td><i>The eqiva-N thermostatic radiator valve (TRV)</i></td></tr></tbody></table>
+<table><tbody><tr><td><figure class="image"><img src="images/102992726-0a59f300-451c-11eb-83e4-a0b0d94b93bb.jpg"></figure></td></tr><tr><td><i>The eqiva-N thermostatic radiator valve (TRV)</i></td></tr></tbody></table>
 
 Radiator valve before:
 
-<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102994879-41320800-4520-11eb-9485-fe36122d2637.jpg"></figure></td></tr><tr><td><i>The Herz valve knob - old situation</i></td></tr></tbody></table>
+<table><tbody><tr><td><figure class="image"><img src="images/102994879-41320800-4520-11eb-9485-fe36122d2637.jpg"></figure></td></tr><tr><td><i>The Herz valve knob - old situation</i></td></tr></tbody></table>
 
 There were no thermostatic valves on my radiator (just a turn knob), to get it working with the Eqiva TRV I had to put in a new insert, part #1639091 for Herz radiator valves:  
 
-<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102867026-6d725980-4438-11eb-9752-5bd6fffe2686.png" alt=""></figure></td></tr><tr><td><i>The Herz 1639091 insert to make the valve a thermostatic valve</i></td></tr></tbody></table>
+<table><tbody><tr><td><figure class="image"><img src="images/102867026-6d725980-4438-11eb-9752-5bd6fffe2686.png" alt=""></figure></td></tr><tr><td><i>The Herz 1639091 insert to make the valve a thermostatic valve</i></td></tr></tbody></table>
 
 An extra adapter was necessary to fit the eqiva-N TRV as it doesn't fit the Herz system with the adapters provided on in the package. 
 
-<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102991803-40967300-451a-11eb-9a69-aa1a5d3b32cc.jpg"></figure></td></tr><tr><td><i>IMI adapter for Herz part no. 15071304</i></td></tr></tbody></table>
+<table><tbody><tr><td><figure class="image"><img src="images/102991803-40967300-451a-11eb-9a69-aa1a5d3b32cc.jpg"></figure></td></tr><tr><td><i>IMI adapter for Herz part no. 15071304</i></td></tr></tbody></table>
 
 **Doorsprings**
 
 A doorspring was put on both rooms door, so that they will be kept closed as much as possible to avoid heat loss.  
 
-<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/102992183-0b3e5500-451b-11eb-8786-723f359d2996.jpeg"></figure></td></tr><tr><td><i>Doorspring for door closing</i></td></tr></tbody></table>
+<table><tbody><tr><td><figure class="image"><img src="images/102992183-0b3e5500-451b-11eb-8786-723f359d2996.jpeg"></figure></td></tr><tr><td><i>Doorspring for door closing</i></td></tr></tbody></table>
 
 ## 6. Home Assistant configuration 
 
@@ -186,7 +186,7 @@ Created the following helpers via configuration > helpers within Home Assistant
 | Second to last movement recorded |   | input\_datetime.bewegingeennalaatst\_1 |
 | Last movement recorded |   | input\_datetime.beweginglaatst\_0 |
 | Current set temperature living room according to program |   | input\_number.current\_insteltemp\_slaapkamer |
-| Hours and minutes for a manual change in set temperature before reverting to program  |   | input\_datetime.duur\_manuele\_verhoging |
+| Hours and minutes for a manual change in set temperature before reverting to program |   | input\_datetime.duur\_manuele\_verhoging |
 | Heating toggle switch for bedroom (used in generic thermostat as heating switch) |   | input\_boolean.schakelaar\_slaapkamer |
 | Heating toggle switch for Living room (used in generic thermostat as heating switch) |   | input\_boolean.schakelaar\_woonkamer |
 | Set temperature living room night |   | input\_text.slaapkamer\_insteltemp\_nacht |
@@ -196,9 +196,9 @@ Created the following helpers via configuration > helpers within Home Assistant
 
 To easily change settings to which I would like them, I make use of input variables. I made a tab in Lovelace to edit this variables.
 
-![](https://user-images.githubusercontent.com/43075793/121800703-a941eb00-cc33-11eb-9dcc-9041997f328b.png)
+![](images/121800703-a941eb00-cc33-11eb-9dcc-9041997f328b.png)
 
-![](https://user-images.githubusercontent.com/43075793/123307777-2c601c80-d523-11eb-9138-1a2ba55526f1.png)
+![](images/123307777-2c601c80-d523-11eb-9138-1a2ba55526f1.png)
 
 Most of them speak for themselves. The someone home switch is turned on depending on presence detection. When the set temperature of the thermostat is changed manually, it will revert back to the initial set temperature according to program after the set Duration manual change value. The countdown shows the amount of time left until revert to initial set temperature. 
 
@@ -223,7 +223,7 @@ Only covering the relevant part of the configuration for the smart heating syste
 
 ##### 6.4.1.1 **DS18b20 temperature sensor**
 
-![](https://user-images.githubusercontent.com/43075793/117957906-cb85d780-b31a-11eb-8d61-c71f36264ce6.png)
+![](images/117957906-cb85d780-b31a-11eb-8d61-c71f36264ce6.png)
 
 To detect 1-wire temperature sensors on the Raspberry pi first add to your config.txt:
 
@@ -263,7 +263,7 @@ sensor:
 
 ##### 6.4.1.3 **Relay**
 
-![](https://user-images.githubusercontent.com/43075793/117958501-5c5cb300-b31b-11eb-8065-645693a0284e.png)
+![](images/117958501-5c5cb300-b31b-11eb-8065-645693a0284e.png)
 
 Added to configuration.yaml
 
@@ -278,7 +278,7 @@ More info on Home Assistant website: [rpi\_gpio integration](https://www.home-as
 
 ##### 6.4.1.4 **Motion sensor**
 
-![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
+![](images/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
 
 Connected to gpio pin 26
 
@@ -307,13 +307,13 @@ On the Home Assistant documentation for Arduino integration it is described that
 
 See below GIF:
 
-![](https://user-images.githubusercontent.com/43075793/124147866-5ff4f680-da8f-11eb-9b1b-1c47cd8149ed.gif)
+![](images/124147866-5ff4f680-da8f-11eb-9b1b-1c47cd8149ed.gif)
 
 #### 6.4.2 Setup the generic thermostat integration
 
 This integration adds the thermostat function and when configured makes available the thermostat function in Lovelace. 
 
-![](https://user-images.githubusercontent.com/43075793/123781158-33e14600-d8d4-11eb-81ee-56c0fa15236e.png)
+![](images/123781158-33e14600-d8d4-11eb-81ee-56c0fa15236e.png)
 
 Home Assistant documentation: [Generic thermostat](https://www.home-assistant.io/integrations/generic_thermostat/)
 
@@ -367,13 +367,13 @@ I use [Telegram](https://telegram.org/) for notifications. Currently I am using 
 
 *   Hours of heating during a week on Sunday at 18:00
 
-![](https://user-images.githubusercontent.com/43075793/110303144-53d5bc80-7ffa-11eb-98dc-0a7ae96f4686.png)
+![](images/110303144-53d5bc80-7ffa-11eb-98dc-0a7ae96f4686.png)
 
 Translation: "Last week there were 21 hours of heating"
 
 *   When the heating is automatically turned off because of a suspected open window (See [Window open detection](#windowopendetection)).
 
-![](https://user-images.githubusercontent.com/43075793/110302916-13763e80-7ffa-11eb-8579-ccd264169956.png)
+![](images/110302916-13763e80-7ffa-11eb-8579-ccd264169956.png)
 
 Translation: "Bedroom thermostat turned off bc of too slow heating up, window open?"
 
@@ -457,9 +457,9 @@ Two automations per room, one for setting the desired set-temperature at bedtime
 
 Uses below variables (screenshot from Lovelace dashboard)
 
-![](https://user-images.githubusercontent.com/43075793/123770552-aa794600-d8ca-11eb-90bd-742b9d51ee14.png)
+![](images/123770552-aa794600-d8ca-11eb-90bd-742b9d51ee14.png)
 
-![](https://user-images.githubusercontent.com/43075793/123771018-03e17500-d8cb-11eb-9f21-7072873c8c0f.png)
+![](images/123771018-03e17500-d8cb-11eb-9f21-7072873c8c0f.png)
 
 I am aware that there is a Home Assistant plugin called [Schedy](https://hass-apps.readthedocs.io/en/stable/apps/schedy/index.html), which provides a lot of features that would come in hand for the desired configuration. However, as it isn't a native integration within Home Assistant, it is possible that compatibility with Home Assistant will be be lost in the future because of updates on Home Assistant. Therefore I chose to go with setting my own automations which are more reliable for the future. 
 
@@ -804,7 +804,7 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
 
 ### 6.7 Presence detection
 
-![](https://user-images.githubusercontent.com/43075793/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
+![](images/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
 
 Presence detection is done with both the mobile phone GPS location and a PIR movement sensor in the living room. If the mobile phone was the only source for presence detection this would have been used, but since there is a PIR as well, the away modus of Generic thermostat integration isn't used in this configuration, instead of this a helper switch input (Someone home?).  
 
@@ -1120,7 +1120,7 @@ Uses the [Trend sensor](https://www.home-assistant.io/integrations/trend/) to ma
 
 After 300 seconds of heating without reaching the treshold of de trend sensor, the thermostat is turned off and sends a Telegram notification:
 
-![](https://user-images.githubusercontent.com/43075793/110302916-13763e80-7ffa-11eb-8579-ccd264169956.png)
+![](images/110302916-13763e80-7ffa-11eb-8579-ccd264169956.png)
 
 Translation: "Bedroom thermostat turned off bc of too slow heating up, window open?"
 
@@ -1286,7 +1286,7 @@ It occasionally happens that there is no signal of the DS18B20 temperature senso
 
 When using zone heating in your house, consider adding a bypass valve to your central heating plan. A bypass valve will let through water when the pressure in the system gets too high. This avoid damage to the boiler pump because of pumping while all the radiators are closed you can open a small radiator manually or add a bypass valve. I just keep a radiator in my shower always opened.
 
-![](https://user-images.githubusercontent.com/43075793/123786721-4e1e2280-d8da-11eb-867b-88769c79d803.jpeg)
+![](images/123786721-4e1e2280-d8da-11eb-867b-88769c79d803.jpeg)
 
 ## 8. Possible improvements to this configuration
 
