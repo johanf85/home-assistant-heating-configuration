@@ -53,6 +53,10 @@ The appartement has a boiler (Intergas kompakt hre 24/18) for central heating wh
 
 [Home Assistant](https://www.home-assistant.io/) (The main platform on which everything is running)
 
+Installation instructions for Home Assistant can be found on the [Getting Started](https://www.home-assistant.io/getting-started/) page of the Home Assistant website. 
+
+**Download location Home-Assistant OS** for Pi Zero W, used in this configuration, is not listed on the website but is available at: [https://github.com/home-assistant/operating-system/releases](https://github.com/home-assistant/operating-system/releases) for pi Zero W choose: hassos\_rpi0-w-x.xx.img.xz. 
+
 Arduino IDE (for uploading Arduino sketches to the arduino mcu)
 
 **Home assistant integrations for the thermostat**
@@ -172,24 +176,21 @@ Created the following helpers via configuration > helpers within Home Assistant
 |   | Type | Name: |
 | --- | --- | --- |
 | **Someone home?** | input\_boolean (toggle) | input\_boolean.aanwezig |
-|   |   | input\_datetime.bedtijd |
-|   |   | input\_datetime.avond |
-|   |   | input\_datetime.opstaan |
-|   |   | input\_text.woonk\_nacht |
-|   |   | input\_text.woonk\_overdag |
-|   |   | input\_number.current\_insteltemp\_woonkamer |
+| Go to bed time |   | input\_datetime.bedtijd |
+| Evening time |   | input\_datetime.avond |
+| Wake up time |   | input\_datetime.opstaan |
+| Set temperature living room night |   | input\_text.woonk\_nacht |
+| Set temperature living room day |   | input\_text.woonk\_overdag |
+| Current set temperature living room according to program |   | input\_number.current\_insteltemp\_woonkamer |
 | Countdown timer | timer | timer.countdown |
-|   |   | input\_datetime.bewegingeennalaatst\_1 |
-|   |   | input\_datetime.beweginglaatst\_0 |
-|   |   | input\_number.current\_insteltemp\_slaapkamer |
-|   |   | input\_number.current\_insteltemp\_woonkamer |
-|   |   | input\_datetime.duur\_manuele\_verhoging |
-|   |   | input\_number.huidige\_insteltemperatuur\_slaapkamer |
-|   |   | input\_boolean.schakelaar\_slaapkamer |
-|   |   | input\_boolean.schakelaar\_woonkamer |
-|   |   | input\_text.slaapkamer\_insteltemp\_nacht |
-|   |   | input\_text.slaapkamer\_insteltemp\_overdag |
-|   |   | input\_datetime.tijdelijk\_verwarmen |
+| Second to last movement recorded |   | input\_datetime.bewegingeennalaatst\_1 |
+| Last movement recorded |   | input\_datetime.beweginglaatst\_0 |
+| Current set temperature living room according to program |   | input\_number.current\_insteltemp\_slaapkamer |
+| Hours and minutes for a manual change in set temperature before reverting to program  |   | input\_datetime.duur\_manuele\_verhoging |
+| Heating toggle switch for bedroom (used in generic thermostat as heating switch) |   | input\_boolean.schakelaar\_slaapkamer |
+| Heating toggle switch for Living room (used in generic thermostat as heating switch) |   | input\_boolean.schakelaar\_woonkamer |
+| Set temperature living room night |   | input\_text.slaapkamer\_insteltemp\_nacht |
+| Set temperature living room day |   | input\_text.slaapkamer\_insteltemp\_overdag |
 
 ### 6.2 Variables
 
@@ -200,6 +201,19 @@ To easily change settings to which I would like them, I make use of input variab
 ![](https://user-images.githubusercontent.com/43075793/123307777-2c601c80-d523-11eb-9138-1a2ba55526f1.png)
 
 Most of them speak for themselves. The someone home switch is turned on depending on presence detection. When the set temperature of the thermostat is changed manually, it will revert back to the initial set temperature according to program after the set Duration manual change value. The countdown shows the amount of time left until revert to initial set temperature. 
+
+### Turning off wifi and bluetooth
+
+As it is one of the design wishes to have an all wired system to limit the amount of EMF radiaton, bluetooth and wifi aren't used and turned off. 
+
+This is done by adding to boot/config.txt
+
+```
+dtoverlay=disable-wifi                                                         
+dtoverlay=disable-bt
+```
+
+You can enter the config.txt file on Windows by reading out your SD card or USB drive on your computer and opening the boot partition. On Mac it is possible to mount the boot drive and read it out, see instructions [here](https://community.home-assistant.io/t/pi-zero-with-enc28j60-ethernet-no-ethernet-found-solved/76509/3?u=johanf).  
 
 ### 6.3 Configuration.yaml
 
