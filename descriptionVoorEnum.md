@@ -3,7 +3,7 @@
 Date first published: July 1 2021  
 Latest modification: July 2 2021
 
-By: Johan Fit
+By: Johan F.
 
 ## Introduction
 
