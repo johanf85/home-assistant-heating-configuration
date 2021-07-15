@@ -1,9 +1,9 @@
 #  My home multi zone smart heating configuration with the use of Home Assistant
 
 Date first published: July 1 2021  
-Latest modification: July 2 2021
+Latest modification: July 14 2021
 
-By: Johan Fit
+By: Johan F.
 
 ## 1. Introduction
 
@@ -138,7 +138,7 @@ In casing:
 The casing is too small to fit al the parts, so the USB hub is connected outside the casing. 
 
 **Note about the pi0**  
-The pi Zero W is the Raspberry with the least powerful specifications. However, it does run well for a year now, as I only use it for nothing else than the thermostat function. \`
+The pi Zero W is the Raspberry with the least powerful specifications. However, it does run well for a year now, as I only use it for nothing else than the thermostat function. The larger Raspberry pi boards have headers, the GPIO pins, soldered to to them. For Pi0 you can choose to buy a headerless of with header. I prefer the one already soldered, as it is only a couple of bucks more.
 
 **Download location Home-Assistant OS** for pi0 at: [https://github.com/home-assistant/operating-system/releases](https://github.com/home-assistant/operating-system/releases) for pi Zero W choose: hassos\_rpi0-w-x.xx.img.xz. 
 
@@ -161,7 +161,7 @@ There were no thermostatic valves on my radiator (just a turn knob), to get it w
 
 An extra adapter was necessary to fit the eqiva-N TRV as it doesn't fit the Herz system with the adapters provided on in the package. 
 
-<table><tbody><tr><td><figure class="image"><img src="images/102991803-40967300-451a-11eb-9a69-aa1a5d3b32cc.jpg"></figure></td></tr><tr><td><i>IMI adapter for Herz part no. 15071304</i></td></tr></tbody></table>
+<table><tbody><tr><td><figure class="image"><img src="images/102991803-40967300-451a-11eb-9a69-aa1a5d3b32cc.jpg"></figure><p>&nbsp;</p></td></tr><tr><td><i>IMI adapter for Herz part no. 15071304</i></td></tr></tbody></table>
 
 **Doorsprings**
 
