@@ -1,0 +1,34 @@
+title: My Home Assistant smart heating configuration
+lang: en
+description: My configuration for smart heating thermostat with the use of Home Assistant. 
+
+#markdown: kramdown
+
+remote_theme: rundocs/jekyll-rtd-theme
+
+kramdown:
+  toc_levels: "2,3"
+  parse_block_html: true
+
+readme_index:
+   with_frontmatter: true
+   
+plugins:
+  - jekyll-readme-index
+  - jekyll-numbered-headings
+  - jekyll-last-modified-at
+
+scss: |
+  .tableofcontentswrappper{background-color:#e7f2fa;padding:15px;}
+  .tableofcontentswrappper ul li{list-style-type: none;}
+
+google:
+  gtag: G-ERSFN94HKL
+  
+exclude:
+  - Makefile
+  - CNAME
+  - Gemfile
+  - Gemfile.lock
+  - descriptionVoorEnum.md
+
