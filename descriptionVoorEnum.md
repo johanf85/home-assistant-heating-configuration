@@ -1364,26 +1364,23 @@ Some possible improvements for this design to implement later on:
 
 Easiest way is to post a message in [this topic](https://community.home-assistant.io/t/my-multi-zone-thermostat-configuration/319432) on the Home Assistant community forum. 
 
-## Other options for a wired configuration
+## Other options for wired configurations
 
-Above configuration uses a USB cable connection to an arduino to my bedroom. This is convenient as it both powers and readouts the arduino. For other, larger houses with multiple temperature sensors and zones this will not be an option.   
+Above configuration uses a USB cable connection to an arduino to my bedroom. This is convenient as it both powers and readouts the arduino. For other, larger houses with multiple temperature sensors and zones this will not be an option, as it's not suitable for long distances.   
 
 Other wired options:
 
 *   a long cable to a 1-wire ds18b20 sensor.  
-    This is something that could have been done in this configuration too, but wasn't considered. 1-Wire senors are capable to have quite a distance.  
-     
+    This is something that could have been done in this configuration too, but wasn't considered. 1-Wire senors are capable to have quite a distance.
 *   Ethernet wires to ESP32 microcontrollers with ethernet   
     Among other options, the [ESPHome](https://www.esphome.io/) platform can be used by using an [Olimex POE device](https://www.olimex.com/Products/IoT/ESP32/ESP32-POE-ISO/open-source-hardware) or a [Wt32-eth01](https://community.home-assistant.io/t/how-i-installed-esphome-on-the-wt32-eth01/359027). Entities from these devices will be available in Home Assistant, when they are connected to the network Home Assistant is running on.
 
 <table><tbody><tr><td><figure class="image"><img src="https://www.olimex.com/Products/IoT/ESP32/ESP32-POE-ISO/images/thumbs/310x230/ESP32-POE-ISO-2.jpg" alt="ESP32-POE-ISO - Open Source Hardware Board"></figure></td></tr><tr><td>The Olimex-poe-iso, device with Ethernet connection</td></tr></tbody></table>
 
 *   Arduino with an ethernet module, like the W5500, with MQTT sending/receiving   
-    Cheaper hardware, but more work to be done for the configuration  
-     
+    Cheaper hardware, but more work to be done for the configuration
 *   [Modbus](https://www.home-assistant.io/integrations/modbus/)   
-    An older but also available protocol for sending data trough two wired cables. Can be convenient to use with existing cables running trough a home.  
-     
+    An older but also available protocol for sending data trough two wired cables. Can be convenient to use with existing cables running trough a home.
 
 **Power over Ethernet (PoE)**
 
@@ -1406,3 +1403,9 @@ A nice project by Davide Perini which also uses a PIR motion detector and has a 
 An interesting idea: [using Omron D6T thermal sensors as room presence detection](https://www.youtube.com/watch?v=-beIaL-RmvQ)
 
 [Opentherm module](http://ihormelnyk.com/opentherm_adapter) by Ihor Melnyk
+
+An interesting idea is to use heating actuators on the radiator controlled by relays. These actuators are actually designed for floor heating manifolds. [This topic](https://community.openhab.org/t/my-central-heating-solution-using-thermal-actuators/41320) on the Openhab forum discusses this option. 
+
+Below a photo from that topic. 
+
+![image](https://community-openhab-org.s3.dualstack.eu-central-1.amazonaws.com/optimized/3X/b/d/bd24c5b6411ebc950789d70791437274e22fba45_2_375x500.jpeg)
