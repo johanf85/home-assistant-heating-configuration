@@ -131,7 +131,7 @@ There are two set screws on this module, one is for measure distance and one for
 Store: [Aliexpress](https://s.click.aliexpress.com/e/_A5z0ab)
 
 *   USB hub with Ethernet and connected USB storage device for the OS.  
-    Note: an SSD drive will give a higher expected lifetime than a USB or SD card, as these are known for their limited I/O read and write cycles. 
+    Note: an SSD drive will give a higher expected lifetime than a USB or SD card, as these are known for their limited I/O read and write cycles.
 *   MicroSD with [bootcode.bin file](https://www.raspberrypi.org/documentation/computers/raspberry-pi.html#raspberry-pi-boot-modes) (needed, as pi0 doesn't boot from USB by default)
 
 **Connnected together:**
@@ -248,8 +248,7 @@ dtoverlay=w1-gpio,gpiopin=4
 
 You can enter the config.txt file on Windows by reading out your SD card or USB drivee on your computer and opening the boot partition. On Mac it is possible to mount the boot drive and read it out, see instructions [here](https://community.home-assistant.io/t/pi-zero-with-enc28j60-ethernet-no-ethernet-found-solved/76509/3?u=johanf). 
 
-After this, add the 1-wire integration via Settings / Integrations / Add integration  
- 
+After this, add the 1-wire integration via Settings / Integrations / Add integration  
 
 ![](https://user-images.githubusercontent.com/43075793/154836521-af33edbd-7546-45c3-90d9-765db20d8fd6.png)
 
@@ -1364,6 +1363,32 @@ Some possible improvements for this design to implement later on:
 ## Questions / contact
 
 Easiest way is to post a message in [this topic](https://community.home-assistant.io/t/my-multi-zone-thermostat-configuration/319432) on the Home Assistant community forum. 
+
+## Other options for a wired configuration
+
+Above configuration uses a USB cable connection to an arduino to my bedroom. This is convenient as it both powers and readouts the arduino. For other, larger houses with multiple temperature sensors and zones this will not be an option.   
+ 
+
+Other wired options:
+
+*   a long cable to a 1-wire ds18b20 sensor.  
+    This is something that could have been done in this configuration too, but wasn't considered. 1-Wire senors are capable to have quite a distance.  
+     
+*   Ethernet wires to ESP32 microcontrollers with ethernet   
+    Among other options, the [ESPHome](https://www.esphome.io/) platform can be used for by using a [Olimex POE device](https://www.olimex.com/Products/IoT/ESP32/ESP32-POE-ISO/open-source-hardware) or a [Wt32-eth01](https://community.home-assistant.io/t/how-i-installed-esphome-on-the-wt32-eth01/359027). Entities from these devices will be available in Home Assistant, when they are connected to the network
+
+![ESP32-POE-ISO - Open Source Hardware Board](https://www.olimex.com/Products/IoT/ESP32/ESP32-POE-ISO/images/thumbs/310x230/ESP32-POE-ISO-2.jpg)
+
+*   Arduino with a ethernet module, like the W5500, with MQTT sending/receiving   
+    Cheaper hardware, but more work to be done for the configuration  
+     
+*   [Modbus](https://www.home-assistant.io/integrations/modbus/)   
+    An older but also available protocol for sending data trough two wired cables. Can be convenient to use with existing cables running trough a home. 
+
+**Power over Ethernet (PoE)**
+
+Power over Ethernet can be very convenient in a wired configuration. PoE devices are providing both power and a data connection through one cable.  This dismisses the need for adding power to the device by an extra power source. PoE is not available on all Ethernet connections, a PoE router or switch is needed.   
+ 
 
 ## External links
 
