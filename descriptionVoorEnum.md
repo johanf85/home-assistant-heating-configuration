@@ -59,8 +59,7 @@ Installation instructions for Home Assistant can be found on the [Getting Starte
 
 **Download location Home-Assistant OS** for Pi Zero W, used in this configuration, is not listed on the website but is available at: [https://github.com/home-assistant/operating-system/releases](https://github.com/home-assistant/operating-system/releases) for pi Zero W choose: hassos\_rpi0-w-x.xx.img.xz. 
 
-Note: Since the release of HA OS 7.0 the Pi Zero isn't supported anymore. See [this Github Pull request](https://github.com/home-assistant/operating-system/pull/1638). The 6.6 version is still available for download. However it is uncertain how long the Home Assistant latest core will be running on this version 6. For running a future proof hardware configuration, the RPi3 or above seems to be a better choice.  
-
+Note: Since the release of HA OS 7.0 the Pi Zero isn't supported anymore. See [this Github Pull request](https://github.com/home-assistant/operating-system/pull/1638). The 6.6 version is still available for download. However it is uncertain how long the Home Assistant latest core will be running on this version 6. For running a future proof hardware configuration, the RPi3 or above seems to be a better choice.
 
 Arduino IDE (for uploading Arduino sketches to the arduino mcu)
 
@@ -87,6 +86,10 @@ In this container.
 ![](images/117957906-cb85d780-b31a-11eb-8d61-c71f36264ce6.png)
 
 Store: [Aliexpress](https://nl.aliexpress.com/item/1005002674336082.html)
+
+An arduino sketch is flashed to the arduino nano. The ouput of this sketch will be sent to serial via USB. As an alternative to coding a sketch for a USB connected arduino(like) device, [Firmata](home-assistant.io/integrations/firmata/), can also be considered. With firmata it is easy to create a YAML file to add sensors and actuators and have them outputted to Home Assistant.   
+  
+This setup uses a USB serial connection, which is suitable, as this is a small appartement, with just two rooms. For larger house there are other wired alternatives, see the Wired alternatives section. 
 
 {% include arduinosketch.md %}
 
