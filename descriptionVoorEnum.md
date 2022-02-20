@@ -87,8 +87,8 @@ In this container.
 
 Store: [Aliexpress](https://nl.aliexpress.com/item/1005002674336082.html)
 
-An arduino sketch is flashed to the arduino nano. The ouput of this sketch will be sent to serial via USB. As an alternative to coding a sketch for a USB connected arduino(like) device, [Firmata](home-assistant.io/integrations/firmata/), can also be considered. With firmata it is easy to create a YAML file to add sensors and actuators and have them outputted to Home Assistant.   
-  
+An arduino sketch is flashed to the arduino nano. The ouput of this sketch will be sent to serial via USB. As an alternative to coding a sketch for a USB connected arduino(like) device, [Firmata](home-assistant.io/integrations/firmata/), can also be considered. With firmata it is easy to create a YAML file to add sensors and actuators and have them outputted to Home Assistant. 
+
 This setup uses a USB serial connection, which is suitable, as this is a small appartement, with just two rooms. For larger house there are other wired alternatives, see the Wired alternatives section. 
 
 {% include arduinosketch.md %}
@@ -130,7 +130,8 @@ There are two set screws on this module, one is for measure distance and one for
 
 Store: [Aliexpress](https://s.click.aliexpress.com/e/_A5z0ab)
 
-*   USB hub with Ethernet and connected USB storage device for the OS.
+*   USB hub with Ethernet and connected USB storage device for the OS.  
+    Note: an SSD drive will give a higher expected lifetime than a USB or SD card, as these are known for their limited I/O read and write cycles. 
 *   MicroSD with [bootcode.bin file](https://www.raspberrypi.org/documentation/computers/raspberry-pi.html#raspberry-pi-boot-modes) (needed, as pi0 doesn't boot from USB by default)
 
 **Connnected together:**
@@ -147,6 +148,8 @@ The casing is too small to fit al the parts, so the USB hub is connected outside
 The pi Zero W is the Raspberry with the least powerful specifications. However, it does run well for a year now, as I only use it for nothing else than the thermostat function. The larger Raspberry pi boards have headers, the GPIO pins, soldered to to them. For Pi0 you can choose to buy a headerless of with header. I prefer the one already soldered, as it is only a couple of bucks more.
 
 **Download location Home-Assistant OS** for pi0 at: [https://github.com/home-assistant/operating-system/releases](https://github.com/home-assistant/operating-system/releases) for pi Zero W choose: hassos\_rpi0-w-x.xx.img.xz. 
+
+**Note**: Since the release of HA OS 7.0 the Pi Zero isn't supported anymore. See [this Github Pull request](https://github.com/home-assistant/operating-system/pull/1638). The 6.6 version is still available for download. However it is uncertain how long the Home Assistant latest core will be running on this version 6. For running a future proof hardware configuration, the RPi3 or above seems to be a better choice.
 
 **Thermostatic radiator valves**  
 Both rooms have one radiator, each is equipped with an eqiva-N thermostatic radiator valve (TRV). These are only used to open and close the radiators at the beginning and end of the day. They are programmed to setpoint 12° C when the desired heating for the room is off and to 25° C when the desired heating is on. 
@@ -229,6 +232,10 @@ Only covering the relevant part of the configuration for the smart heating syste
 
 #### 6.3.1 Setting up sensors and relay
 
+##### Deprecation of Raspberry Pi GPIO read and write from Home Assistant
+
+Note (february 20, 2020): From  Home Assistant version 2022.6 the support of GPIO reading and output, will be deprecated. Background on this can be read in [Architectural Decision Record 0019](https://github.com/home-assistant/architecture/blob/master/adr/0019-GPIO.md).  As an alternative for GPIO support a HACS integration is available, [ha-rpi\_gpio](https://github.com/thecode/ha-rpi_gpio). Other alternatives is using other connected microcontrollers and use the GPIO on those devices. 
+
 ##### 6.3.1.1 **DS18b20 temperature sensor**
 
 ![](images/117957906-cb85d780-b31a-11eb-8d61-c71f36264ce6.png)
@@ -241,15 +248,14 @@ dtoverlay=w1-gpio,gpiopin=4
 
 You can enter the config.txt file on Windows by reading out your SD card or USB drivee on your computer and opening the boot partition. On Mac it is possible to mount the boot drive and read it out, see instructions [here](https://community.home-assistant.io/t/pi-zero-with-enc28j60-ethernet-no-ethernet-found-solved/76509/3?u=johanf). 
 
-After this add to configuration.yaml:
+After this, add the 1-wire integration via Settings / Integrations / Add integration  
+ 
 
-```yaml
-  - platform: onewire
-```
+![](https://user-images.githubusercontent.com/43075793/154836521-af33edbd-7546-45c3-90d9-765db20d8fd6.png)
 
 Restart Home Assistant and if configuration went well, a temperature sensor is detected and a name is assigned to it, similar to `sensor.28_011937d1c3d1_temperature`. 
 
-More on configurating 1-wire sensors on the Home Assistant documentation:  [1-wire integration](https://www.home-assistant.io/integrations/onewire/).
+More on configuring 1-wire sensors on the Home Assistant documentation:  [1-wire integration](https://www.home-assistant.io/integrations/onewire/).
 
 ##### 6.3.1.2 **Correction of temperature sensor**
 
