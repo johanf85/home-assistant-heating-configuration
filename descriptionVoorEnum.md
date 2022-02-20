@@ -1366,8 +1366,7 @@ Easiest way is to post a message in [this topic](https://community.home-assistan
 
 ## Other options for a wired configuration
 
-Above configuration uses a USB cable connection to an arduino to my bedroom. This is convenient as it both powers and readouts the arduino. For other, larger houses with multiple temperature sensors and zones this will not be an option.   
- 
+Above configuration uses a USB cable connection to an arduino to my bedroom. This is convenient as it both powers and readouts the arduino. For other, larger houses with multiple temperature sensors and zones this will not be an option.   
 
 Other wired options:
 
@@ -1375,20 +1374,20 @@ Other wired options:
     This is something that could have been done in this configuration too, but wasn't considered. 1-Wire senors are capable to have quite a distance.  
      
 *   Ethernet wires to ESP32 microcontrollers with ethernet   
-    Among other options, the [ESPHome](https://www.esphome.io/) platform can be used for by using a [Olimex POE device](https://www.olimex.com/Products/IoT/ESP32/ESP32-POE-ISO/open-source-hardware) or a [Wt32-eth01](https://community.home-assistant.io/t/how-i-installed-esphome-on-the-wt32-eth01/359027). Entities from these devices will be available in Home Assistant, when they are connected to the network
+    Among other options, the [ESPHome](https://www.esphome.io/) platform can be used by using an [Olimex POE device](https://www.olimex.com/Products/IoT/ESP32/ESP32-POE-ISO/open-source-hardware) or a [Wt32-eth01](https://community.home-assistant.io/t/how-i-installed-esphome-on-the-wt32-eth01/359027). Entities from these devices will be available in Home Assistant, when they are connected to the network Home Assistant is running on.
 
-![ESP32-POE-ISO - Open Source Hardware Board](https://www.olimex.com/Products/IoT/ESP32/ESP32-POE-ISO/images/thumbs/310x230/ESP32-POE-ISO-2.jpg)
+<table><tbody><tr><td><figure class="image"><img src="https://www.olimex.com/Products/IoT/ESP32/ESP32-POE-ISO/images/thumbs/310x230/ESP32-POE-ISO-2.jpg" alt="ESP32-POE-ISO - Open Source Hardware Board"></figure></td></tr><tr><td>The Olimex-poe-iso, device with Ethernet connection</td></tr></tbody></table>
 
-*   Arduino with a ethernet module, like the W5500, with MQTT sending/receiving   
+*   Arduino with an ethernet module, like the W5500, with MQTT sending/receiving   
     Cheaper hardware, but more work to be done for the configuration  
      
 *   [Modbus](https://www.home-assistant.io/integrations/modbus/)   
-    An older but also available protocol for sending data trough two wired cables. Can be convenient to use with existing cables running trough a home. 
+    An older but also available protocol for sending data trough two wired cables. Can be convenient to use with existing cables running trough a home.  
+     
 
 **Power over Ethernet (PoE)**
 
-Power over Ethernet can be very convenient in a wired configuration. PoE devices are providing both power and a data connection through one cable.  This dismisses the need for adding power to the device by an extra power source. PoE is not available on all Ethernet connections, a PoE router or switch is needed.   
- 
+Power over Ethernet can be very convenient in a wired configuration. PoE devices are providing both power and a data connection through one cable. This dismisses the need for adding power to the device by an extra power source. PoE is not available on all Ethernet connections, a PoE router or switch is needed.   
 
 ## External links
 
