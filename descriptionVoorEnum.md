@@ -87,7 +87,7 @@ In this container.
 
 Store: [Aliexpress](https://nl.aliexpress.com/item/1005002674336082.html)
 
-An arduino sketch is flashed to the arduino nano. The ouput of this sketch will be sent to serial via USB. As an alternative to coding a sketch for a USB connected arduino(like) device, [Firmata](home-assistant.io/integrations/firmata/), can also be considered. With firmata it is easy to create a YAML file to add sensors and actuators and have them outputted to Home Assistant. 
+An arduino sketch is flashed to the arduino nano. The output of this sketch will be sent to serial via USB. As an alternative to coding a sketch for a USB connected arduino(like) device, [Firmata](home-assistant.io/integrations/firmata/), can also be considered. With firmata it is easy to create a YAML file to add sensors and actuators and have them outputted to Home Assistant. 
 
 This setup uses a USB serial connection, which is suitable, as this is a small appartement, with just two rooms. For larger house there are other wired alternatives, see the Wired alternatives section. 
 
@@ -215,7 +215,7 @@ Most of them speak for themselves. The someone home switch is turned on dependin
 
 ### Turning off wifi and bluetooth
 
-As it is one of the design wishes to have an all wired system to limit the amount of EMF radiaton, bluetooth and wifi aren't used and turned off. 
+As it is one of the design wishes to have an all wired system to limit the amount of EMF radiation, bluetooth and wifi aren't used and turned off. 
 
 This is done by adding to boot/config.txt
 
@@ -476,7 +476,7 @@ Uses below variables (screenshot from Lovelace dashboard)
 
 ![](images/123771018-03e17500-d8cb-11eb-9f21-7072873c8c0f.png)
 
-I am aware that there is a Home Assistant plugin called [Schedy](https://hass-apps.readthedocs.io/en/stable/apps/schedy/index.html), which provides a lot of features that would come in hand for the desired configuration. However, as it isn't a native integration within Home Assistant, it is possible that compatibility with Home Assistant will be be lost in the future because of updates on Home Assistant. Therefore I chose to go with setting my own automations which are more reliable for the future. 
+I am aware that there is a Home Assistant plugin called [Schedy](https://hass-apps.readthedocs.io/en/stable/apps/schedy/index.html), which provides a lot of features that would come in hand for the desired configuration. However, as it isn't a native integration within Home Assistant, it is possible that compatibility with Home Assistant will be lost in the future because of updates on Home Assistant. Therefore I chose to go with setting my own automations which are more reliable for the future. 
 
 **Bedroom set temperature after bedtime**
 
@@ -823,7 +823,7 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
 
 Presence detection is done with both the mobile phone GPS location and a PIR movement sensor in the living room. If the mobile phone was the only source for presence detection this would have been used, but since there is a PIR as well, the away modus of Generic thermostat integration isn't used in this configuration, instead of this a helper switch input (Someone home?).  
 
-I used a PIR sensor next to the smartphone, because there are some disadvantages in using smartphones only for presence detection. There are scenarios like when the battery is down or the phone is on flight mode, in which the system will think someones is home.  Also it is less suitable when having guests if the smartphone is used as only presence detection source. 
+I used a PIR sensor next to the smartphone, because there are some disadvantages in using smartphones only for presence detection. There are scenarios like when the battery is down or the phone is on flight mode, in which the system will think someone is home.  Also it is less suitable when having guests if the smartphone is used as only presence detection source. 
 
 The configuration is set so, that when the phone `device_tracker.pra_lx1` changes location from away to home or home to away the helper switch `input_boolean.iemandthuis`  is toggled. So only on **state change**, not on current state. Next to that, the rule is followed that if two movements aren't being detected within the last half hour, the 'someone home status' `input_boolean.iemandthuis` is set to off. 
 
@@ -876,7 +876,7 @@ This is used, bc it is desired that a minimum of two movements need to be detect
   {% endraw %}
 ```
 
-**Turning of if not more than 1 movement detetected during day**
+**Turning of if not more than 1 movement detected during day**
 
 Timespan: between wake-up time and evening time
 
@@ -1176,7 +1176,7 @@ mode: single
 
 Uses the [Trend sensor](https://www.home-assistant.io/integrations/trend/) to make the `binary_sensor.temp_falling`
 
-After 300 seconds of heating without reaching the treshold of de trend sensor, the thermostat is turned off and sends a Telegram notification:
+After 300 seconds of heating without reaching the threshold of de trend sensor, the thermostat is turned off and sends a Telegram notification:
 
 ![](images/110302916-13763e80-7ffa-11eb-8579-ccd264169956.png)
 
