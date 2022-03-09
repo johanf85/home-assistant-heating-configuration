@@ -166,7 +166,7 @@ Radiator valve before:
 
 There were no thermostatic valves on my radiator (just a turn knob), to get it working with the Eqiva TRV I had to put in a new insert, part #1639091 for Herz radiator valves:  
 
-<table><tbody><tr><td><figure class="image"><img src="images/"></figure></td></tr><tr><td>The Herz valve with the old insert removed with a drained system&nbsp;</td></tr></tbody></table>
+<table><tbody><tr><td><figure class="image"><img src="images/herz-valve-without-insert.png"></figure></td></tr><tr><td>The Herz valve with the old insert removed with a drained system&nbsp;</td></tr></tbody></table>
 
 <table><tbody><tr><td><figure class="image"><img src="images/102867026-6d725980-4438-11eb-9752-5bd6fffe2686.png" alt=""></figure></td></tr><tr><td><i>The Herz 1639091 insert to make the valve a thermostatic valve</i></td></tr></tbody></table>
 
