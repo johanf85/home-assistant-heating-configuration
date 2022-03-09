@@ -45,7 +45,7 @@ The appartement has a boiler (Intergas kompakt hre 24/18) for central heating wh
 
 *   Multi zone: Heat the bedroom to a desired temperature at night (while living room radiator closed) and the living room during the day and evening (while bedroom radiator closed)
 *   Turn off the thermostat function when no one home
-*   A wired system, that doesn't use wifi, to limit the use of EMF-radiation in the home. See [this TED talk](https://www.youtube.com/watch?v=F0NEaPTu9oI) about possible dangers of EMF radiation in the living environment.
+*   A wired system, that doesn't use wifi, as it is more reliable and to limit the use of EMF-radiation in the home. See [this TED talk](https://www.youtube.com/watch?v=F0NEaPTu9oI) about possible dangers of EMF radiation in the living environment.
 *   A smartphone app and / or a browser to control and monitor the thermostat
 *   Send alerts to the smartphone when certain conditions are met, e.g. when it is suspected that a window is open.
 *   Reverting to normal set temperature after a certain amount of time after a manual change
@@ -87,9 +87,9 @@ In this container.
 
 Store: [Aliexpress](https://nl.aliexpress.com/item/1005002674336082.html)
 
-An arduino sketch is flashed to the arduino nano. The ouput of this sketch will be sent to serial via USB. As an alternative to coding a sketch for a USB connected arduino(like) device, [Firmata](home-assistant.io/integrations/firmata/), can also be considered. With firmata it is easy to create a YAML file to add sensors and actuators and have them outputted to Home Assistant. 
+An arduino sketch is flashed to the arduino nano. The output of this sketch will be sent to serial via USB. As an alternative to coding a sketch for a USB connected arduino(like) device, [Firmata](home-assistant.io/integrations/firmata/), can also be considered. With firmata it is easy to create a YAML file to add sensors and actuators and have them outputted to Home Assistant. 
 
-This setup uses a USB serial connection, which is suitable, as this is a small appartement, with just two rooms. For larger house there are other wired alternatives, see the Wired alternatives section. 
+This setup uses a USB serial connection, which is suitable, as this is a small appartement, with just two rooms. For larger house there are other wired alternatives, see the [Wired alternatives section](#10-other-options-for-wired-configurations). 
 
 {% include arduinosketch.md %}
 
@@ -166,6 +166,8 @@ Radiator valve before:
 
 There were no thermostatic valves on my radiator (just a turn knob), to get it working with the Eqiva TRV I had to put in a new insert, part #1639091 for Herz radiator valves:  
 
+<table><tbody><tr><td><figure class="image"><img src="images/herz-valve-without-insert.png"></figure></td></tr><tr><td>The Herz valve with the old insert removed with a drained system&nbsp;</td></tr></tbody></table>
+
 <table><tbody><tr><td><figure class="image"><img src="images/102867026-6d725980-4438-11eb-9752-5bd6fffe2686.png" alt=""></figure></td></tr><tr><td><i>The Herz 1639091 insert to make the valve a thermostatic valve</i></td></tr></tbody></table>
 
 An extra adapter was necessary to fit the eqiva-N TRV as it doesn't fit the Herz system with the adapters provided on in the package. 
@@ -215,7 +217,7 @@ Most of them speak for themselves. The someone home switch is turned on dependin
 
 ### 6.3 Turning off wifi and bluetooth
 
-As it is one of the design wishes to have an all wired system to limit the amount of EMF radiaton, bluetooth and wifi aren't used and turned off. 
+As it is one of the design wishes to have an all wired system to limit the amount of EMF radiation, bluetooth and wifi aren't used and turned off. 
 
 This is done by adding to boot/config.txt
 
@@ -476,7 +478,7 @@ Uses below variables (screenshot from Lovelace dashboard)
 
 ![](images/123771018-03e17500-d8cb-11eb-9f21-7072873c8c0f.png)
 
-I am aware that there is a Home Assistant plugin called [Schedy](https://hass-apps.readthedocs.io/en/stable/apps/schedy/index.html), which provides a lot of features that would come in hand for the desired configuration. However, as it isn't a native integration within Home Assistant, it is possible that compatibility with Home Assistant will be be lost in the future because of updates on Home Assistant. Therefore I chose to go with setting my own automations which are more reliable for the future. 
+I am aware that there is a Home Assistant plugin called [Schedy](https://hass-apps.readthedocs.io/en/stable/apps/schedy/index.html), which provides a lot of features that would come in hand for the desired configuration. However, as it isn't a native integration within Home Assistant, it is possible that compatibility with Home Assistant will be lost in the future because of updates on Home Assistant. Therefore I chose to go with setting my own automations which are more reliable for the future. 
 
 **Bedroom set temperature after bedtime**
 
@@ -823,7 +825,7 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
 
 Presence detection is done with both the mobile phone GPS location and a PIR movement sensor in the living room. If the mobile phone was the only source for presence detection this would have been used, but since there is a PIR as well, the away modus of Generic thermostat integration isn't used in this configuration, instead of this a helper switch input (Someone home?).  
 
-I used a PIR sensor next to the smartphone, because there are some disadvantages in using smartphones only for presence detection. There are scenarios like when the battery is down or the phone is on flight mode, in which the system will think someones is home.  Also it is less suitable when having guests if the smartphone is used as only presence detection source. 
+I used a PIR sensor next to the smartphone, because there are some disadvantages in using smartphones only for presence detection. There are scenarios like when the battery is down or the phone is on flight mode, in which the system will think someone is home.  Also it is less suitable when having guests if the smartphone is used as only presence detection source. 
 
 The configuration is set so, that when the phone `device_tracker.pra_lx1` changes location from away to home or home to away the helper switch `input_boolean.iemandthuis`  is toggled. So only on **state change**, not on current state. Next to that, the rule is followed that if two movements aren't being detected within the last half hour, the 'someone home status' `input_boolean.iemandthuis` is set to off. 
 
@@ -876,7 +878,7 @@ This is used, bc it is desired that a minimum of two movements need to be detect
   {% endraw %}
 ```
 
-**Turning of if not more than 1 movement detetected during day**
+**Turning of if not more than 1 movement detected during day**
 
 Timespan: between wake-up time and evening time
 
@@ -1133,7 +1135,7 @@ When there isn't anyone present in the house and the outside temperature is far 
 
 Automation:
 
-```
+```yaml
 alias: Beveiliging vriezen
 description: ''
 trigger:
@@ -1176,7 +1178,7 @@ mode: single
 
 Uses the [Trend sensor](https://www.home-assistant.io/integrations/trend/) to make the `binary_sensor.temp_falling`
 
-After 300 seconds of heating without reaching the treshold of de trend sensor, the thermostat is turned off and sends a Telegram notification:
+After 300 seconds of heating without reaching the threshold of de trend sensor, the thermostat is turned off and sends a Telegram notification:
 
 ![](images/110302916-13763e80-7ffa-11eb-8579-ccd264169956.png)
 
@@ -1366,16 +1368,25 @@ Easiest way is to post a message in [this topic](https://community.home-assistan
 
 ## 10. Other options for wired configurations
 
-Above configuration uses a USB cable connection to an arduino to my bedroom. This is convenient as it both powers and readouts the arduino. For other, larger houses with multiple temperature sensors and zones this will not be an option, as it's not suitable for long distances.   
+Reasons to choose for a wired configuration instead of wireless are:
 
-Other wired options:
+*   Reliability  
+    A hard wired connection has better reliability because wireless networks can be troublesome with long distance, objects in the house, a (wifi) band that is being used by other devices etcetera. 
+*   Security   
+    A wireless network can be disturbed by external action, taking down its functionality. Something that is important with house security like alarms and camera's. 
+*   No EMF radiation  
+    Something I personally also do take in account. With the number of wireless communicating devices that are adding up in current days, the levels of EMF radiation in the home can get quite high.  
+
+The above described configuration uses a USB cable connection to an arduino to my bedroom. This is convenient as it both powers and readouts the arduino. For other, larger houses with multiple temperature sensors and zones this will not be an option, as it's not suitable for long distances.   
+
+### 10.1 Other wired options:
 
 *   a long cable to a 1-wire ds18b20 sensor.  
-    This is something that could have been done in this configuration too, but wasn't considered. 1-Wire senors are capable to have quite a distance.
+    This is something that could have been done in this configuration too, but wasn't considered. 1-Wire sensors are capable to have quite a distance.
 *   Ethernet wires to ESP32 microcontrollers with ethernet   
     Among other options, the [ESPHome](https://www.esphome.io/) platform can be used by using an [Olimex POE device](https://www.olimex.com/Products/IoT/ESP32/ESP32-POE-ISO/open-source-hardware) or a [Wt32-eth01](https://community.home-assistant.io/t/how-i-installed-esphome-on-the-wt32-eth01/359027). Entities from these devices will be available in Home Assistant, when they are connected to the network Home Assistant is running on.
 
-<table><tbody><tr><td><figure class="image"><img src="https://www.olimex.com/Products/IoT/ESP32/ESP32-POE-ISO/images/thumbs/310x230/ESP32-POE-ISO-2.jpg" alt="ESP32-POE-ISO - Open Source Hardware Board"></figure></td></tr><tr><td>The Olimex-poe-iso, device with Ethernet connection</td></tr></tbody></table>
+<table><tbody><tr><td><figure class="image"><img src="https://www.olimex.com/Products/IoT/ESP32/ESP32-POE-ISO/images/thumbs/310x230/ESP32-POE-ISO-2.jpg" alt="ESP32-POE-ISO - Open Source Hardware Board"></figure></td></tr><tr><td>The Olimex-poe-iso, ESP32 device with Ethernet connection&nbsp;</td></tr></tbody></table>
 
 *   Arduino with an ethernet module, like the W5500, with MQTT sending/receiving   
     Cheaper hardware, but more work to be done for the configuration
@@ -1408,4 +1419,4 @@ An interesting idea is to use heating actuators on the radiator controlled by re
 
 Below a photo from that topic. 
 
-![image](https://community-openhab-org.s3.dualstack.eu-central-1.amazonaws.com/optimized/3X/b/d/bd24c5b6411ebc950789d70791437274e22fba45_2_375x500.jpeg)
+![image](images/bd24c5b6411ebc950789d70791437274e22fba45_2_375x500.jpeg)
