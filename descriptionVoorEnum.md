@@ -89,7 +89,7 @@ Store: [Aliexpress](https://nl.aliexpress.com/item/1005002674336082.html)
 
 An arduino sketch is flashed to the arduino nano. The output of this sketch will be sent to serial via USB. As an alternative to coding a sketch for a USB connected arduino(like) device, [Firmata](home-assistant.io/integrations/firmata/), can also be considered. With firmata it is easy to create a YAML file to add sensors and actuators and have them outputted to Home Assistant. 
 
-This setup uses a USB serial connection, which is suitable, as this is a small appartement, with just two rooms. For larger house there are other wired alternatives, see the Wired alternatives section. 
+This setup uses a USB serial connection, which is suitable, as this is a small appartement, with just two rooms. For larger house there are other wired alternatives, see the [Wired alternatives section](#10-other-options-for-wired-configurations). 
 
 {% include arduinosketch.md %}
 
