@@ -1133,7 +1133,7 @@ When there isn't anyone present in the house and the outside temperature is far 
 
 Automation:
 
-```
+```yaml
 alias: Beveiliging vriezen
 description: ''
 trigger:
