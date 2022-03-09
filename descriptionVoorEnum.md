@@ -45,7 +45,7 @@ The appartement has a boiler (Intergas kompakt hre 24/18) for central heating wh
 
 *   Multi zone: Heat the bedroom to a desired temperature at night (while living room radiator closed) and the living room during the day and evening (while bedroom radiator closed)
 *   Turn off the thermostat function when no one home
-*   A wired system, that doesn't use wifi, to limit the use of EMF-radiation in the home. See [this TED talk](https://www.youtube.com/watch?v=F0NEaPTu9oI) about possible dangers of EMF radiation in the living environment.
+*   A wired system, that doesn't use wifi, as it is more reliable and to limit the use of EMF-radiation in the home. See [this TED talk](https://www.youtube.com/watch?v=F0NEaPTu9oI) about possible dangers of EMF radiation in the living environment.
 *   A smartphone app and / or a browser to control and monitor the thermostat
 *   Send alerts to the smartphone when certain conditions are met, e.g. when it is suspected that a window is open.
 *   Reverting to normal set temperature after a certain amount of time after a manual change
@@ -1366,16 +1366,25 @@ Easiest way is to post a message in [this topic](https://community.home-assistan
 
 ## Other options for wired configurations
 
-Above configuration uses a USB cable connection to an arduino to my bedroom. This is convenient as it both powers and readouts the arduino. For other, larger houses with multiple temperature sensors and zones this will not be an option, as it's not suitable for long distances.   
+Reasons to choose for a wired configuration instead of wireless are:
 
-Other wired options:
+*   Reliability  
+    A hard wired connection has better reliability because wireless networks can be troublesome with long distance, objects in the house, a (wifi) band that is being used by other devices etcetera. 
+*   Security   
+    A wireless network can be disturbed by external action, taking down its functionality. Something that is important with house security like alarms and camera's. 
+*   No EMF radiation  
+    Something I personally also do take in account. With the number of wireless communicating devices that are adding up in current days, the levels of EMF radiation in the home can get quite high.  
+
+The above described configuration uses a USB cable connection to an arduino to my bedroom. This is convenient as it both powers and readouts the arduino. For other, larger houses with multiple temperature sensors and zones this will not be an option, as it's not suitable for long distances.   
+
+### Other wired options:
 
 *   a long cable to a 1-wire ds18b20 sensor.  
-    This is something that could have been done in this configuration too, but wasn't considered. 1-Wire senors are capable to have quite a distance.
+    This is something that could have been done in this configuration too, but wasn't considered. 1-Wire sensors are capable to have quite a distance.
 *   Ethernet wires to ESP32 microcontrollers with ethernet   
     Among other options, the [ESPHome](https://www.esphome.io/) platform can be used by using an [Olimex POE device](https://www.olimex.com/Products/IoT/ESP32/ESP32-POE-ISO/open-source-hardware) or a [Wt32-eth01](https://community.home-assistant.io/t/how-i-installed-esphome-on-the-wt32-eth01/359027). Entities from these devices will be available in Home Assistant, when they are connected to the network Home Assistant is running on.
 
-<table><tbody><tr><td><figure class="image"><img src="https://www.olimex.com/Products/IoT/ESP32/ESP32-POE-ISO/images/thumbs/310x230/ESP32-POE-ISO-2.jpg" alt="ESP32-POE-ISO - Open Source Hardware Board"></figure></td></tr><tr><td>The Olimex-poe-iso, device with Ethernet connection</td></tr></tbody></table>
+<table><tbody><tr><td><figure class="image"><img src="https://www.olimex.com/Products/IoT/ESP32/ESP32-POE-ISO/images/thumbs/310x230/ESP32-POE-ISO-2.jpg" alt="ESP32-POE-ISO - Open Source Hardware Board"></figure></td></tr><tr><td>The Olimex-poe-iso, ESP32 device with Ethernet connection&nbsp;</td></tr></tbody></table>
 
 *   Arduino with an ethernet module, like the W5500, with MQTT sending/receiving   
     Cheaper hardware, but more work to be done for the configuration
@@ -1408,4 +1417,4 @@ An interesting idea is to use heating actuators on the radiator controlled by re
 
 Below a photo from that topic. 
 
-![image](https://community-openhab-org.s3.dualstack.eu-central-1.amazonaws.com/optimized/3X/b/d/bd24c5b6411ebc950789d70791437274e22fba45_2_375x500.jpeg)
+![image](images/bd24c5b6411ebc950789d70791437274e22fba45_2_375x500.jpeg)
