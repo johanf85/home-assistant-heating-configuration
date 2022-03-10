@@ -1362,6 +1362,10 @@ Some possible improvements for this design to implement later on:
 
 *   Set a variable time of heating according to the outdoor temperature fetched from an internet source
 
+## Update 03/10/22 new configuration
+
+As I moved to a new apartment  
+
 ## Questions / contact
 
 Easiest way is to post a message in [this topic](https://community.home-assistant.io/t/my-multi-zone-thermostat-configuration/319432) on the Home Assistant community forum. 
