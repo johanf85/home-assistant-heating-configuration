@@ -1362,11 +1362,23 @@ Some possible improvements for this design to implement later on:
 
 *   Set a variable time of heating according to the outdoor temperature fetched from an internet source
 
-## 9. Questions / contact
+## 9. Update 03/10/22 new configuration
+
+I moved to a new apartment and had to install everything in the new situation. I made different choices for this new home, everything is still wired though. A [ESPHome](https://www.esphome.io) hub in the living room and bedroom. Both hubs are connected via Ethernet cables to the network.
+
+Also different is the use of heating actuators instead of the Eqiva TRVs. Inspired by [this topic](https://community.openhab.org/t/my-central-heating-solution-using-thermal-actuators/41320) on the Openhab forum. These heating actuators are now synced to Home Assistant, which was not the case with the Eqiva TRVs. Also added window open/close sensors.
+
+<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/157851239-0a0d64d0-4965-49fb-9b1c-551b24cb09a2.jpg"></figure></td></tr><tr><td>Heating actuator, usually applied in underfloor heating, now applied in the new design</td></tr></tbody></table>
+
+Below is a schematic overview of this new situation. I am planning on updating this document with the automations used in the new situation. 
+
+![](https://user-images.githubusercontent.com/43075793/157850679-2b7a9313-953f-4b46-b933-f6d61f2000f4.png)  
+
+## 10. Questions / contact
 
 Easiest way is to post a message in [this topic](https://community.home-assistant.io/t/my-multi-zone-thermostat-configuration/319432) on the Home Assistant community forum. 
 
-## 10. Other options for wired configurations
+## 11. Other options for wired configurations
 
 Reasons to choose for a wired configuration instead of wireless are:
 
@@ -1379,7 +1391,7 @@ Reasons to choose for a wired configuration instead of wireless are:
 
 The above described configuration uses a USB cable connection to an arduino to my bedroom. This is convenient as it both powers and readouts the arduino. For other, larger houses with multiple temperature sensors and zones this will not be an option, as it's not suitable for long distances.   
 
-### 10.1 Other wired options:
+### 11.1 Other wired options:
 
 *   a long cable to a 1-wire ds18b20 sensor.  
     This is something that could have been done in this configuration too, but wasn't considered. 1-Wire sensors are capable to have quite a distance.
@@ -1397,7 +1409,7 @@ The above described configuration uses a USB cable connection to an arduino to m
 
 Power over Ethernet can be very convenient in a wired configuration. PoE devices are providing both power and a data connection through one cable. This dismisses the need for adding power to the device by an extra power source. PoE is not available on all Ethernet connections, a PoE router or switch is needed.   
 
-## 11. External links
+## 12. External links
 
 [Home Assistant community forum](https://community.home-assistant.io/)
 
