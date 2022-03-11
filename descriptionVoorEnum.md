@@ -1364,7 +1364,15 @@ Some possible improvements for this design to implement later on:
 
 ## Update 03/10/22 new configuration
 
-As I moved to a new apartment  
+I moved to a new apartment and had to install everything in the new situation. I made different choices for this new home, everything is still wired though. A [ESPHome](https://www.esphome.io) hub in the living room and bedroom. Both hubs are connected via Ethernet cables to the network.
+
+Also different is the use of heating actuators instead of the Eqiva TRVs. Inspired by [this topic](https://community.openhab.org/t/my-central-heating-solution-using-thermal-actuators/41320) on the Openhab forum. These heating actuators are now synced to Home Assistant, which was not the case with the Eqiva TRVs. Also added window open/close sensors.
+
+<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/157851239-0a0d64d0-4965-49fb-9b1c-551b24cb09a2.jpg"></figure></td></tr><tr><td>Heating actuator, usually applied in underfloor heating, now applied in the new design</td></tr></tbody></table>
+
+Below is a schematic overview of this new situation. I am planning on updating this document with the automations used in the new situation. 
+
+![](https://user-images.githubusercontent.com/43075793/157850679-2b7a9313-953f-4b46-b933-f6d61f2000f4.png)  
 
 ## Questions / contact
 
