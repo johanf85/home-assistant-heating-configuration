@@ -280,9 +280,7 @@ sensor:
 
 ##### 6.3.1.3 **Relay**
 
-![](images/117958501-5c5cb300-b31b-11eb-8065-645693a0284e.png)
-
-Added to configuration.yaml
+![](images/117958501-5c5cb300-b31b-11eb-8065-645693a0284e.png)Added to configuration.yaml
 
 ```yaml
 switch:
@@ -295,9 +293,7 @@ More info on Home Assistant website: [rpi\_gpio integration](https://www.home-as
 
 ##### 6.3.1.4 **Motion sensor**
 
-![](images/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)
-
-Connected to gpio pin 26
+![](images/117958088-f8d28580-b31a-11eb-999f-f8b17d1bf0c5.png)Connected to gpio pin 26
 
 ```yaml
 binary_sensor:
@@ -485,7 +481,7 @@ I am aware that there is a Home Assistant plugin called [Schedy](https://hass-ap
 ```yaml
 {% raw %}
 - id: '1587807892892'
-  alias: Slaapkamer naar instelwaarde 's nachts
+  alias: Bedroom to settemperature at night
   description: ''
   trigger:
   - at: input_datetime.bedtijd
@@ -509,7 +505,7 @@ I am aware that there is a Home Assistant plugin called [Schedy](https://hass-ap
 ```yaml
 {% raw %}
 - id: '1589611935632'
-  alias: Woonkamer instelwaarde na opstaan
+  alias: Livingroom set temperature at waking time
   description: ''
   trigger:
   - at: input_datetime.opstaan
@@ -533,7 +529,7 @@ I am aware that there is a Home Assistant plugin called [Schedy](https://hass-ap
 ```yaml
 {% raw %}
 - id: '1587807715263'
-  alias: Slaapkamer naar instelwaarde overdag
+  alias: Bedroom to settempature on wake up time
   description: ''
   trigger:
   - at: input_datetime.opstaan
@@ -557,7 +553,7 @@ I am aware that there is a Home Assistant plugin called [Schedy](https://hass-ap
 ```yaml
 {% raw %}
 - id: '1587310221936'
-  alias: Woonkamer instelwaarde na bedtijd
+  alias: Livingroom to set temperature at night
   description: ''
   trigger:
   - at: input_datetime.bedtijd
@@ -589,7 +585,7 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
 
 ```yaml
 - id: '1587373774458'
-  alias: Thermostaat aan bij iemand thuis
+  alias: Turn on thermostat when Someone home is set to on
   description: ''
   trigger:
   - entity_id: input_boolean.iemandthuis
@@ -605,12 +601,33 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
     service: climate.turn_on
 ```
 
+And a seperate for turning off when the state for Someone home is off. 
+
+```yaml
+- id: '1608318174333'
+  alias: Aanwezigheid uit
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.iemandthuis
+    to: 'off'
+  condition: []
+  action:
+  - service: climate.turn_off
+    data: {}
+    entity_id: climate.slaapkamer
+  - service: climate.turn_off
+    data: {}
+    entity_id: climate.woonkamer
+  mode: single
+```
+
 #### 6.5.2 Living room thermostat turn on
 
 ```yaml
 {% raw %}
 - id: '1606337912735'
-  alias: Woonkamer thermostaat aan
+  alias: Living room thermostaat on
   description: ''
   trigger:
   - platform: template
@@ -642,12 +659,40 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
   {% endraw %}
 ```
 
+#### 6.5.4 Living room turn thermostat off
+
+```yaml
+{% raw %}
+- id: '1606839006446'
+  alias: Woonkamer thermostaat uit
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{state_attr(''climate.woonkamer'', ''temperature'') < state_attr(''climate.woonkamer'',
+      ''current_temperature'')}}'
+  - platform: time_pattern
+    minutes: '2'
+  condition:
+  - condition: state
+    entity_id: climate.woonkamer
+    state: 'on'
+  - condition: template
+    value_template: '{{state_attr(''climate.woonkamer'', ''temperature'') < state_attr(''climate.woonkamer'',
+      ''current_temperature'')}}'
+  action:
+  - service: climate.turn_off
+    data: {}
+    entity_id: climate.woonkamer
+  mode: restart
+  max: 10
+```
+
 #### 6.5.3 Bedroom thermostat turn on / off 
 
 ```yaml
 {% raw %}
 - id: '1606338268883'
-  alias: 'Slaapkamer thermostaat aan '
+  alias: 'Bedroom thermostaat on / off '
   description: ''
   trigger:
   - platform: template
@@ -684,52 +729,13 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
  {% endraw %} 
 ```
 
-#### 6.5.4 Living room turn thermostat off
+#### Enabling heating switch to boiler based when room heat switch turns on
+
+As a room is asking for a heat, the corresponding input\_boolean switch is turned by the thermostat. This automations takes care of turning on the relay switch sending the heating signal to the heater. 
 
 ```yaml
-{% raw %}
-- id: '1606839006446'
-  alias: Woonkamer thermostaat uit
-  description: ''
-  trigger:
-  - platform: template
-    value_template: '{{state_attr(''climate.woonkamer'', ''temperature'') < state_attr(''climate.woonkamer'',
-      ''current_temperature'')}}'
-  - platform: time_pattern
-    minutes: '2'
-  condition:
-  - condition: state
-    entity_id: climate.woonkamer
-    state: 'on'
-  - condition: template
-    value_template: '{{state_attr(''climate.woonkamer'', ''temperature'') < state_attr(''climate.woonkamer'',
-      ''current_temperature'')}}'
-  action:
-  - service: climate.turn_off
-    data: {}
-    entity_id: climate.woonkamer
-  mode: restart
-  max: 10
-
-- id: '1608297641472'
-  alias: terug naar instelwaarde bij restart
-  description: ''
-  trigger:
-  - platform: time_pattern
-    minutes: '15'
-  condition: []
-  action:
-  - service: climate.set_temperature
-    data:
-      temperature: '{{states(''input_number.current_insteltemp_slaapkamer'')}}'
-    entity_id: climate.slaapkamer
-  - service: climate.set_temperature
-    data:
-      temperature: '{{states(''input_number.current_insteltemp_woonkamer'')}}'
-    entity_id: climate.woonkamer
-  mode: single
 - id: '1608298248187'
-  alias: Helper schakelaars voor klimaat
+  alias: Enabling heating switch to boiler based when room heat switch turns on
   description: ''
   trigger:
   - platform: state
@@ -743,7 +749,14 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
   - service: switch.turn_on
     data: {}
     entity_id: switch.relay
-  mode: single
+  mode: single  
+```
+
+#### Turning off the heating switch when both input\_booleans for the rooms are off
+
+The opposite of the previous automation. When there is no heating demand by the thermostats, both input\_booleans for bedroom and livingroom are off and the relay switch to the heater will go off. 
+
+```yaml
 - id: '1608298257006'
   alias: Helper schakelaars UIT klimaat
   description: ''
@@ -768,6 +781,9 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
     data: {}
     entity_id: switch.relay
   mode: single
+```
+
+```yaml
 - id: '1608318082068'
   alias: Aanwezigheid aan
   description: ''
@@ -784,22 +800,9 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
     data: {}
     entity_id: climate.woonkamer
   mode: single
-- id: '1608318174333'
-  alias: Aanwezigheid uit
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.iemandthuis
-    to: 'off'
-  condition: []
-  action:
-  - service: climate.turn_off
-    data: {}
-    entity_id: climate.slaapkamer
-  - service: climate.turn_off
-    data: {}
-    entity_id: climate.woonkamer
-  mode: single
+```
+
+```yaml
 - id: '1608318195860'
   alias: Aanwezigheid uit
   description: ''
@@ -816,7 +819,6 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
     data: {}
     entity_id: climate.woonkamer
   mode: single
-  {% endraw %}
 ```
 
 ### 6.6 Presence detection
