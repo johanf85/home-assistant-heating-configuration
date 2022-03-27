@@ -25,7 +25,9 @@ Here is a tab with variables:
 
 And on my phone:
 
-![](images/screenshot-mobile.jpeg)
+
+<img src="images/screenshot-mobile.jpeg" width="200">
+
 
 {% include toc.html %}
 
@@ -33,7 +35,7 @@ And on my phone:
 
 My appartement consists of a living room, a bedroom and a kitchen.
 
-<table><tbody><tr><td><figure class="image"><img src="images/117958666-8a41f780-b31b-11eb-812e-aa2912945f4b.png"></figure></td></tr><tr><td>A schematic view of the floor plan with the relevant rooms</td></tr></tbody></table>
+<table><tbody><tr><td><figure class="image"><img src="images/117958666-8a41f780-b31b-11eb-812e-aa2912945f4b.png"></figure><p>&nbsp;</p></td></tr><tr><td>A schematic view of the floor plan with the relevant rooms</td></tr></tbody></table>
 
 <table><tbody><tr><td><figure class="image"><img src="images/110297333-a790d780-7ff3-11eb-839d-b3b001fa90a7.png"></figure></td></tr><tr><td>A 3D view of the floorplan, the door between living room and bedroom can be closed off<br>(made with <a href="https://roomstyler.com/3dplanner">https://roomstyler.com/3dplanner</a>)</td></tr></tbody></table>
 
