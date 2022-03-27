@@ -17,11 +17,11 @@ With the use of Home Assistant I created a multi zone smart thermostat, which I 
 
 **Screenshots of my dashboard:**
 
-![](images/Screenshot-main.png)
+![](images/Screenshot-lovelace-main.png)
 
 Here is a tab with variables:
 
-![](images/Screenshot-variables.png)
+![](images/Screenshot-lovelace-variables.png)
 
 And on my phone:
 
