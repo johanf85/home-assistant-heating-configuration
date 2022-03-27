@@ -1,11 +1,11 @@
-#  My home multi zone smart heating configuration with the use of Home Assistant
+# My home multi zone smart heating configuration with the use of Home Assistant
 
 Date first published: July 1 2021  
 Latest modification: March 3 2022
 
 By: Johan F.
 
-## 1. Introduction
+## 1\. Introduction
 
 Home Assistant is Open Source software that runs on various devices, for instance Raspberry Pi, and acts as a central server for smart home devices and/or self build modules to make automatizations in the home. It has an active community and a large library of integrations with products on the market. Home Assistant is a non-cloud system, which means there is not necessarily a dependance on external cloud services and an internet connection.
 
@@ -29,7 +29,7 @@ And on my phone:
 
 {% include toc.html %}
 
-## 2. Floor plan of my apartment 
+## 2\. Floor plan of my apartment 
 
 My appartement consists of a living room, a bedroom and a kitchen.
 
@@ -41,7 +41,7 @@ The appartement has a boiler (Intergas kompakt hre 24/18) for central heating wh
 
 <table><tbody><tr><td><figure class="image"><img src="images/117959173-08060300-b31c-11eb-9171-167f414ecc1a.png"></figure></td></tr><tr><td>Intergas hre 24/18</td></tr></tbody></table>
 
-## 3. The design wishes for the system
+## 3\. The design wishes for the system
 
 *   Multi zone: Heat the bedroom to a desired temperature at night (while living room radiator closed) and the living room during the day and evening (while bedroom radiator closed)
 *   Turn off the thermostat function when no one home
@@ -51,7 +51,7 @@ The appartement has a boiler (Intergas kompakt hre 24/18) for central heating wh
 *   Reverting to normal set temperature after a certain amount of time after a manual change
 *   Easily setting variables like bedtime, waking time and revert-to-initial-time with input fields in the front-end
 
-## 4. Software
+## 4\. Software
 
 [Home Assistant](https://www.home-assistant.io/) (The main platform on which everything is running)
 
@@ -69,7 +69,7 @@ Several integrations are used. The most important is the Generic Thermostat inte
 
 *   [Generic Thermostat integration](https://www.home-assistant.io/integrations/generic_thermostat/)
 
-## 5. Hardware
+## 5\. Hardware
 
 **Bedroom**
 
@@ -180,7 +180,7 @@ A doorspring was put on both rooms door, so that they will be kept closed as muc
 
 <table><tbody><tr><td><figure class="image"><img src="images/102992183-0b3e5500-451b-11eb-8786-723f359d2996.jpeg"></figure></td></tr><tr><td><i>Doorspring for door closing</i></td></tr></tbody></table>
 
-## 6. Home Assistant configuration 
+## 6\. Home Assistant configuration 
 
 ### 6.1 Helpers 
 
@@ -393,6 +393,7 @@ Translation: "Bedroom thermostat turned off bc of too slow heating up, window op
 Home Assistant documentation: [Telegram polling](https://www.home-assistant.io/integrations/telegram_polling/)
 
 ```yaml
+{% raw %}
 telegram_bot:
   - platform: polling
     api_key: secret
@@ -403,7 +404,8 @@ telegram_bot:
 notify:
   - platform: telegram
     name: Telegramnotifier
-    chat_id: secret
+    chat_id: secret    
+{% endraw %}
 ```
 
 #### 6.4.4 Trend sensor for possible open window detection
@@ -413,7 +415,7 @@ Using the [trend platform](https://www.home-assistant.io/integrations/trend/) it
 The `min_gradient` value, which is the temperature rising per second, for each room is set based on trial and error. 
 
 ```yaml
-
+{% raw %}
   - platform: trend
     sensors:
       temp_falling_slaapkamer:
@@ -430,6 +432,7 @@ The `min_gradient` value, which is the temperature rising per second, for each r
         min_gradient: 0.0005
         invert: false
         friendly_name: DeltaT woonk voldoende
+{% endraw %}
 ```
 
 ```yaml
@@ -584,6 +587,7 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
 #### 6.6.1 Turning on the thermostat when someone home
 
 ```yaml
+{% raw %}
 - id: '1587373774458'
   alias: Turn on thermostat when Someone home is set to on
   description: ''
@@ -599,11 +603,14 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
   - data: {}
     entity_id: climate.slaapkamer
     service: climate.turn_on
+ {% endraw %}
+   
 ```
 
 And a seperate for turning off when the state for Someone home is off. 
 
 ```yaml
+{% raw %}
 - id: '1608318174333'
   alias: presenceheid uit
   description: ''
@@ -620,6 +627,7 @@ And a seperate for turning off when the state for Someone home is off. 
     data: {}
     entity_id: climate.woonkamer
   mode: single
+ {% endraw %}
 ```
 
 #### 6.6.2 Living room thermostat turn on
@@ -685,6 +693,7 @@ And a seperate for turning off when the state for Someone home is off. 
     entity_id: climate.woonkamer
   mode: restart
   max: 10
+{% endraw %}
 ```
 
 #### 6.6.4 Bedroom thermostat turn on / off 
@@ -734,6 +743,8 @@ And a seperate for turning off when the state for Someone home is off. 
 As a room is asking for a heat, the corresponding input\_boolean switch is turned by the thermostat. This automations takes care of turning on the relay switch sending the heating signal to the heater. 
 
 ```yaml
+{% raw %}
+
 - id: '1608298248187'
   alias: Enabling heating switch to boiler based when room heat switch turns on
   description: ''
@@ -749,7 +760,9 @@ As a room is asking for a heat, the corresponding input\_boolean switch is turne
   - service: switch.turn_on
     data: {}
     entity_id: switch.relay
-  mode: single  
+  mode: single
+ {% raw %}
+  
 ```
 
 #### 6.6.6 Turning off the heating switch when both input\_booleans for the rooms are off
@@ -757,6 +770,7 @@ As a room is asking for a heat, the corresponding input\_boolean switch is turne
 The opposite of the previous automation. When there is no heating demand by the thermostats, both input\_booleans for bedroom and livingroom are off and the relay switch to the heater will go off. 
 
 ```yaml
+{% raw %}
 - id: '1608298257006'
   alias: Helper schakelaars UIT klimaat
   description: ''
@@ -781,9 +795,11 @@ The opposite of the previous automation. When there is no heating demand by the 
     data: {}
     entity_id: switch.relay
   mode: single
+  {% endraw %}
 ```
 
 ```yaml
+{% raw %}
 - id: '1608318082068'
   alias: presenceheid aan
   description: ''
@@ -800,9 +816,11 @@ The opposite of the previous automation. When there is no heating demand by the 
     data: {}
     entity_id: climate.woonkamer
   mode: single
+ {% endraw %}
 ```
 
 ```yaml
+{% raw %}
 - id: '1608318195860'
   alias: presenceheid uit
   description: ''
@@ -819,6 +837,8 @@ The opposite of the previous automation. When there is no heating demand by the 
     data: {}
     entity_id: climate.woonkamer
   mode: single
+{% endraw %}
+ 
 ```
 
 ### 6.7 Presence detection
@@ -943,7 +963,7 @@ Needed for the someone home status to turn on immediately when entering the livi
       datetime: '{{now().strftime(''%Y-%m-%d %H:%M:%S'')}}'
     entity_id: input_datetime.movement_one_before_last
   mode: restart
-  {% endraw %}
+{% endraw %}
 ```
 
 #### 6.7.3 Automation to turn on someone home status
@@ -972,9 +992,7 @@ Needed for the someone home status to turn on immediately when entering the livi
  {% endraw %}
 ```
 
-#### 6.7.4 Automation during evening and getting up 
-
-Causes 
+#### 6.7.4 Automation presence detection during evening and getting up  
 
 ```yaml
 {% raw %}
@@ -1085,6 +1103,7 @@ If home status was on during night it should turn of at waking time in case I wa
 #### 6.7.8 Turning off thermostat when Someone home status is off
 
 ```yaml
+{% raw %}
 - id: '1587373899805'
   alias: Thermostaat uit bij niemand thuis
   description: ''
@@ -1100,6 +1119,7 @@ If home status was on during night it should turn of at waking time in case I wa
   - data: {}
     entity_id: climate.slaapkamer
     service: climate.turn_off 
+ {% endraw %}     
 ```
 
 ### 6.8 Heat for 5 minutes straight
@@ -1107,7 +1127,7 @@ If home status was on during night it should turn of at waking time in case I wa
 Automation:
 
 ```yaml
-
+{% raw %} 
 - id: '1588717917351'
   alias: 5 minuten verwarmen als schakelaar aan
   description: ''
@@ -1129,6 +1149,7 @@ Automation:
     data: {}
     entity_id: input_boolean.30_min_verwarmen_schakelaar
   mode: single
+ {% endraw %}  
 ```
 
 ### 6.9 Anti-frost measures
@@ -1138,6 +1159,7 @@ When there isn't anyone present in the house and the outside temperature is far 
 Automation:
 
 ```yaml
+{% raw %} 
 alias: Beveiliging vriezen
 description: ''
 trigger:
@@ -1172,6 +1194,7 @@ action:
     data: {}
     entity_id: input_boolean.iemandthuis
 mode: single
+{% endraw %} 
 ```
 
 ### 6.10 Window open detection
@@ -1344,13 +1367,13 @@ It occasionally happens that there is no signal of the DS18B20 temperature senso
   {% endraw %}
 ```
 
-## 7. Bypass valve
+## 7\. Bypass valve
 
 When using zone heating in your house, consider adding a bypass valve to your central heating plan. A bypass valve will let through water when the pressure in the system gets too high. This avoid damage to the boiler pump because of pumping while all the radiators are closed you can open a small radiator manually or add a bypass valve. I just keep a radiator in my shower always opened.
 
 ![](images/123786721-4e1e2280-d8da-11eb-867b-88769c79d803.jpeg)
 
-## 8. Possible improvements to this configuration
+## 8\. Possible improvements to this configuration
 
 Some possible improvements for this design to implement later on:
 
@@ -1364,7 +1387,7 @@ Some possible improvements for this design to implement later on:
 
 *   Set a variable time of heating according to the outdoor temperature fetched from an internet source
 
-## 9. Update 03/10/22 new configuration
+## 9\. Update 03/10/22 new configuration
 
 I moved to a new apartment and had to install everything in the new situation. I made different choices for this new home, everything is still wired though. A [ESPHome](https://www.esphome.io) hub in the living room and bedroom. Both hubs are connected via Ethernet cables to the network.
 
@@ -1376,11 +1399,11 @@ Below is a schematic overview of this new situation. I am planning on updating t
 
 ![](https://user-images.githubusercontent.com/43075793/157850679-2b7a9313-953f-4b46-b933-f6d61f2000f4.png)  
 
-## 10. Questions / contact
+## 10\. Questions / contact
 
 Easiest way is to post a message in [this topic](https://community.home-assistant.io/t/my-multi-zone-thermostat-configuration/319432) on the Home Assistant community forum. 
 
-## 11. Other options for wired configurations
+## 11\. Other options for wired configurations
 
 Reasons to choose for a wired configuration instead of wireless are:
 
@@ -1411,7 +1434,7 @@ The above described configuration uses a USB cable connection to an arduino to m
 
 Power over Ethernet can be very convenient in a wired configuration. PoE devices are providing both power and a data connection through one cable. This dismisses the need for adding power to the device by an extra power source. PoE is not available on all Ethernet connections, a PoE router or switch is needed.   
 
-## 12. External links
+## 12\. External links
 
 [Home Assistant community forum](https://community.home-assistant.io/)
 
