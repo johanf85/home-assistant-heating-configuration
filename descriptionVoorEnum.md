@@ -25,7 +25,7 @@ Here is a tab with variables:
 
 And on my phone:
 
-![](images/110310007-51776080-8002-11eb-9b64-755373b3a415.png)
+![](images/screenshot-mobile.jpeg)
 
 {% include toc.html %}
 
