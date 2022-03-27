@@ -5,7 +5,7 @@ Latest modification: March 3 2022
 
 By: Johan F.
 
-## 1\. Introduction
+## Introduction
 
 Home Assistant is Open Source software that runs on various devices, for instance Raspberry Pi, and acts as a central server for smart home devices and/or self build modules to make automatizations in the home. It has an active community and a large library of integrations with products on the market. Home Assistant is a non-cloud system, which means there is not necessarily a dependance on external cloud services and an internet connection.
 
@@ -31,7 +31,7 @@ And on my phone:
 
 {% include toc.html %}
 
-## 2\. Floor plan of my apartment 
+## Floor plan of my apartment 
 
 My appartement consists of a living room, a bedroom and a kitchen.
 
@@ -43,7 +43,7 @@ The appartement has a boiler (Intergas kompakt hre 24/18) for central heating wh
 
 <table><tbody><tr><td><figure class="image"><img src="images/117959173-08060300-b31c-11eb-9171-167f414ecc1a.png"></figure></td></tr><tr><td>Intergas hre 24/18</td></tr></tbody></table>
 
-## 3\. The design wishes for the system
+## The design wishes for the system
 
 *   Multi zone: Heat the bedroom to a desired temperature at night (while living room radiator closed) and the living room during the day and evening (while bedroom radiator closed)
 *   Turn off the thermostat function when no one home
@@ -53,7 +53,7 @@ The appartement has a boiler (Intergas kompakt hre 24/18) for central heating wh
 *   Reverting to normal set temperature after a certain amount of time after a manual change
 *   Easily setting variables like bedtime, waking time and revert-to-initial-time with input fields in the front-end
 
-## 4\. Software
+## Software
 
 [Home Assistant](https://www.home-assistant.io/) (The main platform on which everything is running)
 
@@ -71,7 +71,7 @@ Several integrations are used. The most important is the Generic Thermostat inte
 
 *   [Generic Thermostat integration](https://www.home-assistant.io/integrations/generic_thermostat/)
 
-## 5\. Hardware
+## Hardware
 
 **Bedroom**
 
@@ -182,7 +182,7 @@ A doorspring was put on both rooms door, so that they will be kept closed as muc
 
 <table><tbody><tr><td><figure class="image"><img src="images/102992183-0b3e5500-451b-11eb-8786-723f359d2996.jpeg"></figure></td></tr><tr><td><i>Doorspring for door closing</i></td></tr></tbody></table>
 
-## 6\. Home Assistant configuration 
+## Home Assistant configuration 
 
 ### 6.1 Helpers 
 
@@ -1366,13 +1366,13 @@ It occasionally happens that there is no signal of the DS18B20 temperature senso
   {% endraw %}
 ```
 
-## 7\. Bypass valve
+## Bypass valve
 
 When using zone heating in your house, consider adding a bypass valve to your central heating plan. A bypass valve will let through water when the pressure in the system gets too high. This avoid damage to the boiler pump because of pumping while all the radiators are closed you can open a small radiator manually or add a bypass valve. I just keep a radiator in my shower always opened.
 
 ![](images/123786721-4e1e2280-d8da-11eb-867b-88769c79d803.jpeg)
 
-## 8\. Possible improvements to this configuration
+## Possible improvements to this configuration
 
 Some possible improvements for this design to implement later on:
 
@@ -1386,7 +1386,7 @@ Some possible improvements for this design to implement later on:
 
 *   Set a variable time of heating according to the outdoor temperature fetched from an internet source
 
-## 9\. Update 03/10/22 new configuration
+## Update 03/10/22 new configuration
 
 I moved to a new apartment and had to install everything in the new situation. I made different choices for this new home, everything is still wired though. A [ESPHome](https://www.esphome.io) hub in the living room and bedroom. Both hubs are connected via Ethernet cables to the network.
 
@@ -1398,11 +1398,11 @@ Below is a schematic overview of this new situation. I am planning on updating t
 
 ![](https://user-images.githubusercontent.com/43075793/157850679-2b7a9313-953f-4b46-b933-f6d61f2000f4.png)  
 
-## 10\. Questions / contact
+## Questions / contact
 
 Easiest way is to post a message in [this topic](https://community.home-assistant.io/t/my-multi-zone-thermostat-configuration/319432) on the Home Assistant community forum. 
 
-## 11\. Other options for wired configurations
+## Other options for wired configurations
 
 Reasons to choose for a wired configuration instead of wireless are:
 
@@ -1433,7 +1433,7 @@ The above described configuration uses a USB cable connection to an arduino to m
 
 Power over Ethernet can be very convenient in a wired configuration. PoE devices are providing both power and a data connection through one cable. This dismisses the need for adding power to the device by an extra power source. PoE is not available on all Ethernet connections, a PoE router or switch is needed.   
 
-## 12\. External links
+## External links
 
 [Home Assistant community forum](https://community.home-assistant.io/)
 
