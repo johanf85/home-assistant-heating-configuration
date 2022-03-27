@@ -17,11 +17,11 @@ With the use of Home Assistant I created a multi zone smart thermostat, which I 
 
 **Screenshots of my dashboard:**
 
-![](images/110309572-ce560a80-8001-11eb-85fc-a04b34ca5de8.png)
+![](images/Screenshot main.png)
 
 Here is a tab with variables:
 
-![](images/110309259-699ab000-8001-11eb-95a1-4a28d13302c3.png)
+![](images/Screenshot variables.png)
 
 And on my phone:
 
@@ -604,7 +604,6 @@ Also the someone status `input_boolean.iemandthuis` is taken into account 
     entity_id: climate.slaapkamer
     service: climate.turn_on
  {% endraw %}
-   
 ```
 
 And a seperate for turning off when the state for Someone home is off. 
@@ -762,7 +761,6 @@ As a room is asking for a heat, the corresponding input\_boolean switch is turne
     entity_id: switch.relay
   mode: single
  {% raw %}
-  
 ```
 
 #### 6.6.6 Turning off the heating switch when both input\_booleans for the rooms are off
@@ -838,7 +836,6 @@ The opposite of the previous automation. When there is no heating demand by the 
     entity_id: climate.woonkamer
   mode: single
 {% endraw %}
- 
 ```
 
 ### 6.7 Presence detection
