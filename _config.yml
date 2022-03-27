@@ -18,9 +18,6 @@ plugins:
   - jekyll-numbered-headings
   - jekyll-last-modified-at
 
-filter: 
-  replace: "zone", "zone2"
-
 scss: |
   .tableofcontentswrappper{background-color:#e7f2fa;padding:15px;}
   .tableofcontentswrappper ul li{list-style-type: none;}
