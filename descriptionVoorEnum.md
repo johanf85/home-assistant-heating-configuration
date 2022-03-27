@@ -26,7 +26,7 @@ Here is a tab with variables:
 And on my phone:
 
 
-<img src="images/screenshot-mobile.jpeg" width="200">
+<img src="images/screenshot-mobile.jpeg" style="width:300px">
 
 
 {% include toc.html %}
