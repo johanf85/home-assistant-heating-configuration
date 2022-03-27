@@ -192,18 +192,18 @@ Created the following helpers via configuration > helpers within Home Assistant
 | Go to bed time |   | input\_datetime.bedtime |
 | Evening time |   | input\_datetime.eveningtime |
 | Wake up time |   | input\_datetime.wakuptime |
-| Set temperature living room night |   | input\_text.woonk\_nacht |
-| Set temperature living room day |   | input\_text.woonk\_overdag |
-| Current set temperature living room according to program |   | input\_number.current\_insteltemp\_woonkamer |
+| Set temperature living room night |   | input\_text.livingroom\_settemp\_night |
+| Set temperature living room day |   | input\_text.livingroom\_settemp\_day |
+| Current set temperature living room according to program |   | input\_number.current\_settemp\_livingroom |
 | Countdown timer | timer | timer.countdown |
-| Second to last movement recorded |   | input\_datetime.bewegingeennalaatst\_1 |
-| Last movement recorded |   | input\_datetime.beweginglaatst\_0 |
-| Current set temperature living room according to program |   | input\_number.current\_insteltemp\_slaapkamer |
-| Hours and minutes for a manual change in set temperature before reverting to program |   | input\_datetime.duur\_manuele\_verhoging |
-| Heating toggle switch for bedroom (used in generic thermostat as heating switch) |   | input\_boolean.schakelaar\_slaapkamer |
-| Heating toggle switch for Living room (used in generic thermostat as heating switch) |   | input\_boolean.schakelaar\_woonkamer |
-| Set temperature living room night |   | input\_text.slaapkamer\_insteltemp\_nacht |
-| Set temperature living room day |   | input\_text.slaapkamer\_insteltemp\_overdag |
+| Second to last movement recorded |   | input\_datetime.movement\_one\_before\_last |
+| Last movement recorded |   | input\_datetime.movement\_last |
+| Current set temperature living room according to program |   | input\_number.current\_settemp\_bedroom |
+| Hours and minutes for a manual change in set temperature before reverting to program |   | input\_datetime.duration\_manual\_temperature\_change |
+| Heating toggle switch for bedroom (used in generic thermostat as heating switch) |   | input\_boolean.switch\_thermostat\_bedroom |
+| Heating toggle switch for Living room (used in generic thermostat as heating switch) |   | input\_boolean.switch\_thermost\_livingroom |
+| Set temperature living room night |   | input\_text.bedroom\_settemp\_night |
+| Set temperature living room day |   | input\_text.bedroom\_settemp\_day |
 
 ### 6.2 Variables
 
