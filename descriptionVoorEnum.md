@@ -31,7 +31,7 @@ A tab with history:
 
 And on my phone:
 
-![](images/screenshot-mobile.jpeg)
+<img src="images/screenshot-mobile.jpeg" style="width:300px">
 
 {% include toc.html %}
 
