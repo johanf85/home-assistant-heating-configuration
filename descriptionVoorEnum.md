@@ -23,11 +23,15 @@ Here is a tab with variables:
 
 ![](images/Screenshot-lovelace-variables.png)
 
+A tab with history:
+
+![](images/screenshot-lovelace-history.png)
+
+
+
 And on my phone:
 
-
-<img src="images/screenshot-mobile.jpeg" style="width:300px">
-
+![](images/screenshot-mobile.jpeg)
 
 {% include toc.html %}
 
