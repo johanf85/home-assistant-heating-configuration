@@ -13,7 +13,7 @@ Home Assistant is Open Source software that runs on various devices, for instanc
 
 Website Home Assistant: [home-assistant.io](https://www.home-assistant.io)
 
-With the use of Home Assistant I created a multi zone smart thermostat, which I was able to customize to my personal situation. Against low costs, about  $50, and all wired to limit the EMF radiation in the home. In this document I will describe my configuration. I am Dutch, so the names I chose for various entities are in Dutch.
+With the use of Home Assistant I created a multi zone smart thermostat, which I was able to customize to my personal situation. Against low costs, about  $50, and all wired to limit the EMF radiation in the home. In this document I will describe my configuration. 
 
 **Screenshots of my dashboard:**
 
