@@ -1458,6 +1458,8 @@ An interesting idea: [using Omron D6T thermal sensors as room presence detection
 
 For underfloor heating systems a wired solution is "off the shelve system" is the [Homematic underfloor heating](https://en.homematic-ip.com/en/products/detail/homematic-ip-floor-heating-actuator-12-channels-motorised.html) system.  
 
+[Scheduler plugin](https://github.com/nielsfaber/scheduler-card) for HACS, the add-on library for add-ons not in the official add-on store. 
+
 An interesting idea is to use heating actuators on the radiator controlled by relays. These actuators are actually designed for floor heating manifolds. [This topic](https://community.openhab.org/t/my-central-heating-solution-using-thermal-actuators/41320) on the Openhab forum discusses this option. 
 
 Below a photo from that topic. 
