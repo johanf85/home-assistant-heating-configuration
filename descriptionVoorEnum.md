@@ -29,7 +29,7 @@ A tab with history:
 
 And on my phone:
 
-![](images/screenshot android.jpeg)
+!\[\](images/screenshot android.jpeg)
 
 {% include toc.html %}
 
@@ -1398,7 +1398,8 @@ Also different is the use of heating actuators instead of the Eqiva TRVs. Inspir
 
 Below is a schematic overview of this new situation. I am planning on updating this document with the automations used in the new situation. 
 
-![](https://user-images.githubusercontent.com/43075793/157850679-2b7a9313-953f-4b46-b933-f6d61f2000f4.png)  
+![](https://user-images.githubusercontent.com/43075793/157850679-2b7a9313-953f-4b46-b933-f6d61f2000f4.png)   
+![](https://user-images.githubusercontent.com/43075793/162945745-5339a3b7-29ac-4e8c-a35b-13e6e137b5d1.jpeg) 
 
 ## Questions / contact
 
@@ -1452,6 +1453,8 @@ A nice project by Davide Perini which also uses a PIR motion detector and has a 
 An interesting idea: [using Omron D6T thermal sensors as room presence detection](https://www.youtube.com/watch?v=-beIaL-RmvQ)
 
 [Opentherm module](http://ihormelnyk.com/opentherm_adapter) by Ihor Melnyk
+
+[MQTT PoE radiator valves](https://community.home-assistant.io/t/mqtt-poe-thermostat/300346) on the Home Assistant community forum
 
 An interesting idea is to use heating actuators on the radiator controlled by relays. These actuators are actually designed for floor heating manifolds. [This topic](https://community.openhab.org/t/my-central-heating-solution-using-thermal-actuators/41320) on the Openhab forum discusses this option. 
 
