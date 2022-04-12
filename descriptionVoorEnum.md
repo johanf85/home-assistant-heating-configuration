@@ -13,7 +13,7 @@ Home Assistant is Open Source software that runs on various devices, for instanc
 
 Website Home Assistant: [home-assistant.io](https://www.home-assistant.io)
 
-With the use of Home Assistant I created a multi zone smart thermostat, which I was able to customize to my personal situation. Against low costs, about  $50, and all wired to limit the EMF radiation in the home. In this document I will describe my configuration. 
+With the use of Home Assistant I created a multi zone smart thermostat, which I was able to customize to my personal situation. Against low costs, about  $50, and all wired to limit the EMF radiation in the home. In this document I will describe my configuration.
 
 **Screenshots of my dashboard:**
 
@@ -27,11 +27,9 @@ A tab with history:
 
 ![](images/screenshot-lovelace-history.png)
 
-
-
 And on my phone:
 
-<img src="images/screenshot android.jpeg" style="width:300px">
+![](images/screenshot android.jpeg)
 
 {% include toc.html %}
 
@@ -483,7 +481,7 @@ Uses below variables (screenshot from Lovelace dashboard)
 
 ![](images/123771018-03e17500-d8cb-11eb-9f21-7072873c8c0f.png)
 
-I am aware that there is a Home Assistant plugin called [Schedy](https://hass-apps.readthedocs.io/en/stable/apps/schedy/index.html), which provides a lot of features that would come in hand for the desired configuration. However, as it isn't a native integration within Home Assistant, it is possible that compatibility with Home Assistant will be lost in the future because of updates on Home Assistant. Therefore I chose to go with setting my own automations which are more reliable for the future. 
+I came across the HACS plugin [Scheduler card](https://github.com/nielsfaber/scheduler-card), which provides a lot of features that would come in hand for the desired configuration. I am testing it out right now and it is quite feature rich and suitable for setting schedules. However, as it isn't a native integration within Home Assistant, it is possible that compatibility with Home Assistant will be lost in the future because of updates on Home Assistant. Therefore I chose to go with setting my own automations which are more reliable for the future. 
 
 **Bedroom set temperature after bedtime**
 
