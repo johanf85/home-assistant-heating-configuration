@@ -1446,7 +1446,7 @@ A tutorial:  [Siytek - the ultimate home-assistant DIY guide for multiple zone 
 
 A nice project by Davide Perini which also uses a PIR motion detector and has a 3D printed case and a LCD screen:  [github.com/sblantipodi/smart\_thermostat](https://github.com/sblantipodi/smart_thermostat)
 
-**For future ideas:**
+**Other links to similar:**
 
 [Hacking a Eqiva EQ-3 thermostatic radiator valve.](https://www.youtube.com/watch?v=LlPHrdXHBTU)
 
@@ -1455,6 +1455,10 @@ An interesting idea: [using Omron D6T thermal sensors as room presence detection
 [Opentherm module](http://ihormelnyk.com/opentherm_adapter) by Ihor Melnyk
 
 [MQTT PoE radiator valves](https://community.home-assistant.io/t/mqtt-poe-thermostat/300346) on the Home Assistant community forum
+
+For underfloor heating systems a wired solution is "off the shelve system" is the [Homematic underfloor heating](https://en.homematic-ip.com/en/products/detail/homematic-ip-floor-heating-actuator-12-channels-motorised.html) system.  
+
+[Scheduler plugin](https://github.com/nielsfaber/scheduler-card) for HACS, the add-on library for add-ons not in the official add-on store. 
 
 An interesting idea is to use heating actuators on the radiator controlled by relays. These actuators are actually designed for floor heating manifolds. [This topic](https://community.openhab.org/t/my-central-heating-solution-using-thermal-actuators/41320) on the Openhab forum discusses this option. 
 
