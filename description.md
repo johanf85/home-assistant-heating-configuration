@@ -13,7 +13,7 @@ Home Assistant is Open Source software that runs on various devices, for instanc
 
 Website Home Assistant: [home-assistant.io](https://www.home-assistant.io)
 
-With the use of Home Assistant I created a multi zone smart thermostat, which I was able to customize to my personal situation. Against low costs, about  $50, and all wired to limit the EMF radiation in the home. In this document I will describe my configuration. 
+With the use of Home Assistant I created a multi zone smart thermostat, which I was able to customize to my personal situation. Against low costs, about  $50, and all wired to limit the EMF radiation in the home. In this document I will describe my configuration.
 
 **Screenshots of my dashboard:**
 
@@ -27,11 +27,9 @@ A tab with history:
 
 ![](images/screenshot-lovelace-history.png)
 
-
-
 And on my phone:
 
-<img src="images/screenshot-mobile.jpeg" style="width:300px">
+!\[\](images/screenshot android.jpeg)
 
 {% include toc.html %}
 
@@ -483,7 +481,7 @@ Uses below variables (screenshot from Lovelace dashboard)
 
 ![](images/123771018-03e17500-d8cb-11eb-9f21-7072873c8c0f.png)
 
-I am aware that there is a Home Assistant plugin called [Schedy](https://hass-apps.readthedocs.io/en/stable/apps/schedy/index.html), which provides a lot of features that would come in hand for the desired configuration. However, as it isn't a native integration within Home Assistant, it is possible that compatibility with Home Assistant will be lost in the future because of updates on Home Assistant. Therefore I chose to go with setting my own automations which are more reliable for the future. 
+I came across the HACS plugin [Scheduler card](https://github.com/nielsfaber/scheduler-card), which provides a lot of features that would come in hand for the desired configuration. I am testing it out right now and it is quite feature rich and suitable for setting schedules. However, as it isn't a native integration within Home Assistant, it is possible that compatibility with Home Assistant will be lost in the future because of updates on Home Assistant. Therefore I chose to go with setting my own automations which are more reliable for the future. 
 
 **Bedroom set temperature after bedtime**
 
@@ -1400,7 +1398,8 @@ Also different is the use of heating actuators instead of the Eqiva TRVs. Inspir
 
 Below is a schematic overview of this new situation. I am planning on updating this document with the automations used in the new situation. 
 
-![](https://user-images.githubusercontent.com/43075793/157850679-2b7a9313-953f-4b46-b933-f6d61f2000f4.png)  
+![](https://user-images.githubusercontent.com/43075793/157850679-2b7a9313-953f-4b46-b933-f6d61f2000f4.png)   
+![](https://user-images.githubusercontent.com/43075793/162945745-5339a3b7-29ac-4e8c-a35b-13e6e137b5d1.jpeg) 
 
 ## 10. Questions / contact
 
@@ -1454,6 +1453,8 @@ A nice project by Davide Perini which also uses a PIR motion detector and has a 
 An interesting idea: [using Omron D6T thermal sensors as room presence detection](https://www.youtube.com/watch?v=-beIaL-RmvQ)
 
 [Opentherm module](http://ihormelnyk.com/opentherm_adapter) by Ihor Melnyk
+
+[MQTT PoE radiator valves](https://community.home-assistant.io/t/mqtt-poe-thermostat/300346) on the Home Assistant community forum
 
 An interesting idea is to use heating actuators on the radiator controlled by relays. These actuators are actually designed for floor heating manifolds. [This topic](https://community.openhab.org/t/my-central-heating-solution-using-thermal-actuators/41320) on the Openhab forum discusses this option. 
 
