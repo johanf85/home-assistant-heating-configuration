@@ -184,6 +184,24 @@ A doorspring was put on both rooms door, so that they will be kept closed as muc
 
 <table><tbody><tr><td><figure class="image"><img src="images/102992183-0b3e5500-451b-11eb-8786-723f359d2996.jpeg"></figure></td></tr><tr><td><i>Doorspring for door closing</i></td></tr></tbody></table>
 
+## Update 03/10/22 new hardware configuration
+
+I moved to a new apartment and had to install everything in the new situation. I made different choices for this new home, everything is still wired though. A [ESPHome](https://www.esphome.io) hub in the living room and bedroom. Both hubs are connected via Ethernet cables to the network.
+
+Also different is the use of heating actuators instead of the Eqiva TRVs. Inspired by [this topic](https://community.openhab.org/t/my-central-heating-solution-using-thermal-actuators/41320) on the Openhab forum. These heating actuators are now synced to Home Assistant, which was not the case with the Eqiva TRVs. Also added window open/close sensors.
+
+<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/157851239-0a0d64d0-4965-49fb-9b1c-551b24cb09a2.jpg"></figure></td></tr><tr><td>Heating actuator, usually applied in underfloor heating, now applied in the new design</td></tr></tbody></table>
+
+Below is a schematic overview of this new situation. I am planning on updating this document with the automations used in the new situation. 
+
+![](https://user-images.githubusercontent.com/43075793/157850679-2b7a9313-953f-4b46-b933-f6d61f2000f4.png)   
+April 2020:
+
+![ASUS Chromebox 4 GC004UN kopen? - Prijzen - Tweakers](https://user-images.githubusercontent.com/43075793/172711752-6be0d4cf-75b9-40ae-90de-f738c00590f9.jpeg)  
+Replaced the server Raspberry Pi zero with a Asus Chromebox second hand for €40. Flashed HaOS to a an SSD drive via USB with a USB to SATA connector and plugged this in the Chromebox.  
+  
+![](https://user-images.githubusercontent.com/43075793/162945745-5339a3b7-29ac-4e8c-a35b-13e6e137b5d1.jpeg)
+
 ## Home Assistant configuration 
 
 ### 6.1 Helpers 
@@ -1387,19 +1405,6 @@ Some possible improvements for this design to implement later on:
 ### 8.1 Added to the system but not described yet
 
 *   Set a variable time of heating according to the outdoor temperature fetched from an internet source
-
-## Update 03/10/22 new configuration
-
-I moved to a new apartment and had to install everything in the new situation. I made different choices for this new home, everything is still wired though. A [ESPHome](https://www.esphome.io) hub in the living room and bedroom. Both hubs are connected via Ethernet cables to the network.
-
-Also different is the use of heating actuators instead of the Eqiva TRVs. Inspired by [this topic](https://community.openhab.org/t/my-central-heating-solution-using-thermal-actuators/41320) on the Openhab forum. These heating actuators are now synced to Home Assistant, which was not the case with the Eqiva TRVs. Also added window open/close sensors.
-
-<table><tbody><tr><td><figure class="image"><img src="https://user-images.githubusercontent.com/43075793/157851239-0a0d64d0-4965-49fb-9b1c-551b24cb09a2.jpg"></figure></td></tr><tr><td>Heating actuator, usually applied in underfloor heating, now applied in the new design</td></tr></tbody></table>
-
-Below is a schematic overview of this new situation. I am planning on updating this document with the automations used in the new situation. 
-
-![](https://user-images.githubusercontent.com/43075793/157850679-2b7a9313-953f-4b46-b933-f6d61f2000f4.png)   
-![](https://user-images.githubusercontent.com/43075793/162945745-5339a3b7-29ac-4e8c-a35b-13e6e137b5d1.jpeg) 
 
 ## Questions / contact
 
