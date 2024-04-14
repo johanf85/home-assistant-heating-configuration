@@ -1470,3 +1470,6 @@ An interesting idea is to use heating actuators on the radiator controlled by re
 Below a photo from that topic. 
 
 ![image](images/bd24c5b6411ebc950789d70791437274e22fba45_2_375x500.jpeg)
+
+
+Another project: [Orientation on measuring and controlling in the vegetable garden using sensors](https://johanf44.github.io/moestuin-dh/)
